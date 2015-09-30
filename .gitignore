@@ -1,0 +1,10 @@
+npm-debug.log
+
+# Exclude build files
+build/
+
+# Exclude compiled files
+lib/
+
+# Exclude node modules
+node_modules/
