@@ -57,7 +57,7 @@ var HomePage = React.createClass({
       h1: {
         color: Colors.darkWhite,
         fontWeight: Typography.fontWeightLight,
-        fontSize: 30
+        fontSize: 40
       },
       h2: {
         //.mui-font-style-title
@@ -96,9 +96,9 @@ var HomePage = React.createClass({
     return (
       <FullWidthSection style={styles.root}>
           <div style={styles.tagline}>
-            <h1 style={styles.h1}>Y | N</h1>
+            <h1 style={styles.h1}>YES|NO</h1>
             <h2 style={styles.h2}>
-              Choose Now
+              Make a poll | Choose one
             </h2>
             <FacebookLogin
               appId="1088597931155576"

@@ -87,13 +87,6 @@ class Master extends React.Component {
   }
 
   componentWillMount(){
-    /*
-    ThemeManager.setComponentThemes({
-      inkBar: {
-        backgroundColor: Colors.yellow200,
-      },
-    });
-    */
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({renderTabs: !(document.body.clientWidth <= 647)});
@@ -146,6 +139,12 @@ class Master extends React.Component {
         width: 325,
         bottom:0,
       },
+      tabItemContainerStyle: {
+        backgroundColor: Colors.deepPurple500,
+      },
+      inkBarStyle : {
+      backgroundColor : Colors.yellow200,
+      },
       tab: {
         backgroundColor: Colors.deepPurple500,
         height: 64
@@ -156,7 +155,7 @@ class Master extends React.Component {
       <EnhancedButton
         linkButton={true}
         href="/#/home">
-        <span style={styles.span}>Hide Book</span>
+        <span style={styles.span}>YES|NO</span>
       </EnhancedButton>) : null;
 
     return(
@@ -169,6 +168,8 @@ class Master extends React.Component {
           <div style={styles.container}>
             <Tabs
               style={styles.tabs}
+              tabItemContainerStyle={styles.tabItemContainerStyle}
+              inkBarStyle={styles.inkBarStyle}
               value={this.state.tabIndex}
               onChange={this._handleTabChange.bind(this)}>
               <Tab
@@ -251,7 +252,7 @@ class Master extends React.Component {
 
         <div style={styles.footer}>
           <p style={styles.p}>
-            Hide book was made by <a style={styles.a} href="https://github.com/luckypapa/AMAG/graphs/contributors">Big head brothers band</a>.
+            <a style={styles.a} href="https://github.com/orgs/bigheadbb/people">Big head brothers band</a>
           </p>
         </div>
 

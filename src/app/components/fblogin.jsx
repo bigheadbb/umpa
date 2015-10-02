@@ -20,7 +20,7 @@ module.exports = React.createClass({
   render: function() {
     var styles = {
       label: {
-        color: Colors.indigo700,
+        color: Colors.indigo800,
       },
       demoStyle: {
         margin: '16px 32px 0px 32px'

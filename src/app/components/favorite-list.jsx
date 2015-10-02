@@ -28,12 +28,12 @@ var ToggleStarBorder = require('./svg-icons/toggle-star-border.jsx');
 
 var {Spacing, Typography} = mui.Styles;
 
-var Feed = React.createClass({
+var FavoriteList = React.createClass({
 
   render: function() {
 
     var containerStyle = {
-      paddingTop: Spacing.desktopKeylineIncrement
+      margin: '10',
     };
 
     return (
@@ -110,4 +110,4 @@ var Feed = React.createClass({
   },
 });
 
-module.exports = Feed;
+module.exports = FavoriteList;
