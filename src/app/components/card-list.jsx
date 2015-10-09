@@ -130,7 +130,15 @@ var CardList = React.createClass({
     console.log("CardList render");
     var showCard = function () {
       var styles = {
-        card: {
+        textfield: {
+          width: "100%",
+        },
+        cardtext: {
+          backgroundColor: Colors.white,
+          paddingBottom: 1,
+          borderTop: 'solid 1px #e0e0e0',
+        },
+        cardlist: {
           marginTop: 10,
           marginBottom: 15,
           marginLeft: 10,
