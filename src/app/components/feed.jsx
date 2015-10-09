@@ -1,10 +1,11 @@
 var React = require('react');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs } = require('material-ui');
+var { Slider, Styles, Tab, Tabs, FloatingActionButton } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var FavoriteList = require('./favorite-list.jsx');
+var ToggleStar = require('./svg-icons/toggle-star.jsx');
 
 var Feed = React.createClass({
   loadContent: function () {
@@ -40,19 +41,30 @@ var Feed = React.createClass({
       backgroundColor : Colors.grey600,
     };
 
+    var floatingButtonStyle = {
+      position: 'fixed',
+      right: '30px',
+      bottom: '30px',
+    };
+
     return (
-      <div style={containerStyle}>
-        <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
-          <Tab label='NEW' >
-            <CardList/>
-          </Tab>
-          <Tab label='HOT' >
-            <FavoriteList/>
-          </Tab>
-          <Tab label='MY'>
-            <CardList/>
-          </Tab>
-        </Tabs>
+      <div>
+        <div style={containerStyle}>
+          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
+            <Tab label='NEW' >
+              <CardList/>
+            </Tab>
+            <Tab label='HOT' >
+              <FavoriteList/>
+            </Tab>
+            <Tab label='MY'>
+              <CardList/>
+            </Tab>
+          </Tabs>
+        </div>
+        <FloatingActionButton style={floatingButtonStyle} >
+          <ToggleStar />
+        </FloatingActionButton>
       </div>
     );
   },
