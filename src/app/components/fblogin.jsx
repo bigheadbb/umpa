@@ -160,3 +160,10 @@ module.exports = React.createClass({
     this.refs.logOutDialog.show();
   }
 });
+
+
+/*
+  <FacebookLogin
+    appId="1088597931155576"
+    scope="public_profile,email,user_friends" />
+*/

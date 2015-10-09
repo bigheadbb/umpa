@@ -1,7 +1,9 @@
 var React = require('react');
 var Router = require('react-router');
+var RouteHandler = Router.RouteHandler;
 var mui = require('material-ui');
 var RaisedButton = mui.RaisedButton;
+var CircularProgress = mui.CircularProgress;
 var HomeFeature = require('./home-feature.jsx');
 var FullWidthSection = require('./full-width-section.jsx');
 
@@ -20,30 +22,30 @@ var HomePage = React.createClass({
 
   render: function() {
     var style = {
-      paddingTop: Spacing.desktopKeylineIncrement
     };
 
     return (
       <div style={style}>
-        {this._getHomePageHero()}
+        { this._getHomePageHero() }
       </div>
     );
   },
 
   _getHomePageHero: function() {
+    var tagLigeMarginTop = (window.innerHeight - 72) / 2;
+
     var styles = {
       root: {
         backgroundColor: Colors.deepPurple500,
-        overflow: 'hidden'
+        height: window.innerHeight, 
       },
       svgLogo: {
         marginLeft: (window.innerWidth * 0.5) - 130 + 'px',
         width: '420px'
       },
       tagline: {
-        margin: '16px auto 0 auto',
         textAlign: 'center',
-        maxWidth: '575px'
+        marginTop: tagLigeMarginTop,
       },
       label: {
         color: Colors.deepPurple500,
@@ -97,12 +99,6 @@ var HomePage = React.createClass({
       <FullWidthSection style={styles.root}>
           <div style={styles.tagline}>
             <h1 style={styles.h1}>YES|NO</h1>
-            <h2 style={styles.h2}>
-              Make a poll | Choose one
-            </h2>
-            <FacebookLogin
-              appId="1088597931155576"
-              scope="public_profile,email,user_friends" />
           </div>
       </FullWidthSection>
     );
