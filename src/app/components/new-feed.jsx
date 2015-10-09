@@ -22,7 +22,7 @@ var newFeed = React.createClass({
 
   render: function() {
     var root = {
-      backgroundColor : Colors.grey600,
+      backgroundColor : Colors.grey300,
     };
 
     var containerStyle = {
@@ -30,7 +30,7 @@ var newFeed = React.createClass({
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-      backgroundColor : Colors.grey600,
+      backgroundColor : Colors.grey300,
     };
 
     return (

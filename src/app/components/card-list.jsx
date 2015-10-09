@@ -76,7 +76,7 @@ var CardList = React.createClass({
           width: "100%",
         },
         cardtext: {
-          backgroundColor: Colors.gray300,
+          backgroundColor: Colors.white,
           paddingBottom: 1,
           borderTop: 'solid 1px #e0e0e0',
         },

@@ -84,6 +84,21 @@ class Master extends React.Component {
     this.setState({tabIndex: this._getSelectedIndex()});
   }
 
+  _getSelectedIndex() {
+    return this.context.router.isActive('new-feed') ? '1' :
+      this.context.router.isActive('hot-feed') ? '2' :
+      this.context.router.isActive('my-poll') ? '3' : '0';
+  }
+
+  _handleTabChange(value, e, tab) {
+    this.context.router.transitionTo(tab.props.route);
+    this.setState({tabIndex: this._getSelectedIndex()});
+  }
+
+  _onRightIconButtonTouchTap() {
+    this.refs.leftNav.toggle();
+  }
+
   _getAppbar() {
     var styles = {
       root: {
@@ -188,33 +203,17 @@ class Master extends React.Component {
     );
   }
 
-  _getSelectedIndex() {
-    return this.context.router.isActive('new-feed') ? '1' :
-      this.context.router.isActive('hot-feed') ? '2' : 
-      this.context.router.isActive('my-poll') ? '3' : '0';
-  }
-
-  _handleTabChange(value, e, tab) {
-    this.context.router.transitionTo(tab.props.route);
-    this.setState({tabIndex: this._getSelectedIndex()});
-  }
-
   render() {
     var styles = this.getStyles();
-    
-
     return (
       <div style={styles.root}>
         { this.state.data == "recieved" ? this._getAppbar() : null }
-        { this.state.data == "recieved" ? <RouteHandler /> : <Home /> }        
+        { this.state.data == "recieved" ? <RouteHandler /> : <Home /> }
         <AppLeftNav ref="leftNav" />
       </div>
     );
   }
 
-  _onRightIconButtonTouchTap() {
-    this.refs.leftNav.toggle();
-  }
 }
 
 Master.contextTypes = {
