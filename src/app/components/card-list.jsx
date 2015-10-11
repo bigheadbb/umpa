@@ -115,7 +115,7 @@ var CardList = React.createClass({
     }();
     console.log("showCards end");
     return (
-      <div className="cardList">
+      <div>
         {showCards}
         {showCards}
         {showCards}
