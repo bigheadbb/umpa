@@ -25,7 +25,6 @@ var WriteButton = React.createClass({
     }
 
     var dialogBodyStyle = {
-      height: window.innerHeight,
     }
 
     var contentTextField = {
