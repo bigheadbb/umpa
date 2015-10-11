@@ -5,7 +5,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var FavoriteList = require('./favorite-list.jsx');
-var WritePencil = require('./svg-icons/write-pencil.jsx');
+var WriteButton = require('./write-button.jsx');
 
 var Feed = React.createClass({
   loadContent: function () {
@@ -62,9 +62,7 @@ var Feed = React.createClass({
             </Tab>
           </Tabs>
         </div>
-        <FloatingActionButton style={floatingButtonStyle} >
-          <WritePencil />
-        </FloatingActionButton>
+        <WriteButton />
       </div>
     );
   },

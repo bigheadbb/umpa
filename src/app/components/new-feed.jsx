@@ -5,6 +5,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var FavoriteList = require('./favorite-list.jsx');
+var WriteButton = require('./write-button.jsx');
 
 var newFeed = React.createClass({
   loadContent: function () {
@@ -38,6 +39,7 @@ var newFeed = React.createClass({
       <div style={containerStyle}>
         <CardList/>
       </div>
+      <WriteButton />
       </div>
     );
   },

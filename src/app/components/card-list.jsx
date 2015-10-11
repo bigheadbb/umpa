@@ -157,7 +157,7 @@ var CardList = React.createClass({
       );
     };
     return (
-      <div className="cardList">
+      <div>
         {showCard()}
         {showCard()}
         {showCard()}
