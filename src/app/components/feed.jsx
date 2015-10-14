@@ -41,12 +41,6 @@ var Feed = React.createClass({
       backgroundColor : Colors.grey300,
     };
 
-    var floatingButtonStyle = {
-      position: 'fixed',
-      right: '30px',
-      bottom: '30px',
-    };
-
     return (
       <div>
         <div style={containerStyle}>
