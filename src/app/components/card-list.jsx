@@ -1,22 +1,32 @@
 var React = require('react');
 var mui = require('material-ui');
-var Avatar = mui.Avatar;
-var Card = mui.Card;
-var CardActions = mui.CardActions;
-var CardHeader = mui.CardHeader;
-var CardText = mui.CardText;
-var ClearFix = mui.ClearFix;
+var {Avatar,
+  Card,
+  CardActions,
+  CardHeader,
+  CardText,
+  FlatButton,
+  RaisedButton } = mui;
 var Colors = mui.Styles.Colors;
-var IconButton = mui.IconButton;
-var TextField = mui.TextField;
 
-var QuestionMark = require('./svg-icons/question-mark.jsx');
-
-var {Spacing, Typography} = mui.Styles;
+var Author = React.createClass({
+  render: function () {
+    console.log("Author rendered");
+    var author = 'Author';
+    var time = 'Aug 10 2015';
+    return (
+      <CardHeader
+        avatar={<Avatar>A</Avatar>}
+        title={author}
+        subtitle={time}
+        showExpandableButton={true} />
+    );
+  }
+});
 
 var Content = React.createClass({
   render: function () {
-    console.log("Content render");
+    console.log("Content rendered");
     var showContent = function (content) {
       return (
         <div>
@@ -27,98 +37,123 @@ var Content = React.createClass({
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </div>
       );
-    }();
+    };
     return (
-      <div className="content">
-        {showContent}
-      </div>
+      <CardText
+        expandable={true} >
+        {showContent()}
+      </CardText>
     );
   }
 });
 
-var Comment = React.createClass({
+var Selection = React.createClass({
   render: function () {
-    console.log("Comment render");
-    var showComments = function (comment) {
+    var firstSelection = 'Yes';
+    var secondSelection = 'No';
+    var styles = {
+      buttonArea: {
+        width: '100%',
+      },
+      selectButton: {
+        width: '50%',
+      },
+    };
+    return (
+      <CardActions
+        expandable={true} >
+        <div style={styles.buttonArea} >
+          <FlatButton
+            label={firstSelection}
+            primary={true}
+            style={styles.selectButton} />
+          <FlatButton
+            label={secondSelection}
+            secondary={true}
+            style={styles.selectButton} />
+        </div>
+      </CardActions>
+    );
+  }
+});
+
+var VoteResult = React.createClass({
+  render: function () {
+    console.log("VoteResult render");
+
+    var showVoteResult = function (result) {
+      var result1 = 70.5;
+      var result2 = 100 - result1;
+      result1 += '%';
+      result2 += '%';
       var styles = {
-        commentStyle: {
-          marginBottom: 7,
+        buttonArea: {
+          width: '100%',
         },
-        commentAvatarStyle: {
-          marginRight: 10,
+        firstResult: {
+          width: result1,
+        },
+        secondResult: {
+          width: result2,
         },
       };
       return (
-        <div style={styles.commentStyle}>
-          <Avatar size={30} style={styles.commentAvatarStyle}> A </Avatar>
-          This is a sample of comment.
+        <div style={styles.buttonArea} >
+          <RaisedButton
+            label={result1}
+            primary={true}
+            disabled={true}
+            disabledBackgroundColor={Colors.pink300}
+            disabledLabelColor={Colors.white}
+            style={styles.firstResult} />
+          <RaisedButton
+            label={result2}
+            secondary={true}
+            disabled={true}
+            disabledBackgroundColor={Colors.cyan300}
+            disabledLabelColor={Colors.white}
+            style={styles.secondResult} />
         </div>
       );
-    }();
+    };
     return (
-      <div className="comment">
-        {showComments}
-        {showComments}
-        {showComments}
-        {showComments}
-      </div>
+      <CardActions
+        expandable={true} >
+        {showVoteResult()}
+      </CardActions>
     );
   }
 });
 
 var CardList = React.createClass({
   render: function () {
-
     console.log("CardList render");
-    var showCards = function () {
+    var showCard = function () {
       var styles = {
-        textfield: {
-          width: "100%",
-        },
-        cardtext: {
-          backgroundColor: Colors.gray300,
-          paddingBottom: 1,
-          borderTop: 'solid 1px #e0e0e0',
-        },
-        cardlist: {
+        card: {
           marginTop: 10,
           marginBottom: 15,
           marginLeft: 10,
           marginRight: 10,
         }
       };
-      console.log("showCards render");
       return (
-        <div style={styles.cardlist}>
-          <Card>
-            <CardHeader
-              avatar={<Avatar>A</Avatar>}
-              title="author"
-              subtitle="time" />
-            <CardText>
-              <Content data="Content"/>
-            </CardText>
-            <CardActions>
-              <IconButton tooltip="Who?">
-                <QuestionMark color={Colors.grey400} />
-              </IconButton>
-            </CardActions>
-            <CardText style={styles.cardtext}>
-              <Comment data="Comments"/>
-              <TextField
-                hintText="It will be read by some friends of yours."
-                style={styles.textfield}/>
-            </CardText>
-          </Card>
-        </div>
+        <Card
+          initiallyExpanded={true}
+          style={styles.card} >
+          <Author />
+          <Content />
+          <Selection />
+          <VoteResult />
+        </Card>
       );
-    }();
-    console.log("showCards end");
+    };
     return (
       <div className="cardList">
-        {showCards}
-        {showCards}
-        {showCards}
+        {showCard()}
+        {showCard()}
+        {showCard()}
+        {showCard()}
       </div>
     );
   }
