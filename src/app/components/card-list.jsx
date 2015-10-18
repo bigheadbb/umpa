@@ -76,7 +76,7 @@ var CardList = React.createClass({
           width: "100%",
         },
         cardtext: {
-          backgroundColor: Colors.gray300,
+          backgroundColor: Colors.white,
           paddingBottom: 1,
           borderTop: 'solid 1px #e0e0e0',
         },
@@ -115,7 +115,7 @@ var CardList = React.createClass({
     }();
     console.log("showCards end");
     return (
-      <div className="cardList">
+      <div>
         {showCards}
         {showCards}
         {showCards}

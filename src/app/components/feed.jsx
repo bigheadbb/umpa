@@ -5,7 +5,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var FavoriteList = require('./favorite-list.jsx');
-var ToggleStar = require('./svg-icons/toggle-star.jsx');
+var WriteButton = require('./write-button.jsx');
 
 var Feed = React.createClass({
   loadContent: function () {
@@ -34,17 +34,11 @@ var Feed = React.createClass({
     };
 
     var tabItemContainerStyle = {
-      backgroundColor : Colors.grey600,
+      backgroundColor : Colors.deepPurple500,
     };
 
     var tabStyle = {
-      backgroundColor : Colors.grey600,
-    };
-
-    var floatingButtonStyle = {
-      position: 'fixed',
-      right: '30px',
-      bottom: '30px',
+      backgroundColor : Colors.grey300,
     };
 
     return (
@@ -62,9 +56,7 @@ var Feed = React.createClass({
             </Tab>
           </Tabs>
         </div>
-        <FloatingActionButton style={floatingButtonStyle} >
-          <ToggleStar />
-        </FloatingActionButton>
+        <WriteButton />
       </div>
     );
   },

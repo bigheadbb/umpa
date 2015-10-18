@@ -90,7 +90,6 @@ var HomePage = React.createClass({
     styles.h2 = this.mergeStyles(styles.h1, styles.h2);
 
     if (this.isDeviceSize(StyleResizable.statics.Sizes.LARGE)) {
-      styles.tagline = this.mergeStyles(styles.tagline, styles.taglineWhenLarge);
       styles.h1 = this.mergeStyles(styles.h1, styles.h1WhenLarge);
       styles.h2 = this.mergeStyles(styles.h2, styles.h2WhenLarge);
     }
