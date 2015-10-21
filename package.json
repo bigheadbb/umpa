@@ -33,9 +33,9 @@
     "watchify": "^2.2.1"
   },
   "dependencies": {
-    "material-ui": ">=0.11.0",
+    "material-ui": "0.12.2",
     "react": "0.13",
-    "react-router": "^0.13.3",
-    "react-tap-event-plugin": "^0.1.6"
+    "react-router": "0.13.4",
+    "react-tap-event-plugin": "0.1.8"
   }
 }
