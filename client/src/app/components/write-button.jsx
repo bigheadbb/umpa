@@ -6,7 +6,6 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var WritePencil = require('./svg-icons/write-pencil.jsx');
 
 var WriteButton = React.createClass({
-
   render: function() {
     var floatingButtonStyle = {
       position: 'fixed',
@@ -46,15 +45,15 @@ var WriteButton = React.createClass({
           onTouchTap={this.handleWritePollDialogTouchTap}>
           <WritePencil />
         </FloatingActionButton>
-        <div >
+        <div>
           <Dialog 
-              contentStyle={dialogStyle}
-              autoDetectWindowHeight={true} 
-              autoScrollBodyContent={true}
-              ref="writePoll"
-              actions={writePollActions}
-              actionFocus="submit">
-              <div style={dialogBodyStyle}>
+            contentStyle={dialogStyle}
+            autoDetectWindowHeight={true} 
+            autoScrollBodyContent={true}
+            ref="writePoll"
+            actions={writePollActions}
+            actionFocus="submit">
+            <div style={dialogBodyStyle}>
               <div>
                 <TextField
                   ref="contentTextField"
@@ -64,38 +63,59 @@ var WriteButton = React.createClass({
                   floatingLabelText="What do you want to ask?"
                   multiLine={true} />
               </div>
-              <div  style={{marginLeft: "calc(100% - 60px)"}}>
-              <Toggle
-                name="toggleContent"
-                value="toggleContentValue"
-                ref="toggleContent"
-                onToggle={this.handleContentToggleStatusChange}
-                defaultToggled={true}/>
+              <div style={{marginLeft: "calc(100% - 60px)"}}>
+                <Toggle
+                  name="toggleContent"
+                  value="toggleContentValue"
+                  ref="toggleContent"
+                  onToggle={this.handleContentToggleStatusChange}
+                  defaultToggled={true}/>
               </div>
               <div style={yesOrNoDivStyle}>
                 <TextField
                   style={yesOrNoTextField}
+                  ref="yesTextField"
                   floatingLabelText="Yes"
                   rows={1}
                   rowsMax={5}
                   multiLine={true} />
                 <TextField
                   style={yesOrNoTextField}
+                  ref="noTextField"
                   floatingLabelText="No"
                   rows={1}
                   rowsMax={5}
                   multiLine={true} />
               </div>
-              </div>
+            </div>
           </Dialog>
         </div>
       </div>
     );
   },
 
-  handleCreatePollClick: function() {
-    console.log('New poll was created');
+  handleCreatePollClick: function(e) {
+    console.log('New poll is being created');
     this.refs.writePoll.dismiss();
+    var url = 'http://localhost:5000/createPoll';
+    var poll = {};
+    poll.content = this.refs.contentTextField.getValue();
+    poll.yes = this.refs.yesTextField.getValue();
+    poll.no = this.refs.noTextField.getValue();
+
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'POST',
+      data: poll,
+      success: function (res) {
+        this.setState({data: res});
+        alert(JSON.stringify(res));
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.log(url, status, err.toString());
+      }.bind(this),
+    });
   },
 
   handleWritePollDialogTouchTap : function() {
