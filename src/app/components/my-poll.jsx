@@ -1,13 +1,13 @@
 var React = require('react');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs, FloatingActionButton } = mui;
+var { Slider, Styles, Tab, Tabs } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var FavoriteList = require('./favorite-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
-var Feed = React.createClass({
+var MyPoll = React.createClass({
   loadContent: function () {
     // TODO: show data of content from server
     // this.setState({data: {content:{author:"", time:"", text:""}}});
@@ -22,44 +22,27 @@ var Feed = React.createClass({
   },
 
   render: function() {
+    var root = {
+      backgroundColor : Colors.grey300,
+    };
+
     var containerStyle = {
       paddingTop: Spacing.desktopKeylineIncrement,
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-    };
-
-    var inkBarStyle = {
-      backgroundColor : Colors.yellow200,
-    };
-
-    var tabItemContainerStyle = {
-      backgroundColor : Colors.deepPurple500,
-    };
-
-    var tabStyle = {
       backgroundColor : Colors.grey300,
     };
 
     return (
-      <div>
-        <div style={containerStyle}>
-          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
-            <Tab label='NEW' >
-              <CardList/>
-            </Tab>
-            <Tab label='HOT' >
-              <FavoriteList/>
-            </Tab>
-            <Tab label='MY'>
-              <CardList/>
-            </Tab>
-          </Tabs>
-        </div>
+      <div style={root}>
+      <div style={containerStyle}>
+        <CardList/>
+      </div>
         <WriteButton />
       </div>
     );
   },
 });
 
-module.exports = Feed;
+module.exports = MyPoll;

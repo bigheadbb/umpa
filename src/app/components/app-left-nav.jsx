@@ -72,6 +72,7 @@ class AppLeftNav extends React.Component {
         header={header}
         menuItems={menuItems}
         selectedIndex={this._getSelectedIndex()}
+        openRight={true}
         onChange={this._onLeftNavChange} />
     );
   }

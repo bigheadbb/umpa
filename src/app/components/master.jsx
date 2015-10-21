@@ -5,7 +5,8 @@ var AppLeftNav = require('./app-left-nav.jsx');
 var FullWidthSection = require('./full-width-section.jsx');
 var mui = require('material-ui');
 var LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
-
+var UserSetting = require('./svg-icons/user-setting.jsx');
+var Home = require('./home.jsx');
 
 var { AppBar,
       AppCanvas,
@@ -30,7 +31,7 @@ class Master extends React.Component {
 
   constructor() {
     super();
-    this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
+    this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
   }
 
   getChildContext() {
@@ -39,57 +40,41 @@ class Master extends React.Component {
     }
   }
 
+  getInitialState() {
+    return { 
+      data : "init" 
+    };
+  }
+
   getStyles() {
-    var darkWhite = Colors.darkWhite;
     return {
       root: {
-        margin: '0px'
-      },
-      footer: {
-        backgroundColor: Colors.grey900,
-        textAlign: 'center',
-        padding: DesktopGutter + 'px'
-      },
-      a: {
-        color: darkWhite
-      },
-      p: {
-        margin: '0 auto',
-        padding: '0',
-        color: Colors.lightWhite,
-        maxWidth: '335px'
-      },
-      iconButton: {
-        color: darkWhite
       }
     };
   }
 
   componentDidMount() {
-    document.addEventListener("fbLogin",
-      function statusChangeCallback(e) {
-        if (this.context.router.getCurrentPath() != "/home") {
-          console.log('master fbLogin statusChangeCallback');
-          console.log(e.detail.res);
-          var response = e.detail.res;
-          if (response.status == 'connected') {
-            document.fblogin = "connected";
-          } else if (response.status === 'not_authorized') {
-            document.fblogin = "not_authorized";
-            this.context.router.transitionTo('home');
-          } else {
-            document.fblogin = "not_logged";
-            this.context.router.transitionTo('home');
-          }
+    setTimeout(
+      function(){ 
+        this.setState({data: "recieved"});
+        this.setState({tabIndex: this._getSelectedIndex()});
+        if (document.body.clientWidth <= 647) {
+          this.context.router.transitionTo('feed');
+        } else {
+          this.context.router.transitionTo('new-feed');
         }
-      }.bind(this)
-    );
+      }.bind(this), 2000);
   }
 
   componentWillMount(){
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({renderTabs: !(document.body.clientWidth <= 647)});
+      if (document.body.clientWidth <= 647) {
+        this.context.router.transitionTo('feed');
+      } else {
+        this.context.router.transitionTo('new-feed');
+      }
     }.bind(this);
     setTabsState();
     window.onresize = setTabsState;
@@ -99,7 +84,22 @@ class Master extends React.Component {
     this.setState({tabIndex: this._getSelectedIndex()});
   }
 
-  _getTabs() {
+  _getSelectedIndex() {
+    return this.context.router.isActive('new-feed') ? '1' :
+      this.context.router.isActive('hot-feed') ? '2' :
+      this.context.router.isActive('my-poll') ? '3' : '0';
+  }
+
+  _handleTabChange(value, e, tab) {
+    this.context.router.transitionTo(tab.props.route);
+    this.setState({tabIndex: this._getSelectedIndex()});
+  }
+
+  _onRightIconButtonTouchTap() {
+    this.refs.leftNav.toggle();
+  }
+
+  _getAppbar() {
     var styles = {
       root: {
         backgroundColor: Colors.deepPurple500,
@@ -112,7 +112,7 @@ class Master extends React.Component {
       },
       container: {
         position: 'absolute',
-        right: 0,
+        right: (Spacing.desktopGutter/2) + 48,
         bottom: 0,
       },
       span: {
@@ -123,20 +123,9 @@ class Master extends React.Component {
         position: 'absolute',
         fontSize: 26,
       },
-      svgLogoContainer: {
-        position: 'fixed',
-        width: 300,
-        left: Spacing.desktopGutter,
-      },
-      svgLogo: {
-        width: 65,
-        backgroundColor: Colors.deepPurple500,
-        position: 'absolute',
-        top: 20,
-      },
       tabs: {
         backgroundColor: Colors.deepPurple500,
-        width: 325,
+        width: 200,
         bottom:0,
       },
       tabItemContainerStyle: {
@@ -148,15 +137,55 @@ class Master extends React.Component {
       tab: {
         backgroundColor: Colors.deepPurple500,
         height: 64
-      }
+      },
+      userSetting: {
+        position: 'fixed',
+        right: Spacing.desktopGutter/2,
+        top: 8,
+        zIndex: 5,
+        color: 'white'
+      },
     };
 
-    var materialIcon= this.state.tabIndex !== '0' ? (
-      <EnhancedButton
-        linkButton={true}
-        href="/#/home">
-        <span style={styles.span}>YES|NO</span>
-      </EnhancedButton>) : null;
+    var yesOrNoIcon= (
+      <EnhancedButton>
+        <span style={styles.span}>Y|N</span>
+      </EnhancedButton>);
+
+    var rightButton = (
+      <IconButton style={styles.userSetting}
+        onTouchTap={this._onRightIconButtonTouchTap.bind(this)}
+      >
+        <UserSetting />
+      </IconButton>
+    );
+
+    var tabs = 
+      this.state.renderTabs ? 
+      (
+        <Tabs
+          style={styles.tabs}
+          tabItemContainerStyle={styles.tabItemContainerStyle}
+          inkBarStyle={styles.inkBarStyle}
+          value={this.state.tabIndex}
+          onChange={this._handleTabChange.bind(this)}>
+          <Tab
+            value="1"
+            label="NEW"
+            style={styles.tab}
+            route="new-feed" />
+          <Tab
+            value="2"
+            label="HOT"
+            style={styles.tab}
+            route="hot-feed"/>
+          <Tab
+            value="3"
+            label="MY"
+            style={styles.tab}
+            route="my-poll"/>
+         </Tabs>
+       ) : null;
 
     return(
       <div>
@@ -164,105 +193,27 @@ class Master extends React.Component {
           zDepth={0}
           rounded={false}
           style={styles.root}>
-          {materialIcon}
+          {yesOrNoIcon}
           <div style={styles.container}>
-            <Tabs
-              style={styles.tabs}
-              tabItemContainerStyle={styles.tabItemContainerStyle}
-              inkBarStyle={styles.inkBarStyle}
-              value={this.state.tabIndex}
-              onChange={this._handleTabChange.bind(this)}>
-              <Tab
-                value="1"
-                label="GETTING STARTED"
-                style={styles.tab}
-                route="get-started" />
-              <Tab
-                value="2"
-                label="FEED"
-                style={styles.tab}
-                route="feed"/>
-            </Tabs>
+            {tabs}
           </div>
+          {rightButton}
         </Paper>
       </div>
     );
   }
 
-  _getAppBar() {
-    var title =
-      this.context.router.isActive('get-started') ? 'Get Started' :
-      this.context.router.isActive('feed') ? 'Feed' :
-      this.context.router.isActive('component') ? 'Component' :
-      this.context.router.isActive('text-component') ? 'Text Component' :
-      "";
-
-    var githubButton = (
-      <IconButton
-        iconClassName="muidocs-icon-custom-github"
-        href="https://github.com/callemall/material-ui"
-        linkButton={true}/>
-    );
-
-    return (
-      <div>
-        <AppBar
-          onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap.bind(this)}
-          title={title}
-          zDepth={0}
-          iconElementRight={githubButton}
-          style={{position: 'absolute',top: 0, backgroundColor: Colors.deepPurple500}}/>
-      </div>);
-  }
-
-  _getSelectedIndex() {
-    return this.context.router.isActive('get-started') ? '1' :
-      this.context.router.isActive('feed') ? '2' : '0';
-  }
-
-  _handleTabChange(value, e, tab) {
-    this.context.router.transitionTo(tab.props.route);
-    this.setState({tabIndex: this._getSelectedIndex()});
-  }
-
   render() {
     var styles = this.getStyles();
-    var rightButton = (
-      <IconButton
-        iconStyle={styles.iconButton}
-        iconClassName="muidocs-icon-custom-github"
-        linkButton={true} />
-    );
-
-    var githubButton = (
-      <IconButton
-        iconStyle={styles.iconButton}
-        iconClassName="muidocs-icon-custom-github"
-        linkButton={true} />
-    );
-
     return (
-      <AppCanvas style={styles.root}>
-
-        {this.state.renderTabs ? this._getTabs(): this._getAppBar()}
-
+      <div style={styles.root}>
+        { this.state.data == "recieved" ? this._getAppbar() : null }
+        { this.state.data == "recieved" ? <RouteHandler /> : <Home /> }
         <AppLeftNav ref="leftNav" />
-
-        <RouteHandler />
-
-        <div style={styles.footer}>
-          <p style={styles.p}>
-            <a style={styles.a} href="https://github.com/orgs/bigheadbb/people">Big head brothers band</a>
-          </p>
-        </div>
-
-      </AppCanvas>
+      </div>
     );
   }
 
-  _onLeftIconButtonTouchTap() {
-    this.refs.leftNav.toggle();
-  }
 }
 
 Master.contextTypes = {
@@ -274,3 +225,4 @@ Master.childContextTypes = {
 };
 
 module.exports = Master;
+
