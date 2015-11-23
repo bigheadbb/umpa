@@ -6,6 +6,9 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var CardList = require('./card-list.jsx');
 var FavoriteList = require('./favorite-list.jsx');
 var WriteButton = require('./write-button.jsx');
+var NewFeed = require('./new-feed.jsx');
+var HotFeed = require('./hot-feed.jsx');
+var MyPoll = require('./my-poll.jsx');
 
 var Feed = React.createClass({
   loadContent: function () {
@@ -30,7 +33,9 @@ var Feed = React.createClass({
     };
 
     var inkBarStyle = {
-      backgroundColor : Colors.yellow200,
+      backgroundColor : Colors.yellow400,
+      height: 5,
+      marginTop: -5
     };
 
     var tabItemContainerStyle = {
@@ -46,13 +51,13 @@ var Feed = React.createClass({
         <div style={containerStyle}>
           <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
             <Tab label='NEW' >
-              <CardList/>
+              <NewFeed/>
             </Tab>
             <Tab label='HOT' >
-              <FavoriteList/>
+              <HotFeed/>
             </Tab>
             <Tab label='MY'>
-              <CardList/>
+              <MyPoll/>
             </Tab>
           </Tabs>
         </div>
