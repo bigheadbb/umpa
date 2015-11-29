@@ -3,8 +3,6 @@ var mui = require('material-ui');
 var { Slider, Styles, Tab, Tabs, FloatingActionButton } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
-var CardList = require('./card-list.jsx');
-var FavoriteList = require('./favorite-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var NewFeed = require('./new-feed.jsx');
 var HotFeed = require('./hot-feed.jsx');

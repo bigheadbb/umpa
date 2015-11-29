@@ -4,7 +4,6 @@ var { Slider, Styles, Tab, Tabs } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
-var FavoriteList = require('./favorite-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
 var MyPoll = React.createClass({
