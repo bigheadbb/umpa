@@ -97,11 +97,11 @@ var WriteButton = React.createClass({
   handleCreatePollClick: function(e) {
     console.log('New poll is being created');
     this.refs.writePoll.dismiss();
-    var url = 'http://localhost:5000/createPoll';
+    var url = 'http://54.65.152.112:5000/createPoll';
     var poll = {};
-    poll.content = this.refs.contentTextField.getValue();
-    poll.yes = this.refs.yesTextField.getValue();
-    poll.no = this.refs.noTextField.getValue();
+    poll.mainContent = this.refs.contentTextField.getValue();
+    poll.yesContent = this.refs.yesTextField.getValue();
+    poll.noContent = this.refs.noTextField.getValue();
 
     $.ajax({
       url: url,

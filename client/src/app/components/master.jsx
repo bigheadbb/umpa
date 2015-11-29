@@ -132,7 +132,9 @@ class Master extends React.Component {
         backgroundColor: Colors.deepPurple500,
       },
       inkBarStyle : {
-      backgroundColor : Colors.yellow200,
+        backgroundColor : Colors.yellow200,
+        height: 5,
+        marginTop: -5
       },
       tab: {
         backgroundColor: Colors.deepPurple500,

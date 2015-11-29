@@ -27,7 +27,7 @@ var HotFeed = React.createClass({
     };
 
     var containerStyle = {
-      paddingTop: Spacing.desktopKeylineIncrement,
+      paddingTop: document.body.clientWidth <= 647 ? 0: Spacing.desktopKeylineIncrement,
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
@@ -37,7 +37,7 @@ var HotFeed = React.createClass({
     return (
       <div style={root}>
       <div style={containerStyle}>
-        <FavoriteList/>
+        <CardList/>
       </div>
       <WriteButton />
       </div>
