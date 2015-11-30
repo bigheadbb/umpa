@@ -84,6 +84,10 @@ var HomePage = React.createClass({
         lineHeight: '32px',
         paddingTop: '16px',
         marginBottom: '12px'
+      },
+      logo : {
+        width: 144,
+        height: 36,
       }
     };
 
@@ -97,7 +101,7 @@ var HomePage = React.createClass({
     return (
       <FullWidthSection style={styles.root}>
           <div style={styles.tagline}>
-            <h1 style={styles.h1}>YES|NO</h1>
+            <img src="img/yesno.png" style={styles.logo}/>
           </div>
       </FullWidthSection>
     );

@@ -22,7 +22,7 @@ var MyPoll = React.createClass({
 
   render: function() {
     var root = {
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
     };
 
     var containerStyle = {
@@ -30,15 +30,17 @@ var MyPoll = React.createClass({
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
     };
+
+    var button = (document.body.clientWidth <= 647 ? null : <WriteButton />);
 
     return (
       <div style={root}>
       <div style={containerStyle}>
         <CardList/>
       </div>
-        <WriteButton />
+      {button}
       </div>
     );
   },
