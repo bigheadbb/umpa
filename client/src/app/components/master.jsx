@@ -157,7 +157,7 @@ class Master extends React.Component {
     var yesOrNoIcon= (
       <EnhancedButton>
          <span style={styles.span}>
-           <img src="../img/yesno.png" style={styles.logo}/>
+           <img src="img/yesno.png" style={styles.logo}/>
          </span>
       </EnhancedButton>);
 
