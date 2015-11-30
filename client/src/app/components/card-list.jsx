@@ -6,8 +6,12 @@ var {Avatar,
   CardHeader,
   CardText,
   FlatButton,
+  Paper,
   RaisedButton } = mui;
 var Colors = mui.Styles.Colors;
+
+var Refresh = require('./svg-icons/refresh.jsx');
+var MoreAsks = require('./svg-icons/more-asks.jsx');
 
 var Author = React.createClass({
   render: function () {
@@ -128,6 +132,25 @@ var VoteResult = React.createClass({
 var CardList = React.createClass({
   render: function () {
     console.log("CardList render");
+
+     var styles = {
+       refresh: {
+         marginTop : 10,
+         textAlign: 'center',
+       },
+       moreItem: {
+         textAlign: 'center',
+       },
+       buttonContainer : {
+         height: 24,
+         width: 24,
+         margin: '0 auto',
+         marginTop: 10,
+         marginBottom: 10,
+         textAlign: 'center',
+      }
+     };
+
     var showCard = function () {
       var styles = {
         card: {
@@ -149,12 +172,18 @@ var CardList = React.createClass({
       );
     };
     return (
-      <div className="cardList">
-        {showCard()}
-        {showCard()}
-        {showCard()}
-        {showCard()}
-      </div>
+       <div className="cardList">
+         {showCard()}
+         {showCard()}
+         {showCard()}
+         {showCard()}
+         <Paper
+            zDepth={1}
+            circle={true}
+            style={styles.buttonContainer} >
+            <MoreAsks />
+         </Paper>
+       </div>
     );
   }
 });

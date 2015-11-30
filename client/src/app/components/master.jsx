@@ -138,7 +138,8 @@ class Master extends React.Component {
       },
       tab: {
         backgroundColor: Colors.deepPurple500,
-        height: 64
+        height: 64,
+        fontWeight: 'bold',
       },
       userSetting: {
         position: 'fixed',
@@ -147,11 +148,17 @@ class Master extends React.Component {
         zIndex: 5,
         color: 'white'
       },
+      logo: {
+        width: 72,
+        height: 18
+      }
     };
 
     var yesOrNoIcon= (
       <EnhancedButton>
-        <span style={styles.span}>Y|N</span>
+         <span style={styles.span}>
+           <img src="../img/yesno.png" style={styles.logo}/>
+         </span>
       </EnhancedButton>);
 
     var rightButton = (
