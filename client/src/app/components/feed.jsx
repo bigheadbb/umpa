@@ -4,14 +4,14 @@ var { Slider, Styles, Tab, Tabs } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var WriteButton = require('./write-button.jsx');
-var NewFeed = require('./new-feed.jsx');
-var HotFeed = require('./hot-feed.jsx');
-var MyPoll = require('./my-poll.jsx');
+var NewAsks = require('./new-asks.jsx');
+var HotAsks = require('./hot-asks.jsx');
+var MyAsks = require('./my-asks.jsx');
 
 var Feed = React.createClass({
   loadContent: function () {
     // TODO: show data of content from server
-    // this.setState({data: {content:{author:"", time:"", text:""}}});
+    console.log('Feed is mounted');
   },
 
   componentDidMount: function () {
@@ -51,12 +51,12 @@ var Feed = React.createClass({
     return (
       <div>
         <div style={containerStyle}>
-          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle}>
+          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
             <Tab label='NEW' style={labelStyle}>
-              <NewFeed/>
+              <NewAsks/>
             </Tab>
             <Tab label='HOT' style={labelStyle}>
-              <HotFeed/>
+              <HotAsks/>
             </Tab>
           </Tabs>
         </div>
