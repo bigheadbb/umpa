@@ -19,15 +19,11 @@ var ToggleStarBorder = require('./svg-icons/toggle-star-border.jsx');
 var NavigationMoreButton = require('./svg-icons/navigation-more-button.jsx');
 
 var menuItems = [
-    { route: 'home', text: 'Home' },
-    { route: 'get-started', text: 'Get Started' },
-    { route: 'feed', text: 'Feed' },
-    { route: 'text-component', text: 'Text Component' },
-    { route: 'component', text: 'Component' },
-    { type: MenuItem.Types.SUBHEADER, text: 'Links' },
-    { type: MenuItem.Types.LINK, payload: 'https://github.com/luckypapa/AMAG', text: 'Github' },
-    { type: MenuItem.Types.LINK, payload: 'http://material-ui.com', text: 'Material-UI' },
-    { type: MenuItem.Types.LINK, payload: 'http://facebook.github.io/react', text: 'React' }
+    { route: 'my-asks', text: 'My Asks' },
+    { route: 'voted-asks', text: 'Voted Asks' },
+    { type: MenuItem.Types.SUBHEADER , text: 'Setting' },
+    { route: 'profile', text: 'Profile' },
+    { route: 'logout', text: 'Logout' },
   ];
 
 class AppLeftNav extends React.Component {
@@ -54,9 +50,8 @@ class AppLeftNav extends React.Component {
         <List style={this.getStyles().ListHead}>
           <ListItem
             leftAvatar={<Avatar>A</Avatar>}
-            primaryText="Big head brothers"
+            primaryText="Big head bro"
             secondaryText="show me the money"
-            rightIconButton={<IconButton><NavigationMoreButton color={Colors.grey600} /></IconButton>}
           >
           </ListItem>
         </List>

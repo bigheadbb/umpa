@@ -156,9 +156,9 @@ class Master extends React.Component {
 
     var yesOrNoIcon= (
       <EnhancedButton>
-         <span style={styles.span}>
-           <img src="img/yesno.png" style={styles.logo}/>
-         </span>
+        <span style={styles.span}>
+          <img src="img/yesno.png" style={styles.logo}/>
+        </span>
       </EnhancedButton>);
 
     var rightButton = (
@@ -188,11 +188,6 @@ class Master extends React.Component {
             label="HOT"
             style={styles.tab}
             route="hot-feed"/>
-          <Tab
-            value="3"
-            label="MY"
-            style={styles.tab}
-            route="my-poll"/>
          </Tabs>
        ) : null;
 
