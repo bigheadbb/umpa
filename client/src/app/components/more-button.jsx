@@ -1,31 +1,28 @@
 var React = require('react');
 var mui = require('material-ui');
-var CardActions = mui.CardActions;
 var FlatButton = mui.FlatButton;
 
-var VoteButton = React.createClass({
+var MoreButton = React.createClass({
   render: function () {
     var styles = {
       buttonArea: {
-        width: '100%',
+        marginTop: 10,
+        marginBottom: 15,
+        marginLeft: 10,
+        marginRight: 10,
       },
-      selectButton: {
-        width: '50%',
+      button: {
+        width: '100%',
       },
     };
     return (
       <div style={styles.buttonArea} >
         <FlatButton
-          label={'Yes'}
-          primary={true}
-          style={styles.selectButton} />
-        <FlatButton
-          label={'No'}
-          secondary={true}
-          style={styles.selectButton} />
+          label={'more...'}
+          style={styles.button} />
       </div>
     );
   }
 });
 
-module.exports = VoteButton;
+module.exports = MoreButton;

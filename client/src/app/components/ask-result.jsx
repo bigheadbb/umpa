@@ -18,10 +18,10 @@ var AskResult = React.createClass({
         width: '100%',
       },
       firstResult: {
-        width: '75%'//yesResult + '%',
+        width: yesResult + '%',
       },
       secondResult: {
-        width: '25%'//yesResult + '%',
+        width: noResult + '%',
       },
     };
     return (

@@ -11,7 +11,7 @@ var VoteButton = React.createClass({
     var secondSelection = 'No';
     var styles = {
       buttonArea: {
-        //width: '100%',
+        width: '100%',
       },
       selectButton: {
         width: '50%',
