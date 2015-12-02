@@ -40,7 +40,8 @@ var WriteButton = React.createClass({
 
     return (
       <div>
-        <FloatingActionButton 
+        <FloatingActionButton
+          backgroundColor={Colors.deepPurple500}
           style={floatingButtonStyle} 
           onTouchTap={this.handleWritePollDialogTouchTap}>
           <WritePencil />

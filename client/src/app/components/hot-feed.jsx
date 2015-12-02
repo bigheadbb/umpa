@@ -22,7 +22,7 @@ var HotFeed = React.createClass({
 
   render: function() {
     var root = {
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
     };
 
     var containerStyle = {
@@ -30,7 +30,7 @@ var HotFeed = React.createClass({
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
     };
 
     return (

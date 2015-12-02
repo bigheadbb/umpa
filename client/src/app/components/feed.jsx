@@ -1,6 +1,6 @@
 var React = require('react');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs, FloatingActionButton } = mui;
+var { Slider, Styles, Tab, Tabs } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var WriteButton = require('./write-button.jsx');
@@ -31,7 +31,7 @@ var Feed = React.createClass({
     };
 
     var inkBarStyle = {
-      backgroundColor : Colors.yellow400,
+      backgroundColor : Colors.grey200,
       height: 5,
       marginTop: -5
     };
@@ -41,21 +41,22 @@ var Feed = React.createClass({
     };
 
     var tabStyle = {
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
+    };
+
+    var labelStyle = {
+     fontWeight: 'bold',
     };
 
     return (
       <div>
         <div style={containerStyle}>
-          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
-            <Tab label='NEW' >
+          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle}>
+            <Tab label='NEW' style={labelStyle}>
               <NewFeed/>
             </Tab>
-            <Tab label='HOT' >
+            <Tab label='HOT' style={labelStyle}>
               <HotFeed/>
-            </Tab>
-            <Tab label='MY'>
-              <MyPoll/>
             </Tab>
           </Tabs>
         </div>
