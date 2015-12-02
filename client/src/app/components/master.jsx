@@ -132,11 +132,14 @@ class Master extends React.Component {
         backgroundColor: Colors.deepPurple500,
       },
       inkBarStyle : {
-      backgroundColor : Colors.yellow200,
+        backgroundColor : Colors.yellow200,
+        height: 5,
+        marginTop: -5
       },
       tab: {
         backgroundColor: Colors.deepPurple500,
-        height: 64
+        height: 64,
+        fontWeight: 'bold',
       },
       userSetting: {
         position: 'fixed',
@@ -145,11 +148,17 @@ class Master extends React.Component {
         zIndex: 5,
         color: 'white'
       },
+      logo: {
+        width: 72,
+        height: 18
+      }
     };
 
     var yesOrNoIcon= (
       <EnhancedButton>
-        <span style={styles.span}>Y|N</span>
+        <span style={styles.span}>
+          <img src="img/yesno.png" style={styles.logo}/>
+        </span>
       </EnhancedButton>);
 
     var rightButton = (
@@ -179,11 +188,6 @@ class Master extends React.Component {
             label="HOT"
             style={styles.tab}
             route="hot-feed"/>
-          <Tab
-            value="3"
-            label="MY"
-            style={styles.tab}
-            route="my-poll"/>
          </Tabs>
        ) : null;
 

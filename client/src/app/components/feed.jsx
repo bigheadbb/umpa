@@ -1,11 +1,12 @@
 var React = require('react');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs, FloatingActionButton } = mui;
+var { Slider, Styles, Tab, Tabs } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
-var CardList = require('./card-list.jsx');
-var FavoriteList = require('./favorite-list.jsx');
 var WriteButton = require('./write-button.jsx');
+var NewFeed = require('./new-feed.jsx');
+var HotFeed = require('./hot-feed.jsx');
+var MyPoll = require('./my-poll.jsx');
 
 var Feed = React.createClass({
   loadContent: function () {
@@ -30,7 +31,9 @@ var Feed = React.createClass({
     };
 
     var inkBarStyle = {
-      backgroundColor : Colors.yellow200,
+      backgroundColor : Colors.grey200,
+      height: 5,
+      marginTop: -5
     };
 
     var tabItemContainerStyle = {
@@ -38,21 +41,22 @@ var Feed = React.createClass({
     };
 
     var tabStyle = {
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
+    };
+
+    var labelStyle = {
+     fontWeight: 'bold',
     };
 
     return (
       <div>
         <div style={containerStyle}>
-          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle} >
-            <Tab label='NEW' >
-              <CardList/>
+          <Tabs style={tabStyle} tabItemContainerStyle={tabItemContainerStyle} inkBarStyle={inkBarStyle}>
+            <Tab label='NEW' style={labelStyle}>
+              <NewFeed/>
             </Tab>
-            <Tab label='HOT' >
-              <FavoriteList/>
-            </Tab>
-            <Tab label='MY'>
-              <CardList/>
+            <Tab label='HOT' style={labelStyle}>
+              <HotFeed/>
             </Tab>
           </Tabs>
         </div>

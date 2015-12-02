@@ -4,7 +4,6 @@ var { Slider, Styles, Tab, Tabs } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
-var FavoriteList = require('./favorite-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
 var HotFeed = React.createClass({
@@ -23,21 +22,21 @@ var HotFeed = React.createClass({
 
   render: function() {
     var root = {
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
     };
 
     var containerStyle = {
-      paddingTop: Spacing.desktopKeylineIncrement,
+      paddingTop: document.body.clientWidth <= 647 ? 0: Spacing.desktopKeylineIncrement,
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-      backgroundColor : Colors.grey300,
+      backgroundColor : Colors.grey200,
     };
 
     return (
       <div style={root}>
       <div style={containerStyle}>
-        <FavoriteList/>
+        <CardList/>
       </div>
       <WriteButton />
       </div>
