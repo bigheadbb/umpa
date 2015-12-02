@@ -55,11 +55,8 @@ var Feed = React.createClass({
             <Tab label='NEW' style={labelStyle}>
               <NewFeed/>
             </Tab>
-            <Tab label='BEST' style={labelStyle}>
+            <Tab label='HOT' style={labelStyle}>
               <HotFeed/>
-            </Tab>
-            <Tab label='MY' style={labelStyle}>
-              <MyPoll/>
             </Tab>
           </Tabs>
         </div>
