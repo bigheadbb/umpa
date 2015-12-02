@@ -61,7 +61,7 @@ class Master extends React.Component {
         if (document.body.clientWidth <= 647) {
           this.context.router.transitionTo('feed');
         } else {
-          this.context.router.transitionTo('new-feed');
+          this.context.router.transitionTo('new-asks');
         }
       }.bind(this), 2000);
   }
@@ -73,7 +73,7 @@ class Master extends React.Component {
       if (document.body.clientWidth <= 647) {
         this.context.router.transitionTo('feed');
       } else {
-        this.context.router.transitionTo('new-feed');
+        this.context.router.transitionTo('new-asks');
       }
     }.bind(this);
     setTabsState();
@@ -85,9 +85,9 @@ class Master extends React.Component {
   }
 
   _getSelectedIndex() {
-    return this.context.router.isActive('new-feed') ? '1' :
-      this.context.router.isActive('hot-feed') ? '2' :
-      this.context.router.isActive('my-poll') ? '3' : '0';
+    return this.context.router.isActive('new-asks') ? '1' :
+      this.context.router.isActive('hot-asks') ? '2' :
+      this.context.router.isActive('my-asks') ? '3' : '0';
   }
 
   _handleTabChange(value, e, tab) {
@@ -182,12 +182,12 @@ class Master extends React.Component {
             value="1"
             label="NEW"
             style={styles.tab}
-            route="new-feed" />
+            route="new-asks" />
           <Tab
             value="2"
             label="HOT"
             style={styles.tab}
-            route="hot-feed"/>
+            route="hot-asks"/>
          </Tabs>
        ) : null;
 

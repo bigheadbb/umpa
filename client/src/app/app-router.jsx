@@ -12,9 +12,9 @@ var GetStarted = require('./components/get-started.jsx');
 var Feed = require('./components/feed.jsx'); 
 var Component = require('./components/component.jsx');
 var TextComponent = require('./components/text-component.jsx');
-var NewFeed = require('./components/new-feed.jsx');
-var HotFeed = require('./components/hot-feed.jsx');
-var MyPoll = require('./components/my-poll.jsx');
+var NewAsks = require('./components/new-asks.jsx');
+var HotAsks = require('./components/hot-asks.jsx');
+var MyAsks = require('./components/my-asks.jsx');
 
 /** Routes: https://github.com/rackt/react-router/blob/master/docs/api/components/Route.md
   * 
@@ -32,9 +32,9 @@ var AppRoutes = (
     <Route name="feed" handler={Feed} />
     <Route name="component" handler={Component} />
     <Route name="text-component" handler={TextComponent} />
-    <Route name="new-feed" handler={NewFeed} />
-    <Route name="hot-feed" handler={HotFeed} />
-    <Route name="my-poll" handler={MyPoll} />
+    <Route name="new-asks" handler={NewAsks} />
+    <Route name="hot-asks" handler={HotAsks} />
+    <Route name="my-asks" handler={MyAsks} />
     <DefaultRoute handler={Home}/>
   </Route>
 );
