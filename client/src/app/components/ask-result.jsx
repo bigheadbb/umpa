@@ -10,8 +10,10 @@ var AskResult = React.createClass({
     // TODO: it should show after voting
     var yesCount = parseInt(this.props.yesCount.N);
     var noCount = parseInt(this.props.noCount.N);
-    var yesResult = (100 * yesCount / (yesCount + noCount)).toFixed(2);
-    var noResult = (100 - yesResult).toFixed(2);
+    console.log("yesCount :" + yesCount + " , no :" + noCount);
+    var toTotalCount = yesCount + noCount;
+    var yesResult = toTotalCount==0 ? 50 : (100 * yesCount / (yesCount + noCount)).toFixed(2);
+    var noResult = toTotalCount==0 ? 50 : (100 - yesResult).toFixed(2);
     console.log(yesResult + ' / ' + noResult);
     var styles = {
       resultArea: {
@@ -28,13 +30,13 @@ var AskResult = React.createClass({
       <CardActions expandable={true} >
         <div style={styles.resultArea}>
           <RaisedButton
-            label={yesResult}
+            label={yesCount.toString()}
             primary={true} disabled={true}
             disabledBackgroundColor={Colors.pink300}
             disabledLabelColor={Colors.white}
             style={styles.firstResult} />
           <RaisedButton
-            label={noResult}
+            label={noCount.toString()}
             secondary={true} disabled={true}
             disabledBackgroundColor={Colors.cyan300}
             disabledLabelColor={Colors.white}

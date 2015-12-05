@@ -1,11 +1,19 @@
 var React = require('react');
+var Router = require('react-router');
 var mui = require('material-ui');
-var { Card, Dialog, FloatingActionButton, Paper, TextField, Toggle } = mui;
+var { Card, Dialog, FloatingActionButton, Paper, TextField, Toggle, Snackbar } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var WritePencil = require('./svg-icons/write-pencil.jsx');
 
 var WriteButton = React.createClass({
+
+  getInitialState: function() {
+    return {
+      result : ""
+    };
+  },
+
   render: function() {
     var floatingButtonStyle = {
       position: 'fixed',
@@ -15,7 +23,7 @@ var WriteButton = React.createClass({
 
     var writePollActions = [
       { text: 'Cancel' },
-      { text: 'Submit', onTouchTap: this.handleCreatePollClick, ref: 'submit' }
+      { text: 'Submit', onTouchTap: this.handleCreateNewAskClick, ref: 'submit' }
     ];
 
     var dialogStyle = {
@@ -64,14 +72,6 @@ var WriteButton = React.createClass({
                   floatingLabelText="What do you want to ask?"
                   multiLine={true} />
               </div>
-              <div style={{marginLeft: "calc(100% - 60px)"}}>
-                <Toggle
-                  name="toggleContent"
-                  value="toggleContentValue"
-                  ref="toggleContent"
-                  onToggle={this.handleContentToggleStatusChange}
-                  defaultToggled={true}/>
-              </div>
               <div style={yesOrNoDivStyle}>
                 <TextField
                   style={yesOrNoTextField}
@@ -91,15 +91,19 @@ var WriteButton = React.createClass({
             </div>
           </Dialog>
         </div>
+        <Snackbar
+            ref="snackbar"
+            message={this.state.result} />
       </div>
     );
   },
 
-  handleCreatePollClick: function(e) {
-    console.log('New poll is being created');
+  handleCreateNewAskClick: function(e) {
+    console.log('handleNewAskClick called');
     this.refs.writePoll.dismiss();
-    var url = 'http://54.65.152.112:5000/createPoll';
+    var url = 'http://54.65.152.112:5000/makeNewAsk';
     var poll = {};
+    poll.askerId = 'Big Head Brothers Band';
     poll.mainContent = this.refs.contentTextField.getValue();
     poll.yesContent = this.refs.yesTextField.getValue();
     poll.noContent = this.refs.noTextField.getValue();
@@ -110,11 +114,18 @@ var WriteButton = React.createClass({
       type: 'POST',
       data: poll,
       success: function (res) {
-        this.setState({data: res});
-        alert(JSON.stringify(res));
+        if (res.message === undefined) {
+          this.setState({result: JSON.parse(res).result});
+          this.context.router.refresh();
+        }
+        else {
+          this.setState({result: res.message});
+        }
+        this.refs.snackbar.show();
       }.bind(this),
       error: function (xhr, status, err) {
-        console.log(url, status, err.toString());
+        this.setState({result: "Ask create fail.."});
+        this.refs.snackbar.show();
       }.bind(this),
     });
   },
@@ -127,5 +138,9 @@ var WriteButton = React.createClass({
     console.log('toggle status changed');
   },
 });
+
+WriteButton.contextTypes = {
+  router: React.PropTypes.func
+};
 
 module.exports = WriteButton;
