@@ -42,19 +42,19 @@ app.post('/makeNewAsk', function (req, res) {
          "S": req.body.noContent
       },
       "noCount": {
-        "N": "1"
+        "N": "0"
       },
       "userId": {
         "S": userId
       },
       "voteCount": {
-        "N": "2"
+        "N": "0"
       },
       "yesContent": {
         "S": req.body.yesContent
       },
       "yesCount": {
-        "N": "3"
+        "N": "0"
       }
     },
     TableName: 'yesno'
@@ -63,10 +63,12 @@ app.post('/makeNewAsk', function (req, res) {
   dynamodb.putItem(params, function (err, data) {
     if (err) {
       console.log(err, err.stack);
+      res.json(err);
     }
     else {
       console.log(JSON.stringify(data));
-      res.json(data);
+      if (JSON.stringify(data) === "{}")
+        res.json('{"result" : "New Ask created"}');
     }
   });
 });
@@ -97,7 +99,7 @@ app.post('/getNewAsks', function (req, res) {
     },
     ScanIndexForward: false,
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
-    Limit : 5,
+    Limit : 20,
 };
 
   dynamodb.query(params, function(err, data) {
