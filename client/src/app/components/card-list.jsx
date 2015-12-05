@@ -4,8 +4,13 @@ var {Avatar,
   Card,
   CardActions,
   CardHeader,
-  CardText } = mui;
+  CardText,
+  FlatButton,
+  TextField } = mui;
 var Colors = mui.Styles.Colors;
+
+var ThemeManager = require('material-ui/lib/styles/theme-manager');
+var MyTheme = require('./my-theme.jsx');
 
 var AskResult = require('./ask-result.jsx');
 var MoreButton = require('./more-button.jsx');
@@ -17,21 +22,32 @@ var Author = React.createClass({
     console.log(this.props.userId.S);
     console.log(this.props.date.S);
     var author = this.props.userId.S;
-    var time = this.props.date.S;
+    var yearMonthDay = new Date(parseInt(this.props.date.S)).toDateString();
+    var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
     return (
       <CardHeader
         avatar={<Avatar>A</Avatar>}
         title={author}
-        subtitle={time}
+        subtitle={yearMonthDay+", "+time}
         showExpandableButton={true} />
     );
   }
 });
 
 var Content = React.createClass({
+
+  childContextTypes : {
+    muiTheme: React.PropTypes.object,
+  },
+  getChildContext: function() {
+    return {
+      muiTheme: ThemeManager.getMuiTheme(MyTheme),
+    };
+  },
+
   render: function () {
     console.log("!!!!!!Content rendered");
-    var content = this.props.mainContent.S;
+    var mainContent = this.props.mainContent.S;
     var yesContent = this.props.yesContent.S;
     var noContent = this.props.noContent.S;
     console.log(yesContent);
@@ -40,13 +56,38 @@ var Content = React.createClass({
       return (
         <div>
           <div>
-            {content}
+            <TextField
+              style={{width:'100%'}}
+              underlineDisabledStyle={{display:'none'}}
+              disabled={true}
+              defaultValue={mainContent}
+              rows={1}
+              rowsMax={5}
+              multiLine={true} />
           </div>
           <div>
-            yes - {yesContent}
+            <TextField
+              style={{width:'100%'}}
+              floatingLabelText="Yes"
+              floatingLabelStyle={{color:Colors.pink500}}
+              underlineDisabledStyle={{display:'none'}}
+              disabled={true}
+              defaultValue={yesContent}
+              rows={1}
+              rowsMax={5}
+              multiLine={true} />
           </div>
           <div>
-            no - {noContent}
+            <TextField
+              style={{width:'100%'}}
+              floatingLabelText="No"
+              floatingLabelStyle={{color:Colors.cyan500}}
+              underlineDisabledStyle={{display:'none'}}
+              disabled={true}
+              defaultValue={noContent}
+              rows={1}
+              rowsMax={5}
+              multiLine={true} />
           </div>
         </div>
       );

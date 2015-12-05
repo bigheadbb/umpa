@@ -18,7 +18,7 @@ var MoreButton = React.createClass({
     return (
       <div style={styles.buttonArea} >
         <FlatButton
-          label={'more...'}
+          label={'more'}
           style={styles.button} />
       </div>
     );
