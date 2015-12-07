@@ -58,23 +58,15 @@ class Master extends React.Component {
       function(){ 
         this.setState({data: "recieved"});
         this.setState({tabIndex: this._getSelectedIndex()});
-        if (document.body.clientWidth <= 647) {
-          this.context.router.transitionTo('feed');
-        } else {
-          this.context.router.transitionTo('new-asks');
-        }
+        this.context.router.transitionTo('new-asks');
       }.bind(this), 2000);
   }
 
   componentWillMount(){
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
-      this.setState({renderTabs: !(document.body.clientWidth <= 647)});
-      if (document.body.clientWidth <= 647) {
-        this.context.router.transitionTo('feed');
-      } else {
-        this.context.router.transitionTo('new-asks');
-      }
+      this.setState({mobileView: (document.body.clientWidth <= 647)});
+      this.context.router.transitionTo('new-asks');
     }.bind(this);
     setTabsState();
     window.onresize = setTabsState;
@@ -86,8 +78,7 @@ class Master extends React.Component {
 
   _getSelectedIndex() {
     return this.context.router.isActive('new-asks') ? '1' :
-      this.context.router.isActive('hot-asks') ? '2' :
-      this.context.router.isActive('my-asks') ? '3' : '0';
+      this.context.router.isActive('hot-asks') ? '2' : '0';
   }
 
   _handleTabChange(value, e, tab) {
@@ -110,7 +101,13 @@ class Master extends React.Component {
         zIndex: 4,
         width: '100%',
       },
-      container: {
+      container: this.state.mobileView ?
+      {
+        position: 'absolute',
+        top : Spacing.desktopKeylineIncrement,
+        width: '100%',
+      }
+      : {
         position: 'absolute',
         right: (Spacing.desktopGutter/2) + 48,
         bottom: 0,
@@ -123,7 +120,13 @@ class Master extends React.Component {
         position: 'absolute',
         fontSize: 26,
       },
-      tabs: {
+      tabs: this.state.mobileView ?
+      {
+        backgroundColor: Colors.deepPurple500,
+        width: '100%',
+        bottom:0,
+      }
+      : {
         backgroundColor: Colors.deepPurple500,
         width: 200,
         bottom:0,
@@ -132,11 +135,17 @@ class Master extends React.Component {
         backgroundColor: Colors.deepPurple500,
       },
       inkBarStyle : {
-        backgroundColor : Colors.yellow200,
+        backgroundColor : Colors.grey200,
         height: 5,
         marginTop: -5
       },
-      tab: {
+      tab: this.state.mobileView ?
+      {
+        backgroundColor: Colors.deepPurple500,
+        height: 48,
+        fontWeight: 'bold',
+      }
+      : {
         backgroundColor: Colors.deepPurple500,
         height: 64,
         fontWeight: 'bold',
@@ -169,27 +178,25 @@ class Master extends React.Component {
       </IconButton>
     );
 
-    var tabs = 
-      this.state.renderTabs ? 
-      (
-        <Tabs
-          style={styles.tabs}
-          tabItemContainerStyle={styles.tabItemContainerStyle}
-          inkBarStyle={styles.inkBarStyle}
-          value={this.state.tabIndex}
-          onChange={this._handleTabChange.bind(this)}>
-          <Tab
-            value="1"
-            label="NEW"
-            style={styles.tab}
-            route="new-asks" />
-          <Tab
-            value="2"
-            label="HOT"
-            style={styles.tab}
-            route="hot-asks"/>
-         </Tabs>
-       ) : null;
+    var tabs = (
+      <Tabs
+        style={styles.tabs}
+        tabItemContainerStyle={styles.tabItemContainerStyle}
+        inkBarStyle={styles.inkBarStyle}
+        value={this.state.tabIndex}
+        onChange={this._handleTabChange.bind(this)}>
+        <Tab
+          value="1"
+          label="NEW"
+          style={styles.tab}
+          route="new-asks" />
+        <Tab
+          value="2"
+          label="HOT"
+          style={styles.tab}
+          route="hot-asks"/>
+      </Tabs>
+    );
 
     return(
       <div>

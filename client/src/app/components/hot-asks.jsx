@@ -26,7 +26,7 @@ var HotAsks = React.createClass({
     };
 
     var containerStyle = {
-      paddingTop: document.body.clientWidth <= 647 ? 0: Spacing.desktopKeylineIncrement,
+      paddingTop: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement + 48 : Spacing.desktopKeylineIncrement,
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
