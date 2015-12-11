@@ -103,7 +103,7 @@ var WriteButton = React.createClass({
     this.refs.writePoll.dismiss();
     var url = 'http://54.65.152.112:5000/makeNewAsk';
     var poll = {};
-    poll.askerId = 'Big Head Brothers Band';
+    poll.askerId = document.user.name+'('+document.user.email+')';
     poll.mainContent = this.refs.contentTextField.getValue();
     poll.yesContent = this.refs.yesTextField.getValue();
     poll.noContent = this.refs.noTextField.getValue();
@@ -116,6 +116,7 @@ var WriteButton = React.createClass({
       success: function (res) {
         if (res.message === undefined) {
           this.setState({result: JSON.parse(res).result});
+          window.newAsksState = "UpdateNeeded";
           this.context.router.refresh();
         }
         else {
@@ -131,7 +132,13 @@ var WriteButton = React.createClass({
   },
 
   handleWritePollDialogTouchTap : function() {
-    this.refs.writePoll.show();
+    if (document.fblogin === "connected") {
+      this.refs.writePoll.show();
+    }
+    else {
+      var valueScope = 'public_profile, email';
+      FB.login(window.loginStatusCallback, { scope: valueScope });
+    }
   },
 
   handleContentToggleStatusChange: function() {
