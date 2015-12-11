@@ -44,14 +44,37 @@ class AppLeftNav extends React.Component {
     }
   }
 
+  getInitialState() {
+    return {
+      user : document.user,
+    };
+  }
+
+  componentWillMount() {
+    console.log('AppLeftNav componentWillMount called');
+  }
+
+  componentDidMount() {
+    document.addEventListener("fbUserInfo",
+      function statusChangeCallback(e) {
+        this.setState({user: document.user});
+      }.bind(this)
+    );
+  }
+
+  componentWillUpdate() {
+    console.log('AppLeftNav componentWillUpdate called');
+  }
+
   render() {
+    var profile_photo = document.user === undefined ? "" : "http://graph.facebook.com/"+document.user.id+"/picture?type=small";
     var header = (
       <div onTouchTap={this._onHeaderClick}>
         <List style={this.getStyles().ListHead}>
           <ListItem
-            leftAvatar={<Avatar>A</Avatar>}
-            primaryText="Big head bro"
-            secondaryText="show me the money"
+            leftAvatar={ document.user === undefined ? <Avatar>A</Avatar> : <Avatar src={profile_photo}>A</Avatar>}
+            primaryText={document.user === undefined ? "" : document.user.name}
+            secondaryText={document.user === undefined ? "" : document.user.email}
           >
           </ListItem>
         </List>
@@ -64,6 +87,7 @@ class AppLeftNav extends React.Component {
         ref="leftNav"
         docked={false}
         isInitiallyOpen={false}
+        disableSwipeToOpen={true}
         header={header}
         menuItems={menuItems}
         selectedIndex={this._getSelectedIndex()}
@@ -86,7 +110,16 @@ class AppLeftNav extends React.Component {
   }
 
   _onLeftNavChange(e, key, payload) {
-    this.context.router.transitionTo(payload.route);
+    console.log("_onLeftNavChange e : " + e);
+    console.log("_onLeftNavChange key : " + key);
+    console.log("_onLeftNavChange payload : " + payload);
+
+    if (payload.text === "Logout") {
+      console.log('FB Logout Click');
+      FB.logout(function(response) {
+        console.log(response);
+      }.bind(this));
+    }
   }
 
   _onHeaderClick() {
