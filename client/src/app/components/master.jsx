@@ -128,7 +128,7 @@ class Master extends React.Component {
       }
       : {
         backgroundColor: Colors.deepPurple500,
-        width: 200,
+        width: 300,
         bottom:0,
       },
       tabItemContainerStyle: {
@@ -136,13 +136,13 @@ class Master extends React.Component {
       },
       inkBarStyle : {
         backgroundColor : Colors.grey200,
-        height: 5,
-        marginTop: -5
+        height: 8,
+        marginTop: -8
       },
       tab: this.state.mobileView ?
       {
         backgroundColor: Colors.deepPurple500,
-        height: 48,
+        height: 52,
         fontWeight: 'bold',
       }
       : {
