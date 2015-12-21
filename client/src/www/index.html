@@ -72,6 +72,47 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+    window.loginStatusCallback = function(response) {
+      console.log('loginStatusCallback');
+      console.log(response);
+      // The response object is returned with a status field that lets the
+      // app know the current login status of the person.
+      // Full docs on the response object can be found in the documentation
+      // for FB.getLoginStatus().
+      if (response.status === 'connected') {
+        console.log('response.status is connected');
+        var uid = response.authResponse.userID;
+        var accessToken = response.authResponse.accessToken;
+        console.log('uid is : ' + uid);
+        console.log('accessToken is : ' + accessToken);
+
+        document.fblogin = "connected";
+        // Logged into your app and Facebook.
+
+        FB.api('/me', {fields: 'id,name,email,age_range,gender'}, function(res) {
+          console.log('Successful login for: ' + res.name);
+          document.user = res;
+
+          var event = new CustomEvent("fbUserInfo", {
+            detail: {
+                userInfo: res
+            }
+          });
+          document.dispatchEvent(event);
+
+          console.log(res);
+        }.bind(this));
+
+
+
+      } else if (response.status === 'not_authorized') {
+        console.log("the user is logged in to Facebook, but has not authenticated your app");
+        document.fblogin = "not_authorized";
+      } else {
+        console.log("the user isn't logged in to Facebook. Go login");
+        document.fblogin = "not_logged";
+      }
+    }
   }
   </script>
 </head>

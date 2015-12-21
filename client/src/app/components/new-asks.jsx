@@ -7,35 +7,53 @@ var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
 var NewAsks = React.createClass({
+
+  Asks : {
+  },
+
   getInitialState: function () {
     return {data:[]};
   },
 
   componentWillMount: function () {
-    console.log('New asks are being loaded');
+    console.log('New asks componentWillMount called');
+    console.log('window.newAsksState is ', window.newAsksState);
     var query = {};
     var now = new Date().getTime();
     query.date = now;
 
-    $.ajax({
-      url: 'http://54.65.152.112:5000/getNewAsks',
-      dataType: 'json',
-      data : query,
-      type: 'POST',
-      cache: false,
-      success: function (data) {
-        this.setState({data: data.Items});
-      }.bind(this),
-      error: function (xhr, status, erro) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
+    if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
+      window.newAsksState = "Updating";
+      $.ajax({
+        url: 'http://54.65.152.112:5000/getNewAsks',
+        dataType: 'json',
+        data : query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          this.setState({data: data.Items});
+          Asks = data.Items;
+        }.bind(this),
+        error: function (xhr, status, erro) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+      window.newAsksState = "Updated";
+    } else if (window.newAsksState === "Updated"){
+      this.setState({data: Asks});
+    }
+  },
+
+  componentDidMount: function () {
+    console.log('New asks componentDidMount called');
+    console.log('window.newAsksState is ', window.newAsksState);
   },
 
   componentWillUpdate: function(nextProps, nextState) {
-    console.log('New asks are being updated');
+    console.log('New asks componentWillUpdate called');
+    console.log('window.newAsksState is ', window.newAsksState);
 
-    if (this.state.data[0] === nextState.data[0]) {
+    if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
       var now = new Date().getTime();
       query.date = now;
@@ -53,6 +71,8 @@ var NewAsks = React.createClass({
           console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
+
+      window.newAsksState = "Updated";
     }
   },
 

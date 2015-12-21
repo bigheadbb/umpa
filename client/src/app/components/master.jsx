@@ -41,8 +41,8 @@ class Master extends React.Component {
   }
 
   getInitialState() {
-    return { 
-      data : "init" 
+    return {
+      tabIndex : '1',
     };
   }
 
@@ -54,12 +54,23 @@ class Master extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(
+    var timeout = setTimeout(
       function(){ 
-        this.setState({data: "recieved"});
         this.setState({tabIndex: this._getSelectedIndex()});
         this.context.router.transitionTo('new-asks');
       }.bind(this), 2000);
+
+    document.addEventListener("fbLogin",
+      function statusChangeCallback(e) {
+        console.log('master fbLogin statusChangeCallback');
+        console.log(e.detail.res);
+        var response = e.detail.res;
+        window.loginStatusCallback(response);
+        clearTimeout(timeout);
+        this.setState({tabIndex: this._getSelectedIndex()});
+        this.context.router.transitionTo('new-asks');
+      }.bind(this)
+    );
   }
 
   componentWillMount(){
@@ -87,7 +98,13 @@ class Master extends React.Component {
   }
 
   _onRightIconButtonTouchTap() {
-    this.refs.leftNav.toggle();
+    if (document.fblogin === "connected") {
+      this.refs.leftNav.toggle();
+    }
+    else {
+      var valueScope = 'public_profile, email';
+      FB.login(window.loginStatusCallback, { scope: valueScope });
+    }
   }
 
   _getAppbar() {
@@ -218,8 +235,8 @@ class Master extends React.Component {
     var styles = this.getStyles();
     return (
       <div style={styles.root}>
-        { this.state.data == "recieved" ? this._getAppbar() : null }
-        { this.state.data == "recieved" ? <RouteHandler /> : <Home /> }
+        { this._getAppbar() }
+        <RouteHandler />
         <AppLeftNav ref="leftNav" />
       </div>
     );
