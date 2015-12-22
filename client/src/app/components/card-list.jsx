@@ -52,6 +52,24 @@ var Content = React.createClass({
     var noContent = this.props.noContent.S;
     console.log(yesContent);
     console.log(noContent);
+    var styles = {
+      yesButton: {
+        textAlign: "left",
+        color: Colors.pink300,
+        width: '100%',
+        borderWidth: "1px 1px 1px 15px",
+        borderStyle: "solid",
+        borderColor: Colors.pink500,
+      },
+      noButton: {
+        textAlign: "left",
+        color: Colors.cyan700,
+        width: '100%',
+        borderWidth: "1px 1px 1px 15px",
+        borderStyle: "solid",
+        borderColor: Colors.cyan500,
+      },
+    };
     var showContent = function () {
       return (
         <div>
@@ -72,10 +90,13 @@ var Content = React.createClass({
               floatingLabelStyle={{color:Colors.pink500}}
               underlineDisabledStyle={{display:'none'}}
               disabled={true}
-              defaultValue={yesContent}
               rows={1}
               rowsMax={5}
               multiLine={true} />
+            <FlatButton
+              label={yesContent}
+              primary={true}
+              style={styles.yesButton} />
           </div>
           <div>
             <TextField
@@ -84,10 +105,13 @@ var Content = React.createClass({
               floatingLabelStyle={{color:Colors.cyan500}}
               underlineDisabledStyle={{display:'none'}}
               disabled={true}
-              defaultValue={noContent}
               rows={1}
               rowsMax={5}
               multiLine={true} />
+            <FlatButton
+              label={noContent}
+              secondary={true}
+              style={styles.noButton} />
           </div>
         </div>
       );
@@ -133,9 +157,6 @@ var CardList = React.createClass({
             <Content mainContent={ask.mainContent}
               yesContent={ask.yesContent}
               noContent={ask.noContent} />
-            <VoteButton />
-            <AskResult yesCount={ask.yesCount}
-              noCount={ask.noCount} />
           </Card>
         );
       });
