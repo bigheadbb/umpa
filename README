@@ -1,0 +1,20 @@
+YESNO Project 
+
+*** What it is ***
+This repository is a community to develop "YESNO" project.
+
+
+*** Support ***
+- Web View 
+- Mobile View 
+
+
+*** Commit log Rule ***
+[server/client] module/file : summary 
+
+add the description if you want.
+
+e.g.
+[client] login : apply facebook log in feature 
+[sever] package.js : update aws version
+
