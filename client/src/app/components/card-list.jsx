@@ -54,22 +54,16 @@ var Content = React.createClass({
     console.log(noContent);
     var styles = {
       yesButton: {
-        textAlign: "left",
         color: Colors.pink300,
-        width: '100%',
-        borderWidth: "1px 1px 1px 15px",
-        borderStyle: "solid",
-        borderColor: Colors.pink500,
-        wordWrap: "break-word",
+        width: 'calc(100% - 11px)',
+        paddingLeft: 5,
+        fontSize : 14,
       },
       noButton: {
-        textAlign: "left",
         color: Colors.cyan700,
-        width: '100%',
-        borderWidth: "1px 1px 1px 15px",
-        borderStyle: "solid",
-        borderColor: Colors.cyan500,
-        wordWrap: "break-word",
+        width: 'calc(100% - 11px)',
+        paddingLeft: 5,
+        fontSize : 14,
       },
     };
     var showContent = function () {
@@ -86,34 +80,34 @@ var Content = React.createClass({
               multiLine={true} />
           </div>
           <div>
-            <TextField
-              style={{width:'100%'}}
-              floatingLabelText="Yes"
-              floatingLabelStyle={{color:Colors.pink500}}
-              underlineDisabledStyle={{display:'none'}}
-              disabled={true}
-              rows={1}
-              rowsMax={5}
-              multiLine={true} />
+            <span style={{color:Colors.pink500, fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>YES</span>
             <FlatButton
-              label={yesContent}
-              primary={true}
-              style={styles.yesButton} />
+              style={{width:'100%', backgroundColor:Colors.pink50}}
+              primary={true} >
+              <TextField
+                style={styles.yesButton}
+                underlineDisabledStyle={{display:'none'}}
+                disabled={true}
+                defaultValue={yesContent}
+                rows={1}
+                rowsMax={10}
+                multiLine={true} />
+            </FlatButton>
           </div>
-          <div>
-            <TextField
-              style={{width:'100%'}}
-              floatingLabelText="No"
-              floatingLabelStyle={{color:Colors.cyan500}}
-              underlineDisabledStyle={{display:'none'}}
-              disabled={true}
-              rows={1}
-              rowsMax={5}
-              multiLine={true} />
+          <div style={{marginTop : 15}}>
+            <span style={{color:Colors.cyan500 , fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>NO</span>
             <FlatButton
-              label={noContent}
-              secondary={true}
-              style={styles.noButton} />
+              style={{width:'100%', backgroundColor:Colors.cyan50}}
+              secondary={true} >
+              <TextField
+                style={styles.noButton}
+                underlineDisabledStyle={{display:'none'}}
+                disabled={true}
+                defaultValue={noContent}
+                rows={1}
+                rowsMax={10}
+                multiLine={true} />
+            </FlatButton>
           </div>
         </div>
       );
