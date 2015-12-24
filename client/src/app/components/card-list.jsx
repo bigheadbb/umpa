@@ -52,6 +52,20 @@ var Content = React.createClass({
     var noContent = this.props.noContent.S;
     console.log(yesContent);
     console.log(noContent);
+    var styles = {
+      yesButton: {
+        color: Colors.pink300,
+        width: 'calc(100% - 11px)',
+        paddingLeft: 5,
+        fontSize : 14,
+      },
+      noButton: {
+        color: Colors.cyan700,
+        width: 'calc(100% - 11px)',
+        paddingLeft: 5,
+        fontSize : 14,
+      },
+    };
     var showContent = function () {
       return (
         <div>
@@ -66,28 +80,34 @@ var Content = React.createClass({
               multiLine={true} />
           </div>
           <div>
-            <TextField
-              style={{width:'100%'}}
-              floatingLabelText="Yes"
-              floatingLabelStyle={{color:Colors.pink500}}
-              underlineDisabledStyle={{display:'none'}}
-              disabled={true}
-              defaultValue={yesContent}
-              rows={1}
-              rowsMax={5}
-              multiLine={true} />
+            <span style={{color:Colors.pink500, fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>YES</span>
+            <FlatButton
+              style={{width:'100%', backgroundColor:Colors.pink50}}
+              primary={true} >
+              <TextField
+                style={styles.yesButton}
+                underlineDisabledStyle={{display:'none'}}
+                disabled={true}
+                defaultValue={yesContent}
+                rows={1}
+                rowsMax={10}
+                multiLine={true} />
+            </FlatButton>
           </div>
-          <div>
-            <TextField
-              style={{width:'100%'}}
-              floatingLabelText="No"
-              floatingLabelStyle={{color:Colors.cyan500}}
-              underlineDisabledStyle={{display:'none'}}
-              disabled={true}
-              defaultValue={noContent}
-              rows={1}
-              rowsMax={5}
-              multiLine={true} />
+          <div style={{marginTop : 15}}>
+            <span style={{color:Colors.cyan500 , fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>NO</span>
+            <FlatButton
+              style={{width:'100%', backgroundColor:Colors.cyan50}}
+              secondary={true} >
+              <TextField
+                style={styles.noButton}
+                underlineDisabledStyle={{display:'none'}}
+                disabled={true}
+                defaultValue={noContent}
+                rows={1}
+                rowsMax={10}
+                multiLine={true} />
+            </FlatButton>
           </div>
         </div>
       );
@@ -133,9 +153,6 @@ var CardList = React.createClass({
             <Content mainContent={ask.mainContent}
               yesContent={ask.yesContent}
               noContent={ask.noContent} />
-            <VoteButton />
-            <AskResult yesCount={ask.yesCount}
-              noCount={ask.noCount} />
           </Card>
         );
       });
