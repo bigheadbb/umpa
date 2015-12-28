@@ -22,7 +22,7 @@ var HotAsks = React.createClass({
 
   render: function() {
     var root = {
-      backgroundColor : Colors.grey200,
+      backgroundColor : Colors.grey100,
     };
 
     var containerStyle = {
@@ -30,7 +30,7 @@ var HotAsks = React.createClass({
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-      backgroundColor : Colors.grey200,
+      backgroundColor : Colors.grey100,
     };
 
     var button = (document.body.clientWidth <= 647 ? null : <WriteButton />);
