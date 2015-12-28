@@ -121,7 +121,6 @@ app.post('/getNewAsks', function (req, res) {
 app.post('/getMyAsks', function (req, res) {
   console.log("body: " + JSON.stringify(req.body));
 
-  var currentTime = new Data().getTime().toString();
   var params = {
     TableName: 'yesno',
     IndexName: 'userId-date-index',
@@ -139,7 +138,7 @@ app.post('/getMyAsks', function (req, res) {
         ComparisonOperator: 'LE',
         AttributeValueList: [
           {
-            S: currentTime,
+            S: req.body.date,
           }
         ],
       },
