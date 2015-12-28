@@ -118,6 +118,53 @@ app.post('/getNewAsks', function (req, res) {
   });
 });
 
+app.post('/getMyAsks', function (req, res) {
+  console.log("body: " + JSON.stringify(req.body));
+
+  var params = {
+    TableName: 'yesno',
+    IndexName: 'userId-date-index',
+    KeyConditions: { // indexed attributes to query
+                     // must include the hash key value of the table or index
+      userId: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [
+          {
+            S: req.body.askerId,
+          }
+        ],
+      },
+      date: {
+        ComparisonOperator: 'LE',
+        AttributeValueList: [
+          {
+            S: req.body.date,
+          }
+        ],
+      },
+    },
+    ScanIndexForward: false,  // false : reverse order by sort key value
+                              // true : order by sort key value
+    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+    Limit : 20,
+};
+
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+    }
+    else {
+      console.log(data); // successful response
+      for (var i in data.Items) {
+         i = data.Items[i];
+         console.log(i.mainContent);
+         console.log(i.yesContent);
+      }
+      res.json(data);
+    }
+  });
+});
+
 app.get('/scan', function (req, res) {
   var params = {
     TableName: 'yesno',
