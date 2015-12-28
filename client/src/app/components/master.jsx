@@ -139,27 +139,46 @@ class Master extends React.Component {
       },
       tabs: this.state.mobileView ?
       {
-        backgroundColor: Colors.deepPurple500,
         width: '100%',
         bottom:0,
+        borderWidth: "0px 0px 1px 0px",
+        borderStyle: "solid",
+        borderColor: Colors.grey300,
       }
       : {
-        backgroundColor: Colors.deepPurple500,
         width: 300,
         bottom:0,
       },
       tabItemContainerStyle: {
-        backgroundColor: Colors.deepPurple500,
+        color: Colors.deepPurple500,
       },
-      inkBarStyle : {
-        backgroundColor : Colors.grey200,
-        height: 8,
-        marginTop: -8
+      inkBarStyle : this.state.mobileView ?
+      {
+        backgroundColor : Colors.deepPurple500,
+        height: 2,
+        marginTop: -2
+      }
+      : {
+        backgroundColor : Colors.grey100,
+        height: 6,
+        marginTop: -6,
       },
       tab: this.state.mobileView ?
       {
+        backgroundColor: Colors.grey100,
+        color: Colors.grey400,
+        height: 44,
+      }
+      : {
         backgroundColor: Colors.deepPurple500,
-        height: 52,
+        height: 64,
+        fontWeight: 'bold',
+      },
+      selectedTab : this.state.mobileView ?
+      {
+        backgroundColor: Colors.grey100,
+        color: Colors.deepPurple500,
+        height: 44,
         fontWeight: 'bold',
       }
       : {
@@ -179,6 +198,9 @@ class Master extends React.Component {
         height: 18
       }
     };
+
+    var newTabStyle = this._getSelectedIndex() == 1 ? styles.selectedTab : styles.tab ;
+    var hotTabStyle = this._getSelectedIndex() == 2 ? styles.selectedTab : styles.tab ;
 
     var yesOrNoIcon= (
       <EnhancedButton>
@@ -205,12 +227,12 @@ class Master extends React.Component {
         <Tab
           value="1"
           label="NEW"
-          style={styles.tab}
+          style={newTabStyle}
           route="new-asks" />
         <Tab
           value="2"
           label="HOT"
-          style={styles.tab}
+          style={hotTabStyle}
           route="hot-asks"/>
       </Tabs>
     );

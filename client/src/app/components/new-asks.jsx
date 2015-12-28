@@ -99,7 +99,7 @@ var NewAsks = React.createClass({
 
   render: function() {
     var root = {
-      backgroundColor : Colors.grey200,
+      backgroundColor : Colors.grey100,
     };
 
     var containerStyle = {
@@ -107,7 +107,7 @@ var NewAsks = React.createClass({
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
-      backgroundColor : Colors.grey200,
+      backgroundColor : Colors.grey100,
     };
 
     return (

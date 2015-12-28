@@ -1,6 +1,7 @@
 var React = require('react');
 var mui = require('material-ui');
 var FlatButton = mui.FlatButton;
+var { Colors, } = mui.Styles;
 
 var MoreButton = React.createClass({
   render: function () {
@@ -13,6 +14,7 @@ var MoreButton = React.createClass({
       },
       button: {
         width: '100%',
+        backgroundColor : Colors.white
       },
     };
     return (
