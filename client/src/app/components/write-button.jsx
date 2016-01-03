@@ -50,14 +50,14 @@ var WriteButton = React.createClass({
       <div>
         <FloatingActionButton
           backgroundColor={Colors.deepPurple500}
-          style={floatingButtonStyle} 
+          style={floatingButtonStyle}
           onTouchTap={this.handleWritePollDialogTouchTap}>
           <WritePencil />
         </FloatingActionButton>
         <div>
-          <Dialog 
+          <Dialog
             contentStyle={dialogStyle}
-            autoDetectWindowHeight={true} 
+            autoDetectWindowHeight={true}
             autoScrollBodyContent={true}
             ref="writePoll"
             actions={writePollActions}
@@ -103,7 +103,8 @@ var WriteButton = React.createClass({
     this.refs.writePoll.dismiss();
     var url = 'http://54.65.152.112:5000/makeNewAsk';
     var poll = {};
-    poll.askerId = document.user.name+'('+document.user.email+')';
+    poll.askerId = document.user.id;
+    poll.askerName = document.user.name;
     poll.mainContent = this.refs.contentTextField.getValue();
     poll.yesContent = this.refs.yesTextField.getValue();
     poll.noContent = this.refs.noTextField.getValue();

@@ -12,7 +12,7 @@
 
   <script>
   function init() {
-    /* This script adds the Roboto font to our project. 
+    /* This script adds the Roboto font to our project.
     For more detail go to this site:  http://www.google.com/fonts#UsePlace:use/Collection:Roboto:400,300,500 */
 
     var WebFontConfig = {
@@ -30,7 +30,7 @@
 
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '1632008093752871',
+        appId      : '1685234781763535',
         cookie     : false,  // enable cookies to allow the server to access the session
         xfbml      : true,  // parse social plugins on this page
         version    : 'v2.4', // use version 2.2
@@ -102,9 +102,7 @@
 
           console.log(res);
         }.bind(this));
-
-
-
+      
       } else if (response.status === 'not_authorized') {
         console.log("the user is logged in to Facebook, but has not authenticated your app");
         document.fblogin = "not_authorized";
