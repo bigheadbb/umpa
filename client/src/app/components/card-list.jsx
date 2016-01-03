@@ -20,13 +20,16 @@ var Author = React.createClass({
   render: function () {
     console.log("!!!!!!Author rendered");
     console.log(this.props.userId.S);
+    console.log(this.props.userName.S);
     console.log(this.props.date.S);
-    var author = this.props.userId.S;
+    var userId = this.props.userId.S;
+    var author = this.props.userName.S;
     var yearMonthDay = new Date(parseInt(this.props.date.S)).toDateString();
     var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
+    var profile_photo = "http://graph.facebook.com/"+userId+"/picture?type=small";
     return (
       <CardHeader
-        avatar={<Avatar>A</Avatar>}
+        avatar={<Avatar src={profile_photo}></Avatar>}
         title={author}
         subtitle={yearMonthDay+", "+time}
         showExpandableButton={true} />
@@ -149,7 +152,7 @@ var CardList = React.createClass({
             key={ask.index.S}
             initiallyExpanded={true}
             style={styles.card} >
-            <Author userId={ask.userId} date={ask.date} />
+            <Author userName={ask.userName} userId={ask.userId} date={ask.date} />
             <Content mainContent={ask.mainContent}
               yesContent={ask.yesContent}
               noContent={ask.noContent} />
