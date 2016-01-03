@@ -21,8 +21,11 @@ app.post('/makeNewAsk', function (req, res) {
   console.log("body: " + JSON.stringify(req.body));
 
   var currentTime = new Date().getTime().toString();
-  var language = req.headers["accept-language"].split(',')[0].toLowerCase();
+  var language = "*";
+  // FIXME : '*' is used for temporary, we should change this value to proper languge client sent.
+  //         req.headers["accept-language"].split(',')[0].toLowerCase();
   var userId = req.body.askerId;
+  var userName = req.body.askerName;
 
   var params = {
     Item: {
@@ -30,7 +33,7 @@ app.post('/makeNewAsk', function (req, res) {
         "S": currentTime
       },
       "index": {
-        "S": userId+currentTime
+        "S": userId+"#"+currentTime
       },
       "language": {
         "S": language
@@ -46,6 +49,9 @@ app.post('/makeNewAsk', function (req, res) {
       },
       "userId": {
         "S": userId
+      },
+      "userName": {
+        "S": userName
       },
       "voteCount": {
         "N": "0"
@@ -74,7 +80,9 @@ app.post('/makeNewAsk', function (req, res) {
 });
 
 app.post('/getNewAsks', function (req, res) {
-  var language = req.headers["accept-language"].split(',')[0].toLowerCase();
+  var language = "*";
+  // FIXME : '*' is used for temporary, we should change this value to proper languge client sent.
+  //         req.headers["accept-language"].split(',')[0].toLowerCase();
   var params = {
     TableName: 'yesno',
     IndexName: 'language-date-index',
