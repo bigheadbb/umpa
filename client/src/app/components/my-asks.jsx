@@ -38,7 +38,7 @@ var MyAsks = React.createClass({
     return (
       <div style={root}>
       <div style={containerStyle}>
-        <CardList/>
+        aaaa
       </div>
       {button}
       </div>
