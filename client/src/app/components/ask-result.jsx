@@ -1,50 +1,67 @@
 var React = require('react');
 var mui = require('material-ui');
-var RaisedButton = mui.RaisedButton;
 var Colors = mui.Styles.Colors;
-var CardActions = mui.CardActions;
+
+var {
+  CardText,
+  LinearProgress } = mui;
+
+var Colors = mui.Styles.Colors;
 
 var AskResult = React.createClass({
-  render: function () {
-    console.log("!!!!!!AskResult render");
-    // TODO: it should show after voting
-    var yesCount = parseInt(this.props.yesCount.N);
-    var noCount = parseInt(this.props.noCount.N);
-    console.log("yesCount :" + yesCount + " , no :" + noCount);
-    var toTotalCount = yesCount + noCount;
-    var yesResult = toTotalCount==0 ? 50 : (100 * yesCount / (yesCount + noCount)).toFixed(2);
-    var noResult = toTotalCount==0 ? 50 : (100 - yesResult).toFixed(2);
-    console.log(yesResult + ' / ' + noResult);
-    var styles = {
-      resultArea: {
-        width: '100%',
-      },
-      firstResult: {
-        width: yesResult + '%',
-      },
-      secondResult: {
-        width: noResult + '%',
-      },
+
+  getInitialState: function() {
+    return {
+      show : null
     };
+  },
+
+  render:  function () {
+    console.log("!!!!!!AskResult render");
+
+    var yesNoCount = this.props.yesNoCount;
+    var totalCount = this.props.totalCount;
+    var yesNoResultPercent = totalCount == 0 ? 50 : (100 * yesNoResultPercent / totalCount).toFixed(2);
+    var progressColor = this.props.color;
+    var result = yesNoCount + " (" +  yesNoResultPercent + "%)";
+
+    var styles = {
+      root: this.state.show ?
+      {
+        marginTop: 10,
+        height: 20,
+        width: '100%',
+        transition: 'width 2s',
+        visibility: 'visible'
+      }
+      : {
+        height: 0,
+        width: 0,
+        visibility: 'hidden'
+      },
+      progress : {
+        backgroundColor: Colors.grey300,
+      },
+      result : {
+        textAlign: 'right',
+        marginTop: 3,
+        color : progressColor,
+        fontSize : 11
+      }
+    };
+
     return (
-      <CardActions expandable={true} >
-        <div style={styles.resultArea}>
-          <RaisedButton
-            label={yesCount.toString()}
-            primary={true} disabled={true}
-            disabledBackgroundColor={Colors.pink300}
-            disabledLabelColor={Colors.white}
-            style={styles.firstResult} />
-          <RaisedButton
-            label={noCount.toString()}
-            secondary={true} disabled={true}
-            disabledBackgroundColor={Colors.cyan300}
-            disabledLabelColor={Colors.white}
-            style={styles.secondResult} />
-        </div>
-      </CardActions>
+      <div style={styles.root}>
+        <LinearProgress style={styles.progress} mode="determinate" color={progressColor} value={yesNoResultPercent} />
+        <div style={styles.result}>{result}</div>
+      </div>
     );
-  }
+  },
+
+  show: function() {
+    console.log('AskResult show');
+    this.setState({show: true});
+  },
 });
 
 module.exports = AskResult;

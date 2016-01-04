@@ -1,12 +1,8 @@
 var React = require('react');
-var PureRenderMixin = React.addons.PureRenderMixin;
 var mui = require('material-ui');
 var SvgIcon = mui.SvgIcon;
 
 var NavigationMoreVert = React.createClass({
-
-  mixins: [PureRenderMixin],
-
   render() {
     return (
       <SvgIcon {...this.props}>

@@ -26,47 +26,39 @@ var menuItems = [
     { route: 'logout', text: 'Logout' },
   ];
 
-class AppLeftNav extends React.Component {
+var AppLeftNav = React.createClass({
 
-  constructor() {
-    super();
-    this.toggle = this.toggle.bind(this);
-    this._getSelectedIndex = this._getSelectedIndex.bind(this);
-    this._onLeftNavChange = this._onLeftNavChange.bind(this);
-    this._onHeaderClick = this._onHeaderClick.bind(this);
-  }
-
-  getStyles() {
+  getStyles: function() {
     return {
       ListHead: {
         backgroundColor: Colors.grey300
       }
     }
-  }
+  },
 
-  getInitialState() {
+  getInitialState: function() {
     return {
       user : document.user,
     };
-  }
+  },
 
-  componentWillMount() {
+  componentWillMount: function() {
     console.log('AppLeftNav componentWillMount called');
-  }
+  },
 
-  componentDidMount() {
+  componentDidMount: function() {
     document.addEventListener("fbUserInfo",
       function statusChangeCallback(e) {
         this.setState({user: document.user});
       }.bind(this)
     );
-  }
+  },
 
-  componentWillUpdate() {
+  componentWillUpdate: function() {
     console.log('AppLeftNav componentWillUpdate called');
-  }
+  },
 
-  render() {
+  render: function() {
     var profile_photo = document.user === undefined ? "" : "http://graph.facebook.com/"+document.user.id+"/picture?type=small";
     var header = (
       <div onTouchTap={this._onHeaderClick}>
@@ -94,22 +86,22 @@ class AppLeftNav extends React.Component {
         openRight={true}
         onChange={this._onLeftNavChange} />
     );
-  }
+  },
 
-  toggle() {
+  toggle: function() {
     this.refs.leftNav.toggle();
-  }
+  },
 
-  _getSelectedIndex() {
+  _getSelectedIndex: function() {
     var currentItem;
 
     for (var i = menuItems.length - 1; i >= 0; i--) {
       currentItem = menuItems[i];
       if (currentItem.route && this.context.router.isActive(currentItem.route)) return i;
     }
-  }
+  },
 
-  _onLeftNavChange(e, key, payload) {
+  _onLeftNavChange: function(e, key, payload) {
     console.log("_onLeftNavChange e : " + e);
     console.log("_onLeftNavChange key : " + key);
     console.log("_onLeftNavChange payload : " + payload);
@@ -120,12 +112,12 @@ class AppLeftNav extends React.Component {
         console.log(response);
       }.bind(this));
     }
-  }
+  },
 
-  _onHeaderClick() {
+  _onHeaderClick: function() {
     this.refs.leftNav.close();
-  }
-}
+  },
+});
 
 AppLeftNav.contextTypes = {
   router: React.PropTypes.func

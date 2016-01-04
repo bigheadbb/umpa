@@ -27,33 +27,28 @@ var ThemeManager = Styles.ThemeManager;
 
 var DesktopGutter = mui.Styles.Spacing.desktopGutter;
 
-class Master extends React.Component {
+var Master = React.createClass({
 
-  constructor() {
-    super();
-    this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
-  }
-
-  getChildContext() {
+  getChildContext: function() {
     return {
       muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
     }
-  }
+  },
 
-  getInitialState() {
+  getInitialState: function() {
     return {
       tabIndex : '1',
     };
-  }
+  },
 
-  getStyles() {
+  getStyles: function() {
     return {
       root: {
       }
     };
-  }
+  },
 
-  componentDidMount() {
+  componentDidMount: function() {
     var timeout = setTimeout(
       function(){ 
         this.setState({tabIndex: this._getSelectedIndex()});
@@ -71,9 +66,9 @@ class Master extends React.Component {
         this.context.router.transitionTo('new-asks');
       }.bind(this)
     );
-  }
+  },
 
-  componentWillMount(){
+  componentWillMount: function(){
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({mobileView: (document.body.clientWidth <= 647)});
@@ -81,23 +76,23 @@ class Master extends React.Component {
     }.bind(this);
     setTabsState();
     window.onresize = setTabsState;
-  }
+  },
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps: function() {
     this.setState({tabIndex: this._getSelectedIndex()});
-  }
+  },
 
-  _getSelectedIndex() {
+  _getSelectedIndex: function() {
     return this.context.router.isActive('new-asks') ? '1' :
       this.context.router.isActive('hot-asks') ? '2' : '0';
-  }
+  },
 
-  _handleTabChange(value, e, tab) {
+  _handleTabChange: function(value, e, tab) {
     this.context.router.transitionTo(tab.props.route);
     this.setState({tabIndex: this._getSelectedIndex()});
-  }
+  },
 
-  _onRightIconButtonTouchTap() {
+  _onRightIconButtonTouchTap: function() {
     if (document.fblogin === "connected") {
       this.refs.leftNav.toggle();
     }
@@ -105,9 +100,9 @@ class Master extends React.Component {
       var valueScope = 'public_profile, email';
       FB.login(window.loginStatusCallback, { scope: valueScope });
     }
-  }
+  },
 
-  _getAppbar() {
+  _getAppbar: function() {
     var styles = {
       root: {
         backgroundColor: Colors.deepPurple500,
@@ -211,7 +206,7 @@ class Master extends React.Component {
 
     var rightButton = (
       <IconButton style={styles.userSetting}
-        onTouchTap={this._onRightIconButtonTouchTap.bind(this)}
+        onTouchTap={this._onRightIconButtonTouchTap}
       >
         <UserSetting />
       </IconButton>
@@ -223,7 +218,7 @@ class Master extends React.Component {
         tabItemContainerStyle={styles.tabItemContainerStyle}
         inkBarStyle={styles.inkBarStyle}
         value={this.state.tabIndex}
-        onChange={this._handleTabChange.bind(this)}>
+        onChange={this._handleTabChange}>
         <Tab
           value="1"
           label="NEW"
@@ -251,9 +246,9 @@ class Master extends React.Component {
         </Paper>
       </div>
     );
-  }
+  },
 
-  render() {
+  render: function() {
     var styles = this.getStyles();
     return (
       <div style={styles.root}>
@@ -262,9 +257,9 @@ class Master extends React.Component {
         <AppLeftNav ref="leftNav" />
       </div>
     );
-  }
+  },
 
-}
+});
 
 Master.contextTypes = {
   router: React.PropTypes.func
