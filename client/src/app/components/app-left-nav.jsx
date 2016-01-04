@@ -111,6 +111,9 @@ var AppLeftNav = React.createClass({
       FB.logout(function(response) {
         console.log(response);
       }.bind(this));
+    } else if (payload.text === "My Asks") {
+      console.log('My Asks Click');
+      this.context.router.transitionTo('my-asks');
     }
   },
 

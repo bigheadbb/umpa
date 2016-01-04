@@ -118,6 +118,7 @@ var WriteButton = React.createClass({
         if (res.message === undefined) {
           this.setState({result: JSON.parse(res).result});
           window.newAsksState = "UpdateNeeded";
+          window.myAsksState = "UpdateNeeded";
           this.context.router.refresh();
         }
         else {
