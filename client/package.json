@@ -33,7 +33,7 @@
     "watchify": "^2.2.1"
   },
   "dependencies": {
-    "material-ui": "0.13.1",
+    "material-ui": "0.13.4",
     "react": "0.14.5",
     "react-router": "0.13.5",
     "react-tap-event-plugin": "0.2.1"
