@@ -75,7 +75,7 @@ var AppLeftNav = React.createClass({
     );
 
     return (
-      <LeftNav 
+      <LeftNav
         ref="leftNav"
         docked={false}
         isInitiallyOpen={false}

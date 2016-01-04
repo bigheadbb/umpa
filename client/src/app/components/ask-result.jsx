@@ -12,7 +12,7 @@ var AskResult = React.createClass({
 
   getInitialState: function() {
     return {
-      show : null
+      show : null,
     };
   },
 
@@ -21,7 +21,7 @@ var AskResult = React.createClass({
 
     var yesNoCount = this.props.yesNoCount;
     var totalCount = this.props.totalCount;
-    var yesNoResultPercent = totalCount == 0 ? 50 : (100 * yesNoResultPercent / totalCount).toFixed(2);
+    var yesNoResultPercent = totalCount == 0 ? 50 : (100 * yesNoCount / totalCount).toFixed(2);
     var progressColor = this.props.color;
     var result = yesNoCount + " (" +  yesNoResultPercent + "%)";
 
