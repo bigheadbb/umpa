@@ -204,6 +204,110 @@ app.get('/scan', function (req, res) {
   });
 });
 
+app.post('/makeNewVote', function (req, res) {
+  console.log("start! "+JSON.stringify(req.body));
+  var currentTime = new Date().getTime();
+  var userId = req.body.askerId;
+  var index = req.body.index;
+  var date = index.substr(index.lastIndexOf("#")+1,13);
+  var yes_no = req.body.yesno;
+
+  var params = {
+    Item: {
+      "date": {
+        "S": currentTime + ""
+      },
+      "index": {
+        "S": index
+      },
+      "userid": {
+        "S": userId
+      },
+      "yes_no": {
+        "N": yes_no
+      }
+    },
+    TableName: 'yesnoPoll'
+  };
+
+  console.log("now putItem..");
+  dynamodb.putItem(params, function (err, data) {
+    if (err) {
+      console.log(err, err.stack);
+      res.json(err);
+      return;
+    }
+    else {
+      console.log(JSON.stringify(data));
+    }
+  });
+  var new_params = {};
+  console.log("date:",date);
+  if (yes_no === "1") {
+    new_params = {
+      TableName: 'yesno',
+      Key:{
+        "index": {
+          S: index
+        },
+        "date": {
+          S: date
+        }
+      },
+      AttributeUpdates: {
+      "yesCount": {
+        Action: 'ADD',
+        Value: {
+          N: "1"
+        }
+      },
+      "voteCount": {
+        Action: 'ADD',
+        Value: {
+          N: "1"
+        }
+      }
+      }
+    };
+  } else {
+    new_params = {
+      TableName: 'yesno',
+      Key:{
+        "index": {
+          S: index
+        },
+        "date": {
+          S: date
+        }
+      },
+      AttributeUpdates: {
+      "noCount": {
+        Action: 'ADD',
+        Value: {
+          N: "1"
+        }
+      },
+      "voteCount": {
+        Action: 'ADD',
+        Value: {
+          N: "1"
+        }
+      }
+      }
+    };
+  }
+  console.log("now updating..");
+  dynamodb.updateItem(new_params, function(err, data) {
+    if (err) {
+        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+        res.json(err);
+        return;
+    } else {
+        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+    }
+  });
+});
+
 var server = app.listen(5000, function () {
   var host = server.address().address;
   var port = server.address().port;
