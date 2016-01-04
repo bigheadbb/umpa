@@ -3,21 +3,99 @@ var mui = require('material-ui');
 var { Slider, Styles, Tab, Tabs } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
-var CardList = require('./card-list.jsx');
+var MyCardList = require('./my-card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
 var MyAsks = React.createClass({
-  loadContent: function () {
-    // TODO: show data of content from server
-    // this.setState({data: {content:{author:"", time:"", text:""}}});
-  },
 
-  componentDidMount: function () {
-    this.loadContent();
+  Asks : {
   },
 
   getInitialState: function () {
     return {data:[]};
+  },
+
+  componentWillMount: function () {
+    window.newAsksState = undefined;
+    console.log('My asks componentWillMount called');
+    console.log('window.myAsksState is ', window.myAsksState);
+    var query = {};
+    var now = new Date().getTime();
+    query.date = now;
+    query.askerId = document.user.id;
+    console.log('check userId ', query.askerId);
+
+    window.myAsksState = "Updating";
+    $.ajax({
+      url: 'http://54.65.152.112:5000/getMyAsks',
+      dataType: 'json',
+      data : query,
+      type: 'POST',
+      cache: false,
+      success: function (data) {
+        this.setState({data: data.Items});
+        Asks = data.Items;
+      }.bind(this),
+      error: function (xhr, status, erro) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+    window.myAsksState = "Updated";
+  },
+
+  componentDidMount: function () {
+    console.log('My asks componentDidMount called');
+    console.log('window.te is ', window.myAsksState);
+  },
+
+  componentWillUpdate: function(nextProps, nextState) {
+    console.log('My asks componentWillUpdate called');
+    console.log('window.myAsksState is ', window.myAsksState);
+
+    if (window.myAsksState === undefined || window.myAsksState === "UpdateNeeded") {
+      var query = {};
+      var now = new Date().getTime();
+      query.date = now;
+      query.askerId = document.user.id;
+
+      $.ajax({
+        url: 'http://54.65.152.112:5000/getMyAsks',
+        dataType: 'json',
+        data : query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          this.setState({data: data.Items});
+        }.bind(this),
+        error: function (xhr, status, erro) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+
+      window.myAsksState = "Updated";
+    }
+  },
+
+  getMyAsks: function() {
+    console.log('My asks getMyAsks called');
+    var query = {};
+    var now = new Date().getTime();
+    query.date = now;
+    query.askerId = document.user.id;
+
+    $.ajax({
+      url: 'http://54.65.152.112:5000/getMyAsks',
+      dataType: 'json',
+      data : query,
+      type: 'POST',
+      cache: false,
+      success: function (data) {
+        this.setState({data: data.Items});
+      }.bind(this),
+      error: function (xhr, status, erro) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
 
   render: function() {
@@ -26,21 +104,19 @@ var MyAsks = React.createClass({
     };
 
     var containerStyle = {
-      paddingTop: document.body.clientWidth <= 647 ? 0: Spacing.desktopKeylineIncrement,
+      paddingTop: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
       paddingBottom: 0,
       maxWidth: '650px',
       margin: '0 auto',
       backgroundColor : Colors.grey200,
     };
 
-    var button = (document.body.clientWidth <= 647 ? null : <WriteButton />);
-
     return (
       <div style={root}>
       <div style={containerStyle}>
-        aaaa
+        <MyCardList data={this.state.data}/>
       </div>
-      {button}
+      <WriteButton />
       </div>
     );
   },
