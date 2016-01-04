@@ -55,18 +55,25 @@ var Content = React.createClass({
     var noContent = this.props.noContent.S;
     console.log(yesContent);
     console.log(noContent);
+
+    var yesCount = parseInt(this.props.yesCount.N);
+    var noCount = parseInt(this.props.noCount.N);
+    var toTotalCount = yesCount + noCount;
+
     var styles = {
       yesButton: {
         color: Colors.pink300,
         width: 'calc(100% - 11px)',
         paddingLeft: 5,
         fontSize : 14,
+        pointerEvents: 'none'
       },
       noButton: {
         color: Colors.cyan700,
         width: 'calc(100% - 11px)',
         paddingLeft: 5,
         fontSize : 14,
+        pointerEvents: 'none'
       },
     };
     var showContent = function () {
@@ -74,10 +81,11 @@ var Content = React.createClass({
         <div>
           <div>
             <TextField
-              style={{width:'100%'}}
-              underlineDisabledStyle={{display:'none'}}
-              disabled={true}
+              style={{width:'100%', pointerEvents: 'none'}}
+              underlineStyle={{display:'none'}}
+              disabled={false}
               defaultValue={mainContent}
+              type='text'
               rows={1}
               rowsMax={5}
               multiLine={true} />
@@ -85,42 +93,62 @@ var Content = React.createClass({
           <div>
             <span style={{color:Colors.pink500, fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>YES</span>
             <FlatButton
+              onTouchTap={this.handleYesNoButtonTouchTap}
               style={{width:'100%', backgroundColor:Colors.pink50}}
               primary={true} >
               <TextField
                 style={styles.yesButton}
-                underlineDisabledStyle={{display:'none'}}
-                disabled={true}
+                underlineStyle={{display:'none'}}
+                disabled={false}
                 defaultValue={yesContent}
+                type='text'
                 rows={1}
                 rowsMax={10}
                 multiLine={true} />
             </FlatButton>
           </div>
+          <AskResult
+            ref="yesResult"
+            yesNoCount={yesCount}
+            totalCount={toTotalCount}
+            color={Colors.pink300} />
           <div style={{marginTop : 15}}>
             <span style={{color:Colors.cyan500 , fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>NO</span>
             <FlatButton
+              onTouchTap={this.handleYesNoButtonTouchTap}
               style={{width:'100%', backgroundColor:Colors.cyan50}}
               secondary={true} >
               <TextField
                 style={styles.noButton}
-                underlineDisabledStyle={{display:'none'}}
-                disabled={true}
+                underlineStyle={{display:'none'}}
+                disabled={false}
                 defaultValue={noContent}
+                type='text'
                 rows={1}
                 rowsMax={10}
                 multiLine={true} />
             </FlatButton>
           </div>
+          <AskResult
+            ref="noResult"
+            yesNoCount={noCount}
+            totalCount={toTotalCount}
+            color={Colors.cyan500} />
         </div>
       );
-    };
+    }.bind(this);
     return (
       <CardText expandable={true} >
         {showContent()}
       </CardText>
     );
-  }
+  },
+
+  handleYesNoButtonTouchTap : function(e) {
+    console.log("handleYesButtonTouchTap");
+    this.refs.yesResult.show();
+    this.refs.noResult.show();
+  },
 });
 
 
@@ -155,7 +183,9 @@ var CardList = React.createClass({
             <Author userName={ask.userName} userId={ask.userId} date={ask.date} />
             <Content mainContent={ask.mainContent}
               yesContent={ask.yesContent}
-              noContent={ask.noContent} />
+              noContent={ask.noContent}
+              yesCount={ask.yesCount}
+              noCount={ask.noCount} />
           </Card>
         );
       });
