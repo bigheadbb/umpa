@@ -50,7 +50,7 @@ var Master = React.createClass({
 
   componentDidMount: function() {
     var timeout = setTimeout(
-      function(){ 
+      function(){
         this.setState({tabIndex: this._getSelectedIndex()});
         this.context.router.transitionTo('new-asks');
       }.bind(this), 2000);
@@ -72,7 +72,6 @@ var Master = React.createClass({
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({mobileView: (document.body.clientWidth <= 647)});
-      this.context.router.transitionTo('new-asks');
     }.bind(this);
     setTabsState();
     window.onresize = setTabsState;
@@ -114,10 +113,15 @@ var Master = React.createClass({
         width: '100%',
       },
       container: this.state.mobileView ?
+      this.context.router.isActive("new-asks") || this.context.router.isActive("hot-asks") ?
       {
+        visibility: 'visible',
         position: 'absolute',
         top : Spacing.desktopKeylineIncrement,
         width: '100%',
+      }
+      : {
+          visibility : 'hidden',
       }
       : {
         position: 'absolute',
