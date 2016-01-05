@@ -72,7 +72,6 @@ var Master = React.createClass({
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({mobileView: (document.body.clientWidth <= 647)});
-      this.context.router.transitionTo('new-asks');
     }.bind(this);
     setTabsState();
     window.onresize = setTabsState;
