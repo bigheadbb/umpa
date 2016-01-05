@@ -1,7 +1,6 @@
 var React = require('react');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs } = require('material-ui');
-var { Colors, Spacing, Typography } = mui.Styles;
+var { Colors, Spacing } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
@@ -12,15 +11,14 @@ var NewAsks = React.createClass({
   },
 
   getInitialState: function () {
-    return {data:[]};
+    return {data: [], valid: false};
   },
 
   componentWillMount: function () {
     console.log('New asks componentWillMount called');
     console.log('window.newAsksState is ', window.newAsksState);
     var query = {};
-    var now = new Date().getTime();
-    query.date = now;
+    query.date = new Date().getTime();
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       window.newAsksState = "Updating";
@@ -31,7 +29,7 @@ var NewAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
+          this.setState({data: data.Items, valid: true});
           Asks = data.Items;
         }.bind(this),
         error: function (xhr, status, erro) {
@@ -55,8 +53,8 @@ var NewAsks = React.createClass({
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
-      var now = new Date().getTime();
-      query.date = now;
+      query.date = new Date().getTime();
+      query.askerId = document.user.id;
 
       $.ajax({
         url: 'http://54.65.152.112:5000/getNewAsks',
@@ -65,7 +63,7 @@ var NewAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
+          this.setState({data: data.Items, valid: true});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -79,8 +77,8 @@ var NewAsks = React.createClass({
   getNewAsks: function() {
     console.log('New asks getNewAsks called');
     var query = {};
-    var now = new Date().getTime();
-    query.date = now;
+    query.date = new Date().getTime();
+    query.askerId = document.user.id;
 
     $.ajax({
       url: 'http://54.65.152.112:5000/getNewAsks',
@@ -89,7 +87,7 @@ var NewAsks = React.createClass({
       type: 'POST',
       cache: false,
       success: function (data) {
-        this.setState({data: data.Items});
+        this.setState({data: data.Items, valid: true});
       }.bind(this),
       error: function (xhr, status, erro) {
         console.error(this.props.url, status, err.toString());
