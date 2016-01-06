@@ -12,7 +12,7 @@ var AskResult = React.createClass({
 
   getInitialState: function() {
     return {
-      show : null,
+      show : this.props.show 
     };
   },
 
