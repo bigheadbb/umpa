@@ -8,7 +8,7 @@ var WriteButton = require('./write-button.jsx');
 
 var MyAsks = React.createClass({
 
-  Asks : {
+  myAsksItem : {
   },
 
   getInitialState: function () {
@@ -16,7 +16,6 @@ var MyAsks = React.createClass({
   },
 
   componentWillMount: function () {
-    window.newAsksState = undefined;
     console.log('My asks componentWillMount called');
     console.log('window.myAsksState is ', window.myAsksState);
     var query = {};
@@ -25,22 +24,26 @@ var MyAsks = React.createClass({
     query.askerId = document.user.id;
     console.log('check userId ', query.askerId);
 
-    window.myAsksState = "Updating";
-    $.ajax({
-      url: 'http://54.65.152.112:5000/getMyAsks',
-      dataType: 'json',
-      data : query,
-      type: 'POST',
-      cache: false,
-      success: function (data) {
-        this.setState({data: data.Items});
-        Asks = data.Items;
-      }.bind(this),
-      error: function (xhr, status, erro) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-    window.myAsksState = "Updated";
+    if (window.myAsksState === undefined || window.myAsksState === "UpdateNeeded") {
+      window.myAsksState = "Updating";
+      $.ajax({
+        url: 'http://54.65.152.112:5000/getMyAsks',
+        dataType: 'json',
+        data : query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          this.setState({data: data.Items});
+          myAsksItem = data.Items;
+        }.bind(this),
+        error: function (xhr, status, erro) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+      window.myAsksState = "Updated";
+    } else if (window.myAsksState === "Updated"){
+      this.setState({data: myAsksItem});
+    }
   },
 
   componentDidMount: function () {

@@ -15,28 +15,31 @@ var NewAsks = React.createClass({
   },
 
   componentWillMount: function () {
-    window.newAsksState = undefined;
     console.log('New asks componentWillMount called');
     console.log('window.newAsksState is ', window.newAsksState);
     var query = {};
     query.date = new Date().getTime();
 
-    window.newAsksState = "Updating";
-    $.ajax({
-      url: 'http://54.65.152.112:5000/getNewAsks',
-      dataType: 'json',
-      data : query,
-      type: 'POST',
-      cache: false,
-      success: function (data) {
-        this.setState({data: data.Items});
-        Asks = data.Items;
-      }.bind(this),
-      error: function (xhr, status, erro) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-    window.newAsksState = "Updated";
+    if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
+      window.newAsksState = "Updating";
+      $.ajax({
+        url: 'http://54.65.152.112:5000/getNewAsks',
+        dataType: 'json',
+        data : query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          this.setState({data: data.Items});
+          Asks = data.Items;
+        }.bind(this),
+        error: function (xhr, status, erro) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+      window.newAsksState = "Updated";
+    } else if (window.newAsksState === "Updated"){
+      this.setState({data: Asks});
+    }
   },
 
   componentDidMount: function () {
