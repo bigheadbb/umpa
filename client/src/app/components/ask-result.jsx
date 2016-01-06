@@ -9,8 +9,7 @@ var AskResult = React.createClass({
 
   getInitialState: function() {
     return {
-      show: false,
-      result: 0
+      show : this.props.show 
     };
   },
 
