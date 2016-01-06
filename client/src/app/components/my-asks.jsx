@@ -1,10 +1,12 @@
 var React = require('react');
+var Router = require('react-router');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs } = require('material-ui');
+var { Slider, Styles, Tab, Tabs, IconButton, Toolbar, ToolbarGroup } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var MyCardList = require('./my-card-list.jsx');
 var WriteButton = require('./write-button.jsx');
+var Back = require('./svg-icons/back.jsx');
 
 var MyAsks = React.createClass({
 
@@ -102,27 +104,49 @@ var MyAsks = React.createClass({
   },
 
   render: function() {
-    var root = {
-      backgroundColor : Colors.grey200,
-    };
 
-    var containerStyle = {
-      paddingTop: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
-      paddingBottom: 0,
-      maxWidth: '650px',
-      margin: '0 auto',
-      backgroundColor : Colors.grey200,
+    var styles = {
+      root: {
+        backgroundColor: Colors.grey100,
+      },
+      containerStyle: {
+        paddingTop: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement: Spacing.desktopKeylineIncrement,
+        paddingBottom: 0,
+        maxWidth: '650px',
+        margin: '0 auto',
+        backgroundColor: Colors.grey100,
+      },
+      toobar: {
+        padding: '0px 10px 0px 10px',
+      },
+      iconButton: {
+        marginTop: 4,
+      }
     };
-
     return (
-      <div style={root}>
-      <div style={containerStyle}>
+      <div style={styles.root}>
+      <div style={styles.containerStyle}>
+        <Toolbar style={styles.toolbar}>
+	  <ToolbarGroup firstChild={true} float="left">
+	    <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+	      <Back />
+	    </IconButton>
+	  </ToolbarGroup>
+	</Toolbar>
         <MyCardList data={this.state.data}/>
       </div>
       <WriteButton />
       </div>
     );
   },
+
+  handleBackButtonTouchTap: function(e) {
+    this.context.router.transitionTo('new-asks');
+  },
 });
+
+MyAsks.contextTypes = {
+  router: React.PropTypes.func
+};
 
 module.exports = MyAsks;
