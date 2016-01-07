@@ -4,6 +4,7 @@ var { Colors, Spacing } = mui.Styles;
 
 var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
+var MoreButton = require('./more-button.jsx');
 
 var NewAsks = React.createClass({
 
@@ -74,10 +75,11 @@ var NewAsks = React.createClass({
     }
   },
 
-  getNewAsks: function() {
+  getNewAsks: function(dateTime) {
     console.log('New asks getNewAsks called');
     var query = {};
-    query.date = new Date().getTime();
+    var now = new Date().getTime();
+    query.date = dateTime ? dateTime : now;
     query.askerId = document.user.id;
 
     $.ajax({
@@ -86,10 +88,20 @@ var NewAsks = React.createClass({
       data : query,
       type: 'POST',
       cache: false,
-      success: function (data) {
-        this.setState({data: data.Items, valid: true});
+      success: function (recievedData) {
+        console.log(recievedData.Items);
+        if (recievedData.Items !== undefined && recievedData.Count > 1) {
+          Asks = Asks.concat(recievedData.Items);
+          setTimeout( function() {
+            this.setState({data: Asks, valid: true})
+          }.bind(this), 1000);
+        }
+        setTimeout( function() {
+          this.refs.moreButton.showButton();
+        }.bind(this), 1000);
       }.bind(this),
       error: function (xhr, status, erro) {
+        this.refs.moreButton.showButton();
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
@@ -112,10 +124,21 @@ var NewAsks = React.createClass({
       <div style={root}>
       <div style={containerStyle}>
         <CardList data={this.state.data}/>
+        <MoreButton
+          ref='moreButton'
+          onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
       </div>
     );
+  },
+
+  handleMoreButtonTouchTap: function() {
+    console.log("handleMoreButtonTouchTap");
+    console.log(Asks);
+    console.log(Asks.length);
+    this.refs.moreButton.showSpinner();
+    this.getNewAsks(Asks[Asks.length-1].date.S);
   },
 });
 

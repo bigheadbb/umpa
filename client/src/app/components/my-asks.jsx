@@ -20,6 +20,12 @@ var MyAsks = React.createClass({
   componentWillMount: function () {
     console.log('My asks componentWillMount called');
     console.log('window.myAsksState is ', window.myAsksState);
+
+    if (document.user === undefined) {
+      console.log("the user isn't logged yet");
+      return;
+    }
+
     var query = {};
     var now = new Date().getTime();
     query.date = now;
@@ -56,6 +62,11 @@ var MyAsks = React.createClass({
   componentWillUpdate: function(nextProps, nextState) {
     console.log('My asks componentWillUpdate called');
     console.log('window.myAsksState is ', window.myAsksState);
+
+    if (document.user === undefined) {
+      console.log("the user isn't logged yet");
+      return;
+    }
 
     if (window.myAsksState === undefined || window.myAsksState === "UpdateNeeded") {
       var query = {};
@@ -116,7 +127,7 @@ var MyAsks = React.createClass({
         margin: '0 auto',
         backgroundColor: Colors.grey100,
       },
-      toobar: {
+      toolbar: {
         padding: '0px 10px 0px 10px',
       },
       iconButton: {
@@ -127,12 +138,12 @@ var MyAsks = React.createClass({
       <div style={styles.root}>
       <div style={styles.containerStyle}>
         <Toolbar style={styles.toolbar}>
-	  <ToolbarGroup firstChild={true} float="left">
-	    <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
-	      <Back />
-	    </IconButton>
-	  </ToolbarGroup>
-	</Toolbar>
+          <ToolbarGroup firstChild={true} float="left">
+            <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+              <Back />
+            </IconButton>
+          </ToolbarGroup>
+        </Toolbar>
         <MyCardList data={this.state.data}/>
       </div>
       <WriteButton />
