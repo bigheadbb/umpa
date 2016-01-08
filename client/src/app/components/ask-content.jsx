@@ -1,6 +1,7 @@
 var React = require('react');
 var mui = require('material-ui');
 var {CardText, TextField} = mui;
+var Colors = mui.Styles.Colors;
 
 var ThemeManager = require('material-ui/lib/styles/theme-manager');
 var MyTheme = require('./my-theme.jsx');
@@ -24,8 +25,19 @@ var AskContent = React.createClass({
     console.log("!!!!!!!Content rendered");
     var mainContent = this.props.data.mainContent.S;
     console.log('main content: ' + mainContent);
+    var yesCount = parseInt(this.props.data.yesCount.N);
+    var noCount = parseInt(this.props.data.noCount.N);
+    var totalCount = yesCount + noCount;
 
     var styles = {
+      root: {
+         padding: "0px 16px 16px 16px"
+       },
+      vote: {
+        textAlign: 'right',
+        color : Colors.grey600,
+        fontSize : 11
+      },
       text: {
         width: '100%',
         pointerEvents: 'none'
@@ -50,7 +62,12 @@ var AskContent = React.createClass({
     };
 
     return (
-      <CardText expandable={true} >
+      <CardText
+        style={styles.root}
+        expandable={true} >
+        <div style={styles.vote}>
+          {totalCount} vote
+        </div>
         {showContent()}
         <VoteButton
           data={this.props.data} />

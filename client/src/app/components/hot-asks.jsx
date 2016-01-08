@@ -33,14 +33,11 @@ var HotAsks = React.createClass({
       backgroundColor : Colors.grey100,
     };
 
-    var button = (document.body.clientWidth <= 647 ? null : <WriteButton />);
-
     return (
       <div style={root}>
       <div style={containerStyle}>
-        <CardList/>
       </div>
-      {button}
+      <WriteButton />
       </div>
     );
   },
