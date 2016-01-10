@@ -10,9 +10,6 @@ var Back = require('./svg-icons/back.jsx');
 
 var MyAsks = React.createClass({
 
-  myAsksItem : {
-  },
-
   getInitialState: function () {
     return {data:[]};
   },
@@ -41,8 +38,8 @@ var MyAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
-          myAsksItem = data.Items;
+          myAsks = data.Items;
+          this.setState({data: myAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -50,7 +47,7 @@ var MyAsks = React.createClass({
       });
       window.myAsksState = "Updated";
     } else if (window.myAsksState === "Updated"){
-      this.setState({data: myAsksItem});
+      this.setState({data: myAsks});
     }
   },
 
@@ -81,7 +78,8 @@ var MyAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
+          myAsks = data.Items;
+          this.setState({data: myAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -106,7 +104,8 @@ var MyAsks = React.createClass({
       type: 'POST',
       cache: false,
       success: function (data) {
-        this.setState({data: data.Items});
+        myAsks = data.Items;
+        this.setState({data: myAsks});
       }.bind(this),
       error: function (xhr, status, erro) {
         console.error(this.props.url, status, err.toString());
