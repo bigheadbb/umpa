@@ -306,6 +306,43 @@ app.post('/makeNewVote', function (req, res) {
         console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
     }
   });
+
+  console.log("get yesCount and noCount start");
+  var params = {
+    TableName: 'yesno',
+    IndexName: 'index-index',
+    KeyConditions: { // indexed attributes to query
+                     // must include the hash key value of the table or index
+      index: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [
+          {
+            S: index
+          }
+        ]
+      }
+    }
+  };
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+      res.json(err);
+      return;
+    }
+    else {
+      console.log(data); // successful response
+      for (var i in data.Items) {
+         i = data.Items[i];
+         console.log(i.mainContent);
+         console.log(i.yesContent);
+      }
+      var nocount = JSON.stringify(data.Items[0].noCount);
+      var yescount = JSON.stringify(data.Items[0].yesCount);
+      console.log("noCount: "+nocount);
+      console.log("yesCount: "+yescount);
+      res.json('{"yesCount" : ' + yescount + ' , noCount" : ' + nocount +'}');
+    }
+  });
 });
 
 var server = app.listen(5000, function () {
