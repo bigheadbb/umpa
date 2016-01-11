@@ -8,9 +8,6 @@ var MoreButton = require('./more-button.jsx');
 
 var NewAsks = React.createClass({
 
-  Asks : {
-  },
-
   getInitialState: function () {
     return {data: [], valid: false};
   },
@@ -30,8 +27,8 @@ var NewAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items, valid: true});
-          Asks = data.Items;
+          newAsks = data.Items;
+          this.setState({data: newAsks, valid: true});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -39,7 +36,7 @@ var NewAsks = React.createClass({
       });
       window.newAsksState = "Updated";
     } else if (window.newAsksState === "Updated"){
-      this.setState({data: Asks});
+      this.setState({data: newAsks});
     }
   },
 
@@ -55,7 +52,6 @@ var NewAsks = React.createClass({
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
       query.date = new Date().getTime();
-      query.askerId = document.user.id;
 
       $.ajax({
         url: 'http://54.65.152.112:5000/getNewAsks',
@@ -64,7 +60,8 @@ var NewAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items, valid: true});
+          newAsks = data.Items;
+          this.setState({data: newAsks, valid: true});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -80,7 +77,6 @@ var NewAsks = React.createClass({
     var query = {};
     var now = new Date().getTime();
     query.date = dateTime ? dateTime : now;
-    query.askerId = document.user.id;
 
     $.ajax({
       url: 'http://54.65.152.112:5000/getNewAsks',
@@ -91,9 +87,9 @@ var NewAsks = React.createClass({
       success: function (recievedData) {
         console.log(recievedData.Items);
         if (recievedData.Items !== undefined && recievedData.Count > 1) {
-          Asks = Asks.concat(recievedData.Items);
+          newAsks = newAsks.concat(recievedData.Items);
           setTimeout( function() {
-            this.setState({data: Asks, valid: true})
+            this.setState({data: newAsks, valid: true})
           }.bind(this), 1000);
         }
         setTimeout( function() {
@@ -135,10 +131,10 @@ var NewAsks = React.createClass({
 
   handleMoreButtonTouchTap: function() {
     console.log("handleMoreButtonTouchTap");
-    console.log(Asks);
-    console.log(Asks.length);
+    console.log(newAsks);
+    console.log(newAsks.length);
     this.refs.moreButton.showSpinner();
-    this.getNewAsks(Asks[Asks.length-1].date.S);
+    this.getNewAsks(newAsks[newAsks.length-1].date.S);
   },
 });
 
