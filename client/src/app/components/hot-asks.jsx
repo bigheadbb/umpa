@@ -6,6 +6,8 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
+hotAsks = {};
+
 var HotAsks = React.createClass({
 
   getInitialState: function () {
@@ -15,8 +17,9 @@ var HotAsks = React.createClass({
   componentWillMount: function () {
     console.log('Hot asks componentWillMount called');
     console.log('window.hotAsksState is ', window.hotAsksState);
+    var NUMBER_MAX_VALUE = 999999999999999999999999;
     var query = {};
-    query.voteCount = 999999999999999999999999;
+    query.voteCount = NUMBER_MAX_VALUE;
 
     if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
       window.hotAsksState = "Updating";
@@ -31,7 +34,7 @@ var HotAsks = React.createClass({
           console.log("hotAsks : " + hotAsks);
           this.setState({data: hotAsks, valid: true});
         }.bind(this),
-        error: function (xhr, status, erro) {
+        error: function (xhr, status, err) {
           console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
