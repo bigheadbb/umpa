@@ -130,6 +130,7 @@ var CreateNewAsk = React.createClass({
         if (res.message === undefined) {
           this.setState({result: JSON.parse(res).result});
           window.newAsksState = "UpdateNeeded";
+          window.myAsksState = "UpdateNeeded";
           setTimeout(
             function(){
               this.context.router.transitionTo('new-asks');
