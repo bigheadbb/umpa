@@ -154,16 +154,6 @@ app.post('/getHotAsks', function (req, res) {
         ],
       },
     },
-    QueryFilter: {
-      date: {
-        ComparisonOperator: 'GE',
-        AttributeValueList: [
-          {
-            S: oneWeekAgoDate.toString(),
-          }
-        ],
-      },
-    },
     ScanIndexForward: false,
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
     Limit : 20,
