@@ -107,7 +107,7 @@ app.post('/getNewAsks', function (req, res) {
     },
     ScanIndexForward: false,
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
-    Limit : 20,
+    Limit : 10,
 };
 
   dynamodb.query(params, function(err, data) {
@@ -125,6 +125,56 @@ app.post('/getNewAsks', function (req, res) {
     }
   });
 });
+
+app.post('/getHotAsks', function (req, res) {
+  var language = "*";
+  // FIXME : '*' is used for temporary, we should change this value to proper languge client sent.
+  //         req.headers["accept-language"].split(',')[0].toLowerCase();
+  var oneWeekAgoDate = (new Date().getTime()) - 604800000;
+
+  var params = {
+    TableName: 'yesno',
+    IndexName: 'language-voteCount-index',
+    KeyConditions: { // indexed attributes to query
+                     // must include the hash key value of the table or index
+      language: {
+        ComparisonOperator: 'EQ', // (EQ | NE | IN | LE | LT | GE | GT | BETWEEN |
+        AttributeValueList: [
+          {
+            S: language,
+          }
+        ],
+      },
+      voteCount: {
+        ComparisonOperator: 'LE',
+        AttributeValueList: [
+          {
+            N: req.body.voteCount,
+          }
+        ],
+      },
+    },
+    ScanIndexForward: false,
+    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+    Limit : 20,
+  };
+
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+    }
+    else {
+      console.log(data); // successful response
+      for (var i in data.Items) {
+         i = data.Items[i];
+         console.log(i.mainContent);
+         console.log(i.yesContent);
+      }
+      res.json(data);
+    }
+  });
+});
+
 
 app.post('/getMyAsks', function (req, res) {
   console.log("body: " + JSON.stringify(req.body));
@@ -154,7 +204,7 @@ app.post('/getMyAsks', function (req, res) {
     ScanIndexForward: false,  // false : reverse order by sort key value
                               // true : order by sort key value
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
-    Limit : 20,
+    Limit : 10,
 };
 
   dynamodb.query(params, function(err, data) {

@@ -8,10 +8,9 @@ var MyCardList = require('./my-card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var Back = require('./svg-icons/back.jsx');
 
-var MyAsks = React.createClass({
+myAsks = {};
 
-  myAsksItem : {
-  },
+var MyAsks = React.createClass({
 
   getInitialState: function () {
     return {data:[]};
@@ -23,6 +22,7 @@ var MyAsks = React.createClass({
 
     if (document.user === undefined) {
       console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
       return;
     }
 
@@ -41,8 +41,8 @@ var MyAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
-          myAsksItem = data.Items;
+          myAsks = data.Items;
+          this.setState({data: myAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -50,7 +50,7 @@ var MyAsks = React.createClass({
       });
       window.myAsksState = "Updated";
     } else if (window.myAsksState === "Updated"){
-      this.setState({data: myAsksItem});
+      this.setState({data: myAsks});
     }
   },
 
@@ -65,6 +65,7 @@ var MyAsks = React.createClass({
 
     if (document.user === undefined) {
       console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
       return;
     }
 
@@ -81,7 +82,8 @@ var MyAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
+          myAsks = data.Items;
+          this.setState({data: myAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -106,7 +108,8 @@ var MyAsks = React.createClass({
       type: 'POST',
       cache: false,
       success: function (data) {
-        this.setState({data: data.Items});
+        myAsks = data.Items;
+        this.setState({data: myAsks});
       }.bind(this),
       error: function (xhr, status, erro) {
         console.error(this.props.url, status, err.toString());

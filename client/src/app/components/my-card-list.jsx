@@ -131,7 +131,7 @@ var Content = React.createClass({
           <AskResult
             ref="noResult"
             show={true}
-            Count={noCount}
+            yesNoCount={noCount}
             totalCount={toTotalCount}
             color={Colors.cyan500} />
         </div>
