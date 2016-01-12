@@ -7,10 +7,20 @@ var Colors = mui.Styles.Colors;
 
 var AskContent = require('./ask-content.jsx');
 
-var Author = React.createClass({
-
+var AskHeader = React.createClass({
   render: function () {
-    console.log("!!!!!!Author rendered");
+     var styles = {
+      author: {
+        width:'80%',
+        float: 'left',
+      },
+      crownContainer: {
+        width:'20%',
+        height:'72px',
+        float:'left',
+      },
+    };
+
     console.log(this.props.userId.S);
     console.log(this.props.userName.S);
     console.log(this.props.date.S);
@@ -20,14 +30,32 @@ var Author = React.createClass({
     var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
     var readable = this.readableDate(this.props.date.S);
     var profile_photo = "http://graph.facebook.com/"+userId+"/picture?type=small";
+    var rank = this.props.rank;
 
-    return (
-      <CardHeader
-        avatar={<Avatar src={profile_photo}></Avatar>}
-        title={author}
-        subtitle={readable}
-        showExpandableButton={true} />
-    );
+    if(rank !== undefined ){
+      return (   
+        <div>   
+          <div style={styles.author}>
+          <CardHeader
+            avatar={<Avatar src={profile_photo}></Avatar>}
+            title={author}
+            subtitle={readable}
+            showExpandableButton={true} />
+          </div>
+          <div style={styles.crownContainer}>
+            <Crowns index={rank}/>
+            </div>
+          </div>
+      );
+    }else{
+      return(
+        <CardHeader
+          avatar={<Avatar src={profile_photo}></Avatar>}
+          title={author}
+          subtitle={readable}
+          showExpandableButton={true} />
+      );
+    }
   },
 
   readableDate: function(datetime) {
@@ -66,12 +94,67 @@ var Author = React.createClass({
 });
 
 
-var CardList = React.createClass({
+var Crowns = React.createClass({
+  render: function(){
+    var rank = this.props.index;
+    var styles = {
+      gold: {
+        textAlign: 'center',
+        backgroundImage: "url('img/crown_gold.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 20%", 
+        color : Colors.black,
+        fontWeight: 'bold',
+        fontSize : 20,
+        height: '100%',
+        paddingTop:'30px',
+      },
+      silver: {
+        textAlign: 'center',
+        backgroundImage: "url('img/crown_silver.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 20%", 
+        color : Colors.black,
+        fontWeight: 'bold',
+        fontSize : 20,
+        height: '100%',
+        paddingTop:'30px',
+      },
+      bronze: {
+        textAlign: 'center',
+        backgroundImage: "url('img/crown_bronze.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 20%", 
+        color : Colors.black,
+        fontWeight: 'bold',
+        fontSize : 20,
+        height: '100%',
+        paddingTop:'30px',
+      },
 
+    };
+
+    if(rank == 1)
+      return (<div style={styles.gold}>1</div>);
+    else if(rank == 2)
+      return (<div style={styles.silver}>2</div>);
+    else if(rank == 3)
+      return (<div style={styles.bronze}>3</div>);
+    else
+      return (<div/>);
+        
+  },
+});
+
+var CardList = React.createClass({
   render: function () {
     console.log("!!!!!!!CardList render");
+    console.log(this.props.tabName);
 
     var cards;
+    var tabName = this.props.tabName;
+    var cnt = 1;
+
     var styles = {
       card: {
         marginTop: 10,
@@ -90,16 +173,20 @@ var CardList = React.createClass({
       }();
     } else {
       console.log(".............. valid");
+
       cards = this.props.data.map(function (ask) {
         return (
           <Card
             key={ask.index.S}
             initiallyExpanded={true}
             style={styles.card} >
-            <Author
+            <AskHeader
               userName={ask.userName}
               userId={ask.userId}
-              date={ask.date} />
+              rank={ask.rank}
+              date={ask.date}
+              tabName={tabName}
+              cnt={cnt}/>
             <AskContent
               data={ask} />
           </Card>

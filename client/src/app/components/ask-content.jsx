@@ -36,7 +36,8 @@ var AskContent = React.createClass({
       vote: {
         textAlign: 'right',
         color : Colors.grey600,
-        fontSize : 11
+        fontSize : 12,
+        paddingRight: "5px"
       },
       text: {
         width: '100%',
@@ -65,10 +66,10 @@ var AskContent = React.createClass({
       <CardText
         style={styles.root}
         expandable={true} >
-        <div style={styles.vote}>
-          {totalCount} vote
-        </div>
         {showContent()}
+        <div style={styles.vote}>
+          +{totalCount}
+        </div>
         <VoteButton
           data={this.props.data} />
       </CardText>
