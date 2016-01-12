@@ -354,7 +354,6 @@ app.post('/makeNewVote', function (req, res) {
         return;
     } else {
         console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-        res.json('{"result" : "vote complete"}');
     }
   });
 
