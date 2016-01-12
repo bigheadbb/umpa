@@ -7,9 +7,20 @@ var Colors = mui.Styles.Colors;
 
 var AskContent = require('./ask-content.jsx');
 
-var Author = React.createClass({
-
+var AskHeader = React.createClass({
   render: function () {
+     var styles = {
+      author: {
+        width:'80%',
+        float: 'left',
+      },
+      crownContainer: {
+        width:'20%',
+        height:'72px',
+        float:'left',
+      },
+    };
+
     console.log("!!!!!!Author rendered");
     console.log(this.props.userId.S);
     console.log(this.props.userName.S);
@@ -20,14 +31,32 @@ var Author = React.createClass({
     var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
     var readable = this.readableDate(this.props.date.S);
     var profile_photo = "http://graph.facebook.com/"+userId+"/picture?type=small";
+    var rank = this.props.rank;
 
-    return (
-      <CardHeader
-        avatar={<Avatar src={profile_photo}></Avatar>}
-        title={author}
-        subtitle={readable}
-        showExpandableButton={true} />
-    );
+    if(rank !== undefined ){
+      return (   
+        <div>   
+          <div style={styles.author}>
+          <CardHeader
+            avatar={<Avatar src={profile_photo}></Avatar>}
+            title={author}
+            subtitle={readable}
+            showExpandableButton={true} />
+          </div>
+          <div style={styles.crownContainer}>
+            <Crowns index={rank}/>
+          </div>
+          </div>
+      );
+    }else{
+      return(
+        <CardHeader
+          avatar={<Avatar src={profile_photo}></Avatar>}
+          title={author}
+          subtitle={readable}
+          showExpandableButton={true} />
+      );
+    }
   },
 
   readableDate: function(datetime) {
@@ -66,8 +95,59 @@ var Author = React.createClass({
 });
 
 
-var CardList = React.createClass({
+var Crowns = React.createClass({
+  render: function(){
+    var rank = this.props.index;
+    var styles = {
+      gold: {
+        textAlign: 'center',
+        backgroundImage: "url('img/crown_gold.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 20%", 
+        color : Colors.black,
+        fontWeight: 'bold',
+        fontSize : 20,
+        height: '100%',
+        paddingTop:'30px',
+      },
+      silver: {
+        textAlign: 'center',
+        backgroundImage: "url('img/crown_silver.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 20%", 
+        color : Colors.black,
+        fontWeight: 'bold',
+        fontSize : 20,
+        height: '100%',
+        paddingTop:'30px',
+      },
+      bronze: {
+        textAlign: 'center',
+        backgroundImage: "url('img/crown_bronze.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 20%", 
+        color : Colors.black,
+        fontWeight: 'bold',
+        fontSize : 20,
+        height: '100%',
+        paddingTop:'30px',
+      },
 
+    };
+
+    if(rank == 1)
+      return (<div style={styles.gold}>1</div>);
+    else if(rank == 2)
+      return (<div style={styles.silver}>2</div>);
+    else if(rank == 3)
+      return (<div style={styles.bronze}>3</div>);
+    else
+      return (<div/>);
+        
+  },
+});
+
+var CardList = React.createClass({
   render: function () {
     console.log("!!!!!!!CardList render");
 
@@ -96,10 +176,11 @@ var CardList = React.createClass({
             key={ask.index.S}
             initiallyExpanded={true}
             style={styles.card} >
-            <Author
+            <AskHeader
               userName={ask.userName}
               userId={ask.userId}
-              date={ask.date} />
+              date={ask.date}
+              rank={ask.rank}/>
             <AskContent
               data={ask} />
           </Card>
