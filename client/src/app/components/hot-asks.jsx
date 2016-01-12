@@ -55,6 +55,14 @@ var HotAsks = React.createClass({
     console.log('window.hotAsksState is ', window.hotAsksState);
   },
 
+  makeRank: function(){
+    if(hotAsks.length >= 3){
+      hotAsks[0]['rank'] = 1;
+      hotAsks[1]['rank'] = 2;
+      hotAsks[2]['rank'] = 3;
+    }
+  },
+
   render: function() {
     var root = {
       backgroundColor : Colors.grey100,
@@ -67,6 +75,8 @@ var HotAsks = React.createClass({
       margin: '0 auto',
       backgroundColor : Colors.grey100,
     };
+
+    this.makeRank();
 
     return (
       <div style={root}>
