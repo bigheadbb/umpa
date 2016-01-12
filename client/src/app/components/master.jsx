@@ -52,7 +52,9 @@ var Master = React.createClass({
     var timeout = setTimeout(
       function(){
         this.setState({tabIndex: this._getSelectedIndex()});
-        this.context.router.transitionTo('new-asks');
+        if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
+          this.context.router.transitionTo('new-asks');
+        }
       }.bind(this), 2000);
 
     document.addEventListener("fbLogin",
@@ -63,7 +65,9 @@ var Master = React.createClass({
         window.loginStatusCallback(response);
         clearTimeout(timeout);
         this.setState({tabIndex: this._getSelectedIndex()});
-        this.context.router.transitionTo('new-asks');
+        if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
+          this.context.router.transitionTo('new-asks');
+        }
       }.bind(this)
     );
   },

@@ -6,6 +6,8 @@ var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var MoreButton = require('./more-button.jsx');
 
+newAsks = {};
+
 var NewAsks = React.createClass({
 
   getInitialState: function () {

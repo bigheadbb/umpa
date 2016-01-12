@@ -8,6 +8,8 @@ var MyCardList = require('./my-card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var Back = require('./svg-icons/back.jsx');
 
+myAsks = {};
+
 var MyAsks = React.createClass({
 
   getInitialState: function () {
@@ -20,6 +22,7 @@ var MyAsks = React.createClass({
 
     if (document.user === undefined) {
       console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
       return;
     }
 
@@ -62,6 +65,7 @@ var MyAsks = React.createClass({
 
     if (document.user === undefined) {
       console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
       return;
     }
 
