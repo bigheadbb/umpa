@@ -128,7 +128,6 @@ var NewAsks = React.createClass({
         success: function (data) {
           hotAsks = data.Items;
           console.log("hotAsks : " + hotAsks);
-          this.setState({data: hotAsks, valid: true});
         }.bind(this),
         error: function (xhr, status, err) {
           console.error(this.props.url, status, err.toString());
