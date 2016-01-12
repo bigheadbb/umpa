@@ -31,6 +31,12 @@ var NewAsks = React.createClass({
         success: function (data) {
           newAsks = data.Items;
           this.setState({data: newAsks, valid: true});
+
+          // prepare hot asks data
+          setTimeout( function() {
+            this.prepareHotAsks();
+          }.bind(this), 2000);
+
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -103,6 +109,33 @@ var NewAsks = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+
+  prepareHotAsks: function() {
+    console.log("prepareHotAsks called");
+    var NUMBER_MAX_VALUE = 999999999999999999999999;
+    var query = {};
+    query.voteCount = NUMBER_MAX_VALUE;
+
+    if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
+      window.hotAsksState = "Updating";
+      $.ajax({
+        url: 'http://54.65.152.112:5000/getHotAsks',
+        dataType: 'json',
+        data : query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          hotAsks = data.Items;
+          console.log("hotAsks : " + hotAsks);
+          this.setState({data: hotAsks, valid: true});
+        }.bind(this),
+        error: function (xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+      window.hotAsksState = "Updated";
+    }
   },
 
   render: function() {

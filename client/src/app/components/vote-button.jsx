@@ -104,7 +104,7 @@ var VoteButton = React.createClass({
               defaultValue={yesContent}
               type='text'
               rows={1}
-              rowsMax={10}
+              rowsMax={Number.MAX_VALUE}
               multiLine={true} />
           </FlatButton>
         </div>
@@ -123,7 +123,7 @@ var VoteButton = React.createClass({
               defaultValue={noContent}
               rows={1}
               type='text'
-              rowsMax={10}
+              rowsMax={Number.MAX_VALUE}
               multiLine={true} />
           </FlatButton>
         </div>
