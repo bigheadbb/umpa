@@ -17,6 +17,7 @@ var { AppBar,
       Mixins,
       RaisedButton,
       Styles,
+      Snackbar,
       Tab,
       Tabs,
       Paper} = require('material-ui');
@@ -68,6 +69,14 @@ var Master = React.createClass({
         if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
           this.context.router.transitionTo('new-asks');
         }
+      }.bind(this)
+    );
+
+    document.addEventListener("fbUserInfo",
+      function statusChangeCallback(e) {
+        console.log('master fbUserInfo statusChangeCallback');
+        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.refs.snackbar.show();
       }.bind(this)
     );
   },
@@ -263,6 +272,10 @@ var Master = React.createClass({
         { this._getAppbar() }
         <RouteHandler />
         <AppLeftNav ref="leftNav" />
+        <Snackbar
+          ref="snackbar"
+          autoHideDuration={3000}
+          message={this.state.snackbarMessage} />
       </div>
     );
   },
