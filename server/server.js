@@ -131,7 +131,7 @@ app.post('/getHotAsks', function (req, res) {
     console.log("batch.hotAsks data exist, use this");
     batch.hotAsks.Items[0]['rank'] = 1;
     batch.hotAsks.Items[1]['rank'] = 2;
-    batch.hotAsks.Items[2]['rank'] = 2;
+    batch.hotAsks.Items[2]['rank'] = 3;
     res.json(batch.hotAsks);
     return;
   }
