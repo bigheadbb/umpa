@@ -39,6 +39,7 @@ var Master = React.createClass({
   getInitialState: function() {
     return {
       tabIndex : '1',
+      snackbarMessage : '',
     };
   },
 
@@ -79,6 +80,8 @@ var Master = React.createClass({
         this.refs.snackbar.show();
       }.bind(this)
     );
+
+document.body.addEventListener('touchstart', this._onBodyTouchStart);
   },
 
   componentWillMount: function(){
@@ -106,12 +109,20 @@ var Master = React.createClass({
 
   _onRightIconButtonTouchTap: function() {
     if (document.fblogin === "connected") {
-      this.refs.leftNav.toggle();
+      this.refs.rightSideMenu.toggle();
     }
     else {
       var valueScope = 'public_profile, email';
       FB.login(window.loginStatusCallback, { scope: valueScope });
     }
+  },
+
+  _onRightSideMenuStatusChange: function(open) {
+    console.log("_onRightSideMenuStatusChange open : " + open);
+  },
+
+  _onMainIconTouchTap: function() {
+    window.location = window.location.href.split('#')[0];
   },
 
   _getAppbar: function() {
@@ -215,7 +226,8 @@ var Master = React.createClass({
     var hotTabStyle = this._getSelectedIndex() == 2 ? styles.selectedTab : styles.tab ;
 
     var yesOrNoIcon= (
-      <EnhancedButton>
+      <EnhancedButton
+        onTouchTap={this._onMainIconTouchTap}>
         <span style={styles.span}>
           <img src="img/yesno.png" style={styles.logo}/>
         </span>
@@ -271,13 +283,66 @@ var Master = React.createClass({
       <div style={styles.root}>
         { this._getAppbar() }
         <RouteHandler />
-        <AppLeftNav ref="leftNav" />
+        <AppLeftNav 
+          ref="rightSideMenu" />
         <Snackbar
           ref="snackbar"
           autoHideDuration={3000}
           message={this.state.snackbarMessage} />
       </div>
     );
+  },
+
+
+  _onBodyTouchStart: function (e) {
+    var touchStartX = e.touches[0].pageX;
+    var touchStartY = e.touches[0].pageY;
+
+    this._maybeSwiping = true;
+    this._touchStartX = touchStartX;
+    this._touchStartY = touchStartY;
+
+    document.body.addEventListener('touchend', this._onBodyTouchEnd);
+    document.body.addEventListener('touchcancel', this._onBodyTouchEnd);
+  },
+
+  _onBodyTouchEnd: function (e) {
+    if (this._maybeSwiping) {
+      var currentX = e.changedTouches[0].pageX;
+      var currentY = e.changedTouches[0].pageY;
+
+      var dX = (currentX - this._touchStartX);
+      var dY = (currentY - this._touchStartY);
+      var dXAbs = Math.abs(currentX - this._touchStartX);
+      var dYAbs = Math.abs(currentY - this._touchStartY);
+
+      var thresholdX = 30;
+      var thresholdY = 20;
+
+      if (this.refs.rightSideMenu.isOpen() === false) {
+        if (dXAbs > thresholdX && dX > 0 && dYAbs < thresholdY) {
+          console.log("touch left swipe nav open : " + this.refs.rightSideMenu.isOpen());
+          if (this.context.router.isActive("hot-asks")) {
+            this.context.router.transitionTo('new-asks');
+          } else if (this.context.router.isActive("my-asks")) {
+            this.context.router.transitionTo('new-asks');
+          } else if (this.context.router.isActive("voted-asks")) {
+            this.context.router.transitionTo('new-asks');
+          }
+        }
+        else if (dXAbs > thresholdX && dX < 0 && dYAbs < thresholdY) {
+          console.log("touch right swipe nav open : " + this.refs.rightSideMenu.isOpen());
+          if (this.context.router.isActive("new-asks")) {
+            this.context.router.transitionTo('hot-asks');
+          }
+        }
+      }
+    }
+
+    this._maybeSwiping = false;
+
+    document.body.removeEventListener('touchend', this._onBodyTouchEnd);
+    document.body.removeEventListener('touchcancel', this._onBodyTouchEnd);
   },
 
 });
