@@ -172,4 +172,8 @@ var NewAsks = React.createClass({
   },
 });
 
+NewAsks.contextTypes = {
+  router: React.PropTypes.func
+};
+
 module.exports = NewAsks;

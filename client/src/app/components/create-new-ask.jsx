@@ -11,7 +11,7 @@ var CreateNewAsk = React.createClass({
 
   getInitialState: function() {
     return {
-      result : null,
+      result : '',
     };
   },
 
