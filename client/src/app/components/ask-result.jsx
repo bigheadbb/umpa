@@ -54,7 +54,7 @@ var AskResult = React.createClass({
           style={styles.progress}
           mode="determinate"
           color={progressColor}
-          value={yesNoResultPercent} />
+          value={+yesNoResultPercent} />
         <div style={styles.result}>
           {result}
         </div>
