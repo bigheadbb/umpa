@@ -81,7 +81,7 @@ var Master = React.createClass({
       }.bind(this)
     );
 
-document.body.addEventListener('touchstart', this._onBodyTouchStart);
+    document.body.addEventListener('touchstart', this._onBodyTouchStart);
   },
 
   componentWillMount: function(){
@@ -115,10 +115,6 @@ document.body.addEventListener('touchstart', this._onBodyTouchStart);
       var valueScope = 'public_profile, email';
       FB.login(window.loginStatusCallback, { scope: valueScope });
     }
-  },
-
-  _onRightSideMenuStatusChange: function(open) {
-    console.log("_onRightSideMenuStatusChange open : " + open);
   },
 
   _onMainIconTouchTap: function() {
