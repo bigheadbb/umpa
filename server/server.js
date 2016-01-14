@@ -1,11 +1,16 @@
+// AWS configuration
+var AWS = require('aws-sdk');
+AWS.config.update({region: 'ap-northeast-1'});
+var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+// Batch initialize
+var batch = require('./batch.sh');
+batch.startHotAsksScheduler();
+
+// Express configuration
 var express = require('express');
 var bodyParser = require("body-parser");
 var app = express();
-var AWS = require('aws-sdk');
-
-AWS.config.update({region: 'ap-northeast-1'});
-
-var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -116,17 +121,23 @@ app.post('/getNewAsks', function (req, res) {
     }
     else {
       console.log(data); // successful response
-      for (var i in data.Items) {
-         i = data.Items[i];
-         console.log(i.mainContent);
-         console.log(i.yesContent);
-      }
       res.json(data);
     }
   });
 });
 
 app.post('/getHotAsks', function (req, res) {
+  if (batch.hotAsks !== undefined && batch.hotAsks.Items.length > 0) {
+    console.log("batch.hotAsks data exist, use this");
+    batch.hotAsks.Items[0]['rank'] = 1;
+    batch.hotAsks.Items[1]['rank'] = 2;
+    batch.hotAsks.Items[2]['rank'] = 3;
+    res.json(batch.hotAsks);
+    return;
+  }
+
+  console.log("batch.hotAsks data empty, query now");
+
   var language = "*";
   // FIXME : '*' is used for temporary, we should change this value to proper languge client sent.
   //         req.headers["accept-language"].split(',')[0].toLowerCase();
@@ -165,11 +176,9 @@ app.post('/getHotAsks', function (req, res) {
     }
     else {
       console.log(data); // successful response
-      for (var i in data.Items) {
-         i = data.Items[i];
-         console.log(i.mainContent);
-         console.log(i.yesContent);
-      }
+      data.Items[0]['rank'] = 1;
+      data.Items[1]['rank'] = 2;
+      data.Items[2]['rank'] = 3;
       res.json(data);
     }
   });
@@ -213,11 +222,6 @@ app.post('/getMyAsks', function (req, res) {
     }
     else {
       console.log(data); // successful response
-      for (var i in data.Items) {
-         i = data.Items[i];
-         console.log(i.mainContent);
-         console.log(i.yesContent);
-      }
       res.json(data);
     }
   });
@@ -381,11 +385,6 @@ app.post('/makeNewVote', function (req, res) {
     }
     else {
       console.log(data); // successful response
-      for (var i in data.Items) {
-         i = data.Items[i];
-         console.log(i.mainContent);
-         console.log(i.yesContent);
-      }
       var nocount = JSON.stringify(data.Items[0].noCount);
       var yescount = JSON.stringify(data.Items[0].yesCount);
       console.log("noCount: "+nocount);

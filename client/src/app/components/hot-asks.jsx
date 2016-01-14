@@ -77,6 +77,11 @@ var HotAsks = React.createClass({
       </div>
     );
   },
+
 });
+
+HotAsks.contextTypes = {
+  router: React.PropTypes.func
+};
 
 module.exports = HotAsks;

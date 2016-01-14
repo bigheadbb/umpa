@@ -44,6 +44,7 @@ var AppLeftNav = React.createClass({
 
   componentWillMount: function() {
     console.log('AppLeftNav componentWillMount called');
+    this._isOpen = false;
   },
 
   componentDidMount: function() {
@@ -64,9 +65,9 @@ var AppLeftNav = React.createClass({
       <div onTouchTap={this._onHeaderClick}>
         <List style={this.getStyles().ListHead}>
           <ListItem
-            leftAvatar={ document.user === undefined ? <Avatar>A</Avatar> : <Avatar src={profile_photo}>A</Avatar>}
-            primaryText={document.user === undefined ? "" : document.user.name}
-            secondaryText={document.user === undefined ? "" : document.user.email}
+            leftAvatar={ document.user === undefined ? <Avatar>A</Avatar> : <Avatar src={profile_photo}></Avatar> }
+            primaryText={ document.user === undefined ? "" : document.user.name }
+            secondaryText={ document.user === undefined ? "" : document.user.email }
           >
           </ListItem>
         </List>
@@ -84,8 +85,24 @@ var AppLeftNav = React.createClass({
         menuItems={menuItems}
         selectedIndex={this._getSelectedIndex()}
         openRight={true}
+        onNavOpen={this._onOpen}
+        onNavClose={this._onClose}
         onChange={this._onLeftNavChange} />
     );
+  },
+
+  _onOpen: function() {
+    this._isOpen = true;
+  },
+
+  _onClose: function() {
+    setTimeout( function() {
+      this._isOpen = false;
+    }.bind(this), 500);
+  },
+
+  isOpen: function() {
+    return this._isOpen;
   },
 
   toggle: function() {
