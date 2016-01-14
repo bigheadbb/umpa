@@ -114,9 +114,9 @@ var SearchAsks = React.createClass({
                 <CloseCircle />
             </IconButton>
           </Paper>
+          <CardList data={this.state.data}/>
+          {ShowMoreButton}
         </div>
-        <CardList data={this.state.data}/>
-        {ShowMoreButton}
         <Snackbar
           ref="snackbar"
           autoHideDuration={1500}
