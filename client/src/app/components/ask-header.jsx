@@ -10,13 +10,14 @@ var AskHeader = React.createClass({
   render: function () {
      var styles = {
       author: {
-        width:'80%',
+        width:'70%',
         float: 'left',
       },
       crownContainer: {
-        width:'20%',
+        width:'48px',
         height:'72px',
-        float:'left',
+        float:'right',
+        paddingRight:'16px',
       },
     };
 
