@@ -53,6 +53,14 @@ var CreateNewAsk = React.createClass({
       toolbar: {
         padding : '0px 10px 0px 10px',
       },
+      toolbarTitle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: Colors.deepPurple500,
+        textAlign: 'center',
+        width: 'calc(100% - 112px)',
+        paddingTop: 2,
+      },
       iconButton: {
         marginTop: 4,
       }
@@ -67,6 +75,7 @@ var CreateNewAsk = React.createClass({
                 <Back />
               </IconButton>
             </ToolbarGroup>
+            <ToolbarTitle text="Make Ask" style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
               <IconButton style={styles.iconButton} tooltip="Send" onTouchTap={this.handleCreateNewAskTouchTap} >
                 <Send />

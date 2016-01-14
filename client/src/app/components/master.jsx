@@ -6,6 +6,7 @@ var FullWidthSection = require('./full-width-section.jsx');
 var mui = require('material-ui');
 var LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
 var UserSetting = require('./svg-icons/user-setting.jsx');
+var Search = require('./svg-icons/search.jsx');
 var Home = require('./home.jsx');
 
 var { AppBar,
@@ -38,7 +39,7 @@ var Master = React.createClass({
 
   getInitialState: function() {
     return {
-      tabIndex : '1',
+      tabIndex : '0',
       snackbarMessage : '',
     };
   },
@@ -51,6 +52,7 @@ var Master = React.createClass({
   },
 
   componentDidMount: function() {
+    console.log("master componentDidMount");
     var timeout = setTimeout(
       function(){
         this.setState({tabIndex: this._getSelectedIndex()});
@@ -67,6 +69,7 @@ var Master = React.createClass({
         window.loginStatusCallback(response);
         clearTimeout(timeout);
         this.setState({tabIndex: this._getSelectedIndex()});
+
         if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
           this.context.router.transitionTo('new-asks');
         }
@@ -85,6 +88,7 @@ var Master = React.createClass({
   },
 
   componentWillMount: function(){
+    console.log("master componentWillMount");
     this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({mobileView: (document.body.clientWidth <= 647)});
@@ -94,6 +98,7 @@ var Master = React.createClass({
   },
 
   componentWillReceiveProps: function() {
+    console.log("master componentWillReceiveProps");
     this.setState({tabIndex: this._getSelectedIndex()});
   },
 
@@ -107,7 +112,7 @@ var Master = React.createClass({
     this.setState({tabIndex: this._getSelectedIndex()});
   },
 
-  _onRightIconButtonTouchTap: function() {
+  _onRightUserSettingButtonTouchTap: function() {
     if (document.fblogin === "connected") {
       this.refs.rightSideMenu.toggle();
     }
@@ -115,6 +120,10 @@ var Master = React.createClass({
       var valueScope = 'public_profile, email';
       FB.login(window.loginStatusCallback, { scope: valueScope });
     }
+  },
+
+  _onRightSearchButtonTouchTap: function() {
+    this.context.router.transitionTo('search-asks');
   },
 
   _onMainIconTouchTap: function() {
@@ -145,7 +154,7 @@ var Master = React.createClass({
       }
       : {
         position: 'absolute',
-        right: (Spacing.desktopGutter/2) + 48,
+        left: (Spacing.desktopGutter/2) + 110,
         bottom: 0,
       },
       span: {
@@ -165,7 +174,7 @@ var Master = React.createClass({
         borderColor: Colors.grey300,
       }
       : {
-        width: 300,
+        width: 200,
         bottom:0,
       },
       tabItemContainerStyle: {
@@ -190,7 +199,7 @@ var Master = React.createClass({
       }
       : {
         backgroundColor: Colors.deepPurple500,
-        height: 64,
+        height: 55,
         fontWeight: 'bold',
       },
       selectedTab : this.state.mobileView ?
@@ -202,12 +211,19 @@ var Master = React.createClass({
       }
       : {
         backgroundColor: Colors.deepPurple500,
-        height: 64,
+        height: 55,
         fontWeight: 'bold',
       },
       userSetting: {
         position: 'fixed',
         right: Spacing.desktopGutter/2,
+        top: 8,
+        zIndex: 5,
+        color: 'white'
+      },
+      search: {
+        position: 'fixed',
+        right: Spacing.desktopGutter/2 + 40,
         top: 8,
         zIndex: 5,
         color: 'white'
@@ -221,7 +237,7 @@ var Master = React.createClass({
     var newTabStyle = this._getSelectedIndex() == 1 ? styles.selectedTab : styles.tab ;
     var hotTabStyle = this._getSelectedIndex() == 2 ? styles.selectedTab : styles.tab ;
 
-    var yesOrNoIcon= (
+    var yesOrNoIcon = (
       <EnhancedButton
         onTouchTap={this._onMainIconTouchTap}>
         <span style={styles.span}>
@@ -229,13 +245,22 @@ var Master = React.createClass({
         </span>
       </EnhancedButton>);
 
-    var rightButton = (
+    var userSettingButton = (
       <IconButton style={styles.userSetting}
-        onTouchTap={this._onRightIconButtonTouchTap}
+        onTouchTap={this._onRightUserSettingButtonTouchTap}
       >
         <UserSetting />
       </IconButton>
     );
+
+    var searchButton = !this.context.router.isActive("search-asks") ?
+    (
+      <IconButton style={styles.search}
+        onTouchTap={this._onRightSearchButtonTouchTap}
+      >
+        <Search />
+      </IconButton>
+    ) : null;
 
     var tabs = (
       <Tabs
@@ -257,7 +282,7 @@ var Master = React.createClass({
       </Tabs>
     );
 
-    return(
+    return (
       <div>
         <Paper
           zDepth={0}
@@ -267,7 +292,8 @@ var Master = React.createClass({
           <div style={styles.container}>
             {tabs}
           </div>
-          {rightButton}
+          {searchButton}
+          {userSettingButton}
         </Paper>
       </div>
     );
@@ -288,7 +314,6 @@ var Master = React.createClass({
       </div>
     );
   },
-
 
   _onBodyTouchStart: function (e) {
     var touchStartX = e.touches[0].pageX;
@@ -323,6 +348,8 @@ var Master = React.createClass({
           } else if (this.context.router.isActive("my-asks")) {
             this.context.router.transitionTo('new-asks');
           } else if (this.context.router.isActive("voted-asks")) {
+            this.context.router.transitionTo('new-asks');
+          } else if (this.context.router.isActive("create-new-ask")) {
             this.context.router.transitionTo('new-asks');
           }
         }

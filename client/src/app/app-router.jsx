@@ -12,6 +12,7 @@ var NewAsks = require('./components/new-asks.jsx');
 var HotAsks = require('./components/hot-asks.jsx');
 var MyAsks = require('./components/my-asks.jsx');
 var CreateNewAsk = require('./components/create-new-ask.jsx');
+var SearchAsks = require('./components/search-asks.jsx');
 
 /** Routes: https://github.com/rackt/react-router/blob/master/docs/api/components/Route.md
   * 
@@ -29,6 +30,7 @@ var AppRoutes = (
     <Route name="hot-asks" handler={HotAsks} />
     <Route name="my-asks" handler={MyAsks} />
     <Route name="create-new-ask" handler={CreateNewAsk} />
+    <Route name="search-asks" handler={SearchAsks} />
     <DefaultRoute handler={Home}/>
   </Route>
 );
