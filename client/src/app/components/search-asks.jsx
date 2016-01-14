@@ -119,6 +119,7 @@ var SearchAsks = React.createClass({
         {ShowMoreButton}
         <Snackbar
           ref="snackbar"
+          autoHideDuration={1500}
           message={this.state.result} />
       </div>
     );
@@ -128,6 +129,7 @@ var SearchAsks = React.createClass({
     console.log('New asks getNewAsks called');
     var query = {};
     var now = new Date().getTime();
+    query.tag = '#'+this.refs.searchField.getValue();
     query.date = dateTime ? dateTime : now;
 
     $.ajax({
@@ -137,17 +139,49 @@ var SearchAsks = React.createClass({
       type: 'POST',
       cache: false,
       success: function (recievedData) {
-        console.log(recievedData.Items);
+        console.log(recievedData);
         searchAsks = recievedData.Items;
         this.setState({data: searchAsks});
 
-        if (searchAsks.lenth < 1) {
+        if (searchAsks.length < 1) {
           this.setState({result: "No result, please type another tag..."});
           this.refs.snackbar.show();
         }
       }.bind(this),
       error: function (xhr, status, erro) {
         console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+
+  getMoreSearchAsksByTag: function(dateTime) {
+    console.log('New asks getNewAsks called');
+    var query = {};
+    var now = new Date().getTime();
+    query.tag = '#'+this.refs.searchField.getValue();
+    query.date = dateTime ? dateTime : now;
+
+    $.ajax({
+      url: 'http://54.65.152.112:5000/getSearchAsksByTag',
+      dataType: 'json',
+      data : query,
+      type: 'POST',
+      cache: false,
+      success: function (recievedData) {
+        console.log(recievedData);
+        if (recievedData.Items !== undefined && recievedData.Count > 1) {
+          searchAsks = searchAsks.concat(recievedData.Items);
+          setTimeout( function() {
+            this.setState({data: searchAsks})
+          }.bind(this), 1000);
+        }
+        setTimeout( function() {
+          this.refs.moreButton.showButton();
+        }.bind(this), 1000);
+      }.bind(this),
+      error: function (xhr, status, erro) {
+        console.error(this.props.url, status, err.toString());
+        this.refs.moreButton.showButton();
       }.bind(this)
     });
   },
@@ -177,7 +211,7 @@ var SearchAsks = React.createClass({
     console.log(searchAsks);
     console.log(searchAsks.length);
     this.refs.moreButton.showSpinner();
-    this.getSearchAsksByTag(searchAsks[searchAsks.length-1].date.S);
+    this.getMoreSearchAsksByTag(searchAsks[searchAsks.length-1].date.S);
   },
 });
 

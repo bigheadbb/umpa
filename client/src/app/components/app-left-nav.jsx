@@ -22,7 +22,6 @@ var menuItems = [
     { route: 'my-asks', text: 'My Asks' },
     { route: 'voted-asks', text: 'Voted Asks' },
     { type: MenuItem.Types.SUBHEADER , text: 'Setting' },
-    { route: 'profile', text: 'Profile' },
     { route: 'logout', text: 'Logout' },
   ];
 

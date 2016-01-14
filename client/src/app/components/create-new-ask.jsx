@@ -122,6 +122,7 @@ var CreateNewAsk = React.createClass({
 
   handleCreateNewAskTouchTap: function(e) {
     console.log('handleNewAskClick called');
+
     var url = 'http://54.65.152.112:5000/makeNewAsk';
     var poll = {};
     poll.askerId = document.user.id;
@@ -129,6 +130,14 @@ var CreateNewAsk = React.createClass({
     poll.mainContent = this.refs.contentTextField.getValue();
     poll.yesContent = this.refs.yesTextField.getValue();
     poll.noContent = this.refs.noTextField.getValue();
+
+    if (poll.mainContent.length < 1
+       || poll.yesContent.length < 1
+       || poll.noContent.length < 1) {
+      this.setState({result: "One and more text field value were empty"});
+      this.refs.snackbar.show();
+      return;
+    }
 
     $.ajax({
       url: url,
