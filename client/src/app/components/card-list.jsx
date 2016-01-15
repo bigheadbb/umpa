@@ -20,7 +20,7 @@ var CardList = React.createClass({
       }
     };
 
-    if (this.props.valid === false) {
+    if (this.props.valid === false || this.props.data.length < 1) {
       console.log(".............. invalid");
       cards = function () {
         return (

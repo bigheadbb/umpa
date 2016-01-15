@@ -49,9 +49,21 @@ var CreateNewAsk = React.createClass({
         paddingBottom : 20,
         paddingLeft: 20,
         paddingRight: 20,
+        marginTop: 10,
+        marginBottom: 15,
+        marginLeft: 10,
+        marginRight: 10,
       },
       toolbar: {
         padding : '0px 10px 0px 10px',
+      },
+      toolbarTitle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: Colors.deepPurple500,
+        textAlign: 'center',
+        width: 'calc(100% - 112px)',
+        paddingTop: 2,
       },
       iconButton: {
         marginTop: 4,
@@ -67,6 +79,7 @@ var CreateNewAsk = React.createClass({
                 <Back />
               </IconButton>
             </ToolbarGroup>
+            <ToolbarTitle text="Make Ask" style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
               <IconButton style={styles.iconButton} tooltip="Send" onTouchTap={this.handleCreateNewAskTouchTap} >
                 <Send />
@@ -113,6 +126,7 @@ var CreateNewAsk = React.createClass({
 
   handleCreateNewAskTouchTap: function(e) {
     console.log('handleNewAskClick called');
+
     var url = 'http://54.65.152.112:5000/makeNewAsk';
     var poll = {};
     poll.askerId = document.user.id;
@@ -120,6 +134,14 @@ var CreateNewAsk = React.createClass({
     poll.mainContent = this.refs.contentTextField.getValue();
     poll.yesContent = this.refs.yesTextField.getValue();
     poll.noContent = this.refs.noTextField.getValue();
+
+    if (poll.mainContent.length < 1
+       || poll.yesContent.length < 1
+       || poll.noContent.length < 1) {
+      this.setState({result: "One and more text field value were empty"});
+      this.refs.snackbar.show();
+      return;
+    }
 
     $.ajax({
       url: url,

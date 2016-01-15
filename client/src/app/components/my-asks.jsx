@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs, IconButton, Toolbar, ToolbarGroup } = require('material-ui');
+var { Slider, Styles, Tab, Tabs, IconButton, Toolbar, ToolbarTitle, ToolbarGroup } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var MyCardList = require('./my-card-list.jsx');
@@ -133,6 +133,14 @@ var MyAsks = React.createClass({
       toolbar: {
         padding: '0px 10px 0px 10px',
       },
+      toolbarTitle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: Colors.deepPurple500,
+        textAlign: 'center',
+        width: 'calc(100% - 112px)',
+        paddingTop: 2,
+      },
       iconButton: {
         marginTop: 4,
       }
@@ -146,6 +154,7 @@ var MyAsks = React.createClass({
               <Back />
             </IconButton>
           </ToolbarGroup>
+          <ToolbarTitle text="My Asks" style={styles.toolbarTitle} />
         </Toolbar>
         <MyCardList data={this.state.data}/>
       </div>

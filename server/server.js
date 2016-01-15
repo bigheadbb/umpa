@@ -7,6 +7,9 @@ var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 var batch = require('./batch.sh');
 batch.startHotAsksScheduler();
 
+// Data Container
+var Set = require('Set');
+
 // Express configuration
 var express = require('express');
 var bodyParser = require("body-parser");
@@ -22,6 +25,8 @@ app.all('*', function(req, res, next) {
        next();
 });
 
+
+// makeNewAsks
 app.post('/makeNewAsk', function (req, res) {
   console.log("body: " + JSON.stringify(req.body));
 
@@ -31,6 +36,7 @@ app.post('/makeNewAsk', function (req, res) {
   //         req.headers["accept-language"].split(',')[0].toLowerCase();
   var userId = req.body.askerId;
   var userName = req.body.askerName;
+  var yesnoIndex = userId+"#"+currentTime;
 
   var params = {
     Item: {
@@ -38,7 +44,7 @@ app.post('/makeNewAsk', function (req, res) {
         "S": currentTime
       },
       "index": {
-        "S": userId+"#"+currentTime
+        "S": yesnoIndex
       },
       "language": {
         "S": language
@@ -75,6 +81,7 @@ app.post('/makeNewAsk', function (req, res) {
     if (err) {
       console.log(err, err.stack);
       res.json(err);
+      return;
     }
     else {
       console.log(JSON.stringify(data));
@@ -82,8 +89,55 @@ app.post('/makeNewAsk', function (req, res) {
         res.json('{"result" : "New Ask created"}');
     }
   });
+
+  // Find #tags and put tags to yesnoTag table
+  if (req.body.mainContent.indexOf('#') !== -1) {
+    console.log("main content has tag");
+
+    var words = req.body.mainContent.split(/\s+/);
+    var tagSet = new Set();
+
+    for (var i in words) {
+      if (words[i][0] === '#') {
+        tagSet.add(words[i]);
+      }
+    }
+
+    var tags = tagSet.toArray();
+
+    for (var i in tags) {
+      console.log(tags[i]);
+      var params = {
+        Item: {
+          "index": {
+            "S": yesnoIndex+'/'+i.toString()
+          },
+          "yesnoIndex": {
+            "S": yesnoIndex
+          },
+          "tag": {
+            "S": tags[i]
+          },
+          "date": {
+            "S": new Date().getTime().toString(),
+          },
+        },
+        TableName: 'yesnoTag'
+      };
+      dynamodb.putItem(params, function (err, data) {
+        if (err) {
+          console.log(err, err.stack);
+        }
+        else {
+          console.log(JSON.stringify(data));
+        }
+      });
+    }
+  }
 });
 
+
+// getNewAsks
 app.post('/getNewAsks', function (req, res) {
   var language = "*";
   // FIXME : '*' is used for temporary, we should change this value to proper languge client sent.
@@ -113,11 +167,12 @@ app.post('/getNewAsks', function (req, res) {
     ScanIndexForward: false,
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
     Limit : 10,
-};
+  };
 
   dynamodb.query(params, function(err, data) {
     if (err){
       console.log(err); // an error occurred
+      res.json(err);
     }
     else {
       console.log(data); // successful response
@@ -126,6 +181,8 @@ app.post('/getNewAsks', function (req, res) {
   });
 });
 
+
+// getHotAsks
 app.post('/getHotAsks', function (req, res) {
   if (batch.hotAsks !== undefined && batch.hotAsks.Items.length > 0) {
     console.log("batch.hotAsks data exist, use this");
@@ -173,6 +230,7 @@ app.post('/getHotAsks', function (req, res) {
   dynamodb.query(params, function(err, data) {
     if (err){
       console.log(err); // an error occurred
+      res.json(err);
     }
     else {
       console.log(data); // successful response
@@ -185,6 +243,7 @@ app.post('/getHotAsks', function (req, res) {
 });
 
 
+// getMyAsks
 app.post('/getMyAsks', function (req, res) {
   console.log("body: " + JSON.stringify(req.body));
 
@@ -219,6 +278,7 @@ app.post('/getMyAsks', function (req, res) {
   dynamodb.query(params, function(err, data) {
     if (err){
       console.log(err); // an error occurred
+      res.json(err);
     }
     else {
       console.log(data); // successful response
@@ -227,52 +287,26 @@ app.post('/getMyAsks', function (req, res) {
   });
 });
 
-app.get('/scan', function (req, res) {
-  var params = {
-    TableName: 'yesno',
-    ScanFilter: {
-      date: {
-        ComparisonOperator: 'GT',
-        AttributeValueList: [
-          {
-            S: '0'
-          }
-        ]
-      }
-    },
-    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
-  };
 
-  dynamodb.scan(params, function(err, data) {
-    if (err){
-      console.log(err); // an error occurred
-    }
-    else {
-      console.log(data); // successful response
-      for (var i in data.Items) {
-         i = data.Items[i];
-         console.log(i.mainContent);
-      }
-      res.json(data);
-    }
-  });
-});
-
+// makeNewVote
 app.post('/makeNewVote', function (req, res) {
   console.log("start! "+JSON.stringify(req.body));
-  var currentTime = new Date().getTime();
+  var currentTime = new Date().getTime().toString();
   var userId = req.body.askerId;
-  var index = req.body.index;
-  var date = index.substr(index.lastIndexOf("#")+1,13);
+  var yesnoIndex = req.body.index;
+  var date = yesnoIndex.substr(yesnoIndex.lastIndexOf("#")+1,13);
   var yes_no = req.body.yesno;
 
   var params = {
     Item: {
       "date": {
-        "S": currentTime + ""
+        "S": currentTime
       },
       "index": {
-        "S": index
+        "S": yesnoIndex+'/'+userId+'#'+currentTime
+      },
+      "yesnoIndex": {
+        "S": yesnoIndex
       },
       "userid": {
         "S": userId
@@ -302,7 +336,7 @@ app.post('/makeNewVote', function (req, res) {
       TableName: 'yesno',
       Key:{
         "index": {
-          S: index
+          S: yesnoIndex
         },
         "date": {
           S: date
@@ -328,7 +362,7 @@ app.post('/makeNewVote', function (req, res) {
       TableName: 'yesno',
       Key:{
         "index": {
-          S: index
+          S: yesnoIndex
         },
         "date": {
           S: date
@@ -371,7 +405,7 @@ app.post('/makeNewVote', function (req, res) {
         ComparisonOperator: 'EQ',
         AttributeValueList: [
           {
-            S: index
+            S: yesnoIndex
           }
         ]
       }
@@ -390,6 +424,98 @@ app.post('/makeNewVote', function (req, res) {
       console.log("noCount: "+nocount);
       console.log("yesCount: "+yescount);
       res.json('{"yesCount" : ' + yescount + ' , noCount" : ' + nocount +'}');
+    }
+  });
+});
+
+
+// getSearchAsksByTags
+app.post('/getSearchAsksByTag', function (req, res) {
+
+  var params = {
+    TableName: 'yesnoTag',
+    IndexName: 'tag-date-index',
+    KeyConditions: { // indexed attributes to query
+                     // must include the hash key value of the table or index
+      tag: {
+        ComparisonOperator: 'EQ', // (EQ | NE | IN | LE | LT | GE | GT | BETWEEN |
+        AttributeValueList: [
+          {
+            S: req.body.tag,
+          }
+        ],
+      },
+      date: {
+        ComparisonOperator: 'LE',
+        AttributeValueList: [
+          {
+            S: req.body.date,
+          }
+        ],
+      },
+    },
+    ScanIndexForward: false,
+    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+    Limit : 10,
+  };
+
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+      res.json(err);
+    }
+    else {
+      console.log(data); // successful response
+
+      if (data.Items.length < 1) {
+        console.log("data.Items is empty");
+        res.json(data);
+        return;
+      }
+
+      var searchAsks = { "Items": [], "Count": 0, "ScanCount": 0 };
+      for (var it=0; it < data.Items.length; it++) {
+        var params = {
+          TableName: 'yesno',
+          IndexName: 'index-index',
+          KeyConditions: { // indexed attributes to query
+                           // must include the hash key value of the table or index
+            index: {
+              ComparisonOperator: 'EQ',
+              AttributeValueList: [
+                {
+                  S: data.Items[it].yesnoIndex.S
+                }
+              ]
+            }
+          }
+        };
+
+        dynamodb.query(params, function(err, yesnoData) {
+          if (err){
+            console.log(err); // an error occurred
+            searchAsks.ScanCount++;
+            if (data.Items.length === searchAsks.ScanCount) {
+              console.log("response searchAsks");
+              console.log(searchAsks);
+              res.json(searchAsks);
+            }
+          }
+          else {
+            //console.log(yesnoData.Items[0]);
+            searchAsks.Items.push(yesnoData.Items[0]);
+            searchAsks.Count++;
+            searchAsks.ScanCount++;
+            //console.log("data item length :" + data.Items.length);
+            //console.log(it);
+            if (data.Items.length === searchAsks.ScanCount) {
+              console.log("response searchAsks");
+              console.log(searchAsks);
+              res.json(searchAsks);
+            }
+          }
+        });
+      }
     }
   });
 });
