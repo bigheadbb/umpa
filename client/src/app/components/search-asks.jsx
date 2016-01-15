@@ -110,7 +110,7 @@ var SearchAsks = React.createClass({
               hintText="#tag..."
               underlineFocusStyle={{borderColor: Colors.grey500}}
               multiLine={false} />
-            <IconButton style={styles.clearButton} tooltip="clear" onTouchTap={this.handleClearTextButtonTouchTap} >
+            <IconButton style={styles.clearButton} onTouchTap={this.handleClearTextButtonTouchTap} >
                 <CloseCircle />
             </IconButton>
           </Paper>
@@ -142,6 +142,7 @@ var SearchAsks = React.createClass({
         console.log(recievedData);
         searchAsks = recievedData.Items;
         this.setState({data: searchAsks});
+        this.lastSearchTag = query.tag;
 
         if (searchAsks.length < 1) {
           this.setState({result: "No result, please type another tag..."});
@@ -158,7 +159,7 @@ var SearchAsks = React.createClass({
     console.log('New asks getNewAsks called');
     var query = {};
     var now = new Date().getTime();
-    query.tag = '#'+this.refs.searchField.getValue();
+    query.tag = this.lastSearchTag;
     query.date = dateTime ? dateTime : now;
 
     $.ajax({
