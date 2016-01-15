@@ -9,8 +9,6 @@ var {Avatar,
   TextField } = mui;
 var Colors = mui.Styles.Colors;
 
-var ThemeManager = require('material-ui/lib/styles/theme-manager');
-var MyTheme = require('./my-theme.jsx');
 var AskResult = require('./ask-result.jsx');
 var VoteButton = require('./vote-button.jsx');
 
@@ -39,11 +37,6 @@ var Content = React.createClass({
 
   childContextTypes : {
     muiTheme: React.PropTypes.object,
-  },
-  getChildContext: function() {
-    return {
-      muiTheme: ThemeManager.getMuiTheme(MyTheme),
-    };
   },
 
   render: function () {
