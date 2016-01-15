@@ -11,9 +11,7 @@ var Colors = mui.Styles.Colors;
 
 var ThemeManager = require('material-ui/lib/styles/theme-manager');
 var MyTheme = require('./my-theme.jsx');
-
 var AskResult = require('./ask-result.jsx');
-var MoreButton = require('./more-button.jsx');
 var VoteButton = require('./vote-button.jsx');
 
 var Author = React.createClass({
@@ -188,7 +186,6 @@ var MyCardList = React.createClass({
     return (
       <div className="MyCardList">
         {cards}
-        <MoreButton />
       </div>
     );
   }

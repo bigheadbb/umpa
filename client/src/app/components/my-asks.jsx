@@ -7,6 +7,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var MyCardList = require('./my-card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var Back = require('./svg-icons/back.jsx');
+var MoreButton = require('./more-button.jsx');
 
 myAsks = {};
 
@@ -94,11 +95,11 @@ var MyAsks = React.createClass({
     }
   },
 
-  getMyAsks: function() {
+  getMyAsks: function(dateTime) {
     console.log('My asks getMyAsks called');
     var query = {};
     var now = new Date().getTime();
-    query.date = now;
+    query.date = dateTime ? dateTime : now;
     query.askerId = document.user.id;
 
     $.ajax({
@@ -107,11 +108,20 @@ var MyAsks = React.createClass({
       data : query,
       type: 'POST',
       cache: false,
-      success: function (data) {
-        myAsks = data.Items;
-        this.setState({data: myAsks});
+      success: function (recievedData) {
+        console.log(recievedData.Items);
+        if (recievedData.Items !== undefined && recievedData.Count > 1) {
+          myAsks = myAsks.concat(recievedData.Items);
+          setTimeout( function() {
+            this.setState({data: myAsks, valid: true})
+          }.bind(this), 1000);
+        }
+        setTimeout( function() {
+          this.refs.moreButton.showButton();
+        }.bind(this), 1000);
       }.bind(this),
       error: function (xhr, status, erro) {
+        this.refs.moreButton.showButton();
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
@@ -157,6 +167,9 @@ var MyAsks = React.createClass({
           <ToolbarTitle text="My Asks" style={styles.toolbarTitle} />
         </Toolbar>
         <MyCardList data={this.state.data}/>
+        <MoreButton
+          ref='moreButton'
+          onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
       </div>
@@ -165,6 +178,14 @@ var MyAsks = React.createClass({
 
   handleBackButtonTouchTap: function(e) {
     this.context.router.transitionTo('new-asks');
+  },
+
+  handleMoreButtonTouchTap: function() {
+    console.log("handleMoreButtonTouchTap");
+    console.log(myAsks);
+    console.log(myAsks.length);
+    this.refs.moreButton.showSpinner();
+    this.getMyAsks(myAsks[myAsks.length-1].date.S);
   },
 });
 

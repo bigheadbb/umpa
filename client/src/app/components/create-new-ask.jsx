@@ -17,6 +17,11 @@ var CreateNewAsk = React.createClass({
 
   componentWillMount: function () {
     console.log('CreateNewAsk componentWillMount called');
+    if (document.user === undefined) {
+      console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
+      return;
+    }
   },
 
   componentDidMount: function () {
