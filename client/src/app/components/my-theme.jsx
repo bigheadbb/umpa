@@ -6,10 +6,10 @@ module.exports = {
   spacing: Spacing,
   fontFamily: 'Roboto, sans-serif',
   palette: {
-    primary1Color: Colors.cyan500,
+    primary1Color: Colors.grey500,
     primary2Color: Colors.cyan700,
     primary3Color: Colors.lightBlack,
-    accent1Color: Colors.pinkA200,
+    accent1Color: Colors.deepPurple500,
     accent2Color: Colors.grey100,
     accent3Color: Colors.grey500,
     textColor: Colors.darkBlack,

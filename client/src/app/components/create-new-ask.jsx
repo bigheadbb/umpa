@@ -6,6 +6,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 
 var Send = require('./svg-icons/send.jsx');
 var Back = require('./svg-icons/back.jsx');
+var SelectItems = require('./select-items.jsx');
 
 var CreateNewAsk = React.createClass({
 
@@ -103,8 +104,8 @@ var CreateNewAsk = React.createClass({
               multiLine={true} />
             <TextField
               style={styles.textFieldStyle}
-              floatingLabelStyle={{color: Colors.pink300}}
-              underlineFocusStyle={{borderColor: Colors.grey500}}
+              floatingLabelStyle={{color: Colors.pink500}}
+              underlineFocusStyle={{borderColor: Colors.pink500}}
               ref="yesTextField"
               primary={true}
               floatingLabelText="Yes"
@@ -114,12 +115,13 @@ var CreateNewAsk = React.createClass({
             <TextField
               style={styles.textFieldStyle}
               floatingLabelStyle={{color: Colors.cyan500}}
-              underlineFocusStyle={{borderColor: Colors.grey500}}
+              underlineFocusStyle={{borderColor: Colors.cyan500}}
               ref="noTextField"
               floatingLabelText="No"
               rows={1}
               rowsMax={5}
               multiLine={true} />
+            <SelectItems />
           </Paper>
         </div>
         <Snackbar
