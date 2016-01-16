@@ -5,27 +5,25 @@ var {FlatButton,
 var Colors = mui.Styles.Colors;
 
 var AskResult = require('./ask-result.jsx');
+var VotedCheck = require('./svg-icons/voted-check.jsx');
 var VoteButton = React.createClass({
 
-  askId: function () { return this.props.data.index.S; },
+  askId: function () {
+    return this.props.data.index.S;
+  },
 
   getInitialState: function () {
-    return {valid: true};
+    return {voted: false, yesno: '', yesCount: 0, noCount: 0};
   },
 
   render: function () {
     console.log('!!!!!!VoteButton render');
-
-    // TODO: it should hide after voting
     var yesContent = this.props.data.yesContent.S;
     var noContent = this.props.data.noContent.S;
-    var yesCount = parseInt(this.props.data.yesCount.N);
-    var noCount = parseInt(this.props.data.noCount.N);
+    var yesCount = parseInt(this.props.data.yesCount.N) + this.state.yesCount;
+    var noCount = parseInt(this.props.data.noCount.N) + this.state.noCount;
     var totalCount = yesCount + noCount;
-    var valid = this.state.valid;
-
-    console.log('yesContent:' + yesContent + ', noContent:' + noContent);
-    console.log('yesCount:' + yesCount + ', noCount:' + noCount + ', totalCount:' + totalCount);
+    var voted = this.state.voted || false; //this.props.data.voted
 
     var styles = {
       full: {
@@ -33,6 +31,11 @@ var VoteButton = React.createClass({
       },
       underline: {
         display: 'none'
+      },
+      checkIcon: {
+        position: 'relative',
+        top: '2px',
+        left: '2px'
       },
       yesButtonTitle: {
         color:Colors.pink500,
@@ -83,19 +86,33 @@ var VoteButton = React.createClass({
       return (
         <AskResult
           ref={name}
+          show={voted}
           yesNoCount={count}
           totalCount={totalCount}
-          color={barColor} />     
+          color={barColor} />
       );
     };
+
+    var showVotedCheck = function (select, yesno) {
+      var color = select === 'yes' ? Colors.pink500 : Colors.cyan500;
+      if (select === yesno) {
+        return (
+          <span style={styles.checkIcon}>
+            <VotedCheck data={color} />
+          </span>
+        );
+      }
+    };
+
     return (
       <div>
         <div style={styles.full}>
           <span style={styles.yesButtonTitle}>YES</span>
+          {showVotedCheck('yes', this.state.yesno)}
           <FlatButton
             style={styles.yesButton}
             primary={true}
-            disabled={valid == 'true' ? true : false}
+            disabled={voted}
             onTouchTap={this._handleYesButton} >
             <TextField
               style={styles.yesText}
@@ -111,10 +128,11 @@ var VoteButton = React.createClass({
         {showResult('yes')}
         <div style={{marginTop : 15}}>
           <span style={styles.noButtonTitle}>NO</span>
+          {showVotedCheck('no', this.state.yesno)}
           <FlatButton
             style={styles.noButton}
             secondary={true}
-            disabled={valid == 'true' ? true : false}
+            disabled={voted}
             onTouchTap={this._handleNoButton} >
             <TextField
               style={styles.noText}
@@ -134,52 +152,59 @@ var VoteButton = React.createClass({
 
   _handleYesButton: function (e) {
     console.log('!!!!!!!_handleYesButton');
-    var url = 'http://54.65.152.112:5000/makeNewVote';
-    var query = {};
-    query.askerId = document.user.id;
-    query.index = this.askId();
-    query.yesno = 1;
-    $.ajax({
-      url: url,
-      dataType: 'json',
-      data: query,
-      type: 'POST',
-      cache: false,
-      success: function (data) {
-        console.log('!!!!!data: ' + JSON.stringify(data));
-        this.setState({valid: false});
-        this.refs.yesResult.show(data.yesCount);
-        this.refs.noResult.show(data.noCount);
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(url, status, err.toString());
-      }.bind(this)
-    });
+    if (this.lastTouchEvent && (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
+      var url = 'http://54.65.152.112:5000/makeNewVote';
+      var query = {};
+      query.askerId = document.user.id;
+      query.index = this.askId();
+      query.yesno = 1;
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        data: query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          console.log('!!!!!data: ' + JSON.stringify(data));
+          this.setState({voted: true, yesno: 'yes', yesCount: 1, noCount: 0});
+          this.refs.yesResult.show();
+          this.refs.noResult.show();
+        }.bind(this),
+        error: function (xhr, status, err) {
+          console.error(url, status, err.toString());
+        }.bind(this)
+      });
+    }
+    this.lastTouchEvent = e.nativeEvent.timeStamp;
   },
 
   _handleNoButton: function (e) {
-    console.log('!!!!!!!_handleYesButton');
-    var url = 'http://54.65.152.112:5000/makeNewVote';
-    var query = {};
-    query.askerId = document.user.id;
-    query.index = this.askId();
-    query.yesno = 0;
-    $.ajax({
-      url: url,
-      dataType: 'json',
-      data: query,
-      type: 'POST',
-      cache: false,
-      success: function (data) {
-        this.setState({valid: false});
-        this.refs.yesResult.show(data.yesCount);
-        this.refs.noResult.show(data.noCount);
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(url, status, err.toString());
-      }.bind(this)
-    });
+    console.log('!!!!!!!_handleNoButton');
+    if (this.lastTouchEvent && (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
+      var url = 'http://54.65.152.112:5000/makeNewVote';
+      var query = {};
+      query.askerId = document.user.id;
+      query.index = this.askId();
+      query.yesno = 0;
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        data: query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          this.setState({voted: true, yesno: 'no', yesCount: 0, noCount: 1});
+          this.refs.yesResult.show();
+          this.refs.noResult.show();
+        }.bind(this),
+        error: function (xhr, status, err) {
+          console.error(url, status, err.toString());
+        }.bind(this)
+      });
+    }
+    this.lastTouchEvent = e.nativeEvent.timeStamp;
   },
 });
 
 module.exports = VoteButton;
+

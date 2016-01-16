@@ -15,7 +15,6 @@ var AskContent = React.createClass({
   render: function () {
     console.log("!!!!!!!Content rendered");
     var mainContent = this.props.data.mainContent.S;
-    console.log('main content: ' + mainContent);
     var yesCount = parseInt(this.props.data.yesCount.N);
     var noCount = parseInt(this.props.data.noCount.N);
     var totalCount = yesCount + noCount;
