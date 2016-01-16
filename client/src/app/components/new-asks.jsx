@@ -19,6 +19,10 @@ var NewAsks = React.createClass({
     console.log('window.newAsksState is ', window.newAsksState);
     var query = {};
     query.date = new Date().getTime();
+    query.askerId = '';
+    if (document.user !== undefined) {
+      query.askerId = document.user.id || '';
+    }
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       window.newAsksState = "Updating";
@@ -60,6 +64,10 @@ var NewAsks = React.createClass({
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
       query.date = new Date().getTime();
+      query.askerId = '';
+      if (document.user !== undefined) {
+        query.askerId = document.user.id || '';
+      }
 
       $.ajax({
         url: 'http://54.65.152.112:5000/getNewAsks',
@@ -85,6 +93,10 @@ var NewAsks = React.createClass({
     var query = {};
     var now = new Date().getTime();
     query.date = dateTime ? dateTime : now;
+    query.askerId = '';
+    if (document.user !== undefined) {
+      query.askerId = document.user.id;
+    }
 
     $.ajax({
       url: 'http://54.65.152.112:5000/getNewAsks',
@@ -177,3 +189,4 @@ NewAsks.contextTypes = {
 };
 
 module.exports = NewAsks;
+
