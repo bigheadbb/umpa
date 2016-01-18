@@ -29,7 +29,7 @@ var WriteButton = React.createClass({
   },
 
   handleCreateNewAsksButtonTouchTap : function() {
-    if (document.fblogin === "connected") {
+    if (document.user !== undefined) {
       this.context.router.transitionTo('create-new-ask');
     }
     else {
