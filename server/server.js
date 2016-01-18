@@ -72,6 +72,12 @@ app.post('/makeNewAsk', function (req, res) {
       },
       "yesCount": {
         "N": "0"
+      },
+      "gender" : {
+        "S": req.body.gender
+      },
+      "age": {
+        "S": req.body.age
       }
     },
     TableName: 'yesno'
