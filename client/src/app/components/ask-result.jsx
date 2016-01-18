@@ -63,7 +63,7 @@ var AskResult = React.createClass({
 
   show: function (count) {
     console.log('AskResult show');
-    this.setState({show: true, result: count});
+    this.setState({show: true});
   },
 });
 
