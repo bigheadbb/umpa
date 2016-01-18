@@ -6,7 +6,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 
 var Send = require('./svg-icons/send.jsx');
 var Back = require('./svg-icons/back.jsx');
-var SelectItems = require('./select-items.jsx');
+var SelectTarget = require('./select-target.jsx');
 
 var CreateNewAsk = React.createClass({
 
@@ -121,7 +121,7 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true} />
-            <SelectItems />
+            <SelectTarget ref="selectTarget" />
           </Paper>
         </div>
         <Snackbar
@@ -141,6 +141,8 @@ var CreateNewAsk = React.createClass({
     poll.mainContent = this.refs.contentTextField.getValue();
     poll.yesContent = this.refs.yesTextField.getValue();
     poll.noContent = this.refs.noTextField.getValue();
+    poll.gender = this.refs.selectTarget.getGender();
+    poll.age = this.refs.selectTarget.getAge();
 
     if (poll.mainContent.length < 1
        || poll.yesContent.length < 1

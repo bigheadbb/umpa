@@ -7,7 +7,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var ThemeManager = require('material-ui/lib/styles/theme-manager');
 var MyTheme = require('./my-theme.jsx');
 
-var SelectItems = React.createClass({
+var SelectTarget = React.createClass({
   getInitialState: function() {
     return {
       genderValue: '1',
@@ -40,33 +40,35 @@ var SelectItems = React.createClass({
         fontSize : 14,
       },
     };
-    
-    var genderItems = [
+
+    this.genderItems = [
       { payload: '1', text: 'ALL' },
       { payload: '2', text: 'MAN' },
       { payload: '3', text: 'WOMAN' },
     ];
 
-    var ageItems = [
+    this.ageItems = [
       { payload: '1', text: 'ALL' },
-      { payload: '2', text: 'UNDER 20\'s' },
-      { payload: '3', text: 'OVER 20\'s' },
+      { payload: '2', text: 'UNDER 20' },
+      { payload: '3', text: 'OVER 20' },
     ];
 
     return (
       <div style={styles.root}>
       <SelectField
+        ref="genderSelectField"
         style={styles.genderSelectField}
         value={this.state.genderValue}
         floatingLabelText="Gender"
         onChange={this.handleSelectValuechange.bind(null, 'genderValue')}
-        menuItems={genderItems} />
+        menuItems={this.genderItems} />
       <SelectField
+        ref="ageSelectField"
         style={styles.ageSelectField}
         value={this.state.ageValue}
         floatingLabelText="Age"
         onChange={this.handleSelectValuechange.bind(null, 'ageValue')}
-        menuItems={ageItems} />        
+        menuItems={this.ageItems} />
       </div>
     );
   },
@@ -75,6 +77,14 @@ var SelectItems = React.createClass({
     change[name] = e.target.value;
     this.setState(change);
   },
+
+  getGender: function() {
+    return this.genderItems[parseInt(this.state.genderValue)-1].text;
+  },
+
+  getAge: function() {
+    return this.ageItems[parseInt(this.state.ageValue)-1].text.replace(" ", "");
+  }
 });
 
-module.exports = SelectItems;
+module.exports = SelectTarget;
