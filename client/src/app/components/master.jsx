@@ -113,7 +113,7 @@ var Master = React.createClass({
   },
 
   _onRightUserSettingButtonTouchTap: function() {
-    if (document.fblogin === "connected") {
+    if (document.user !== undefined) {
       this.refs.rightSideMenu.toggle();
     }
     else {
@@ -309,7 +309,7 @@ var Master = React.createClass({
           ref="rightSideMenu" />
         <Snackbar
           ref="snackbar"
-          autoHideDuration={3000}
+          autoHideDuration={2000}
           message={this.state.snackbarMessage} />
       </div>
     );

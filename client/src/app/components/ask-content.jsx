@@ -5,6 +5,7 @@ var Colors = mui.Styles.Colors;
 
 var AskResult = require('./ask-result.jsx');
 var VoteButton = require('./vote-button.jsx');
+var VoteUser = require('./svg-icons/vote-user.jsx');
 
 var AskContent = React.createClass({
 
@@ -26,7 +27,7 @@ var AskContent = React.createClass({
       vote: {
         textAlign: 'right',
         color : Colors.grey600,
-        fontSize : 12,
+        fontSize : 13,
         paddingRight: "5px"
       },
       text: {
@@ -35,6 +36,12 @@ var AskContent = React.createClass({
       },
       underline: {
         display: 'none',
+      },
+      totalVote: {
+        position: 'relative',
+        top: 2,
+        width: 15,
+        height: 15,
       }
     };
     var showContent = function () {
@@ -58,7 +65,7 @@ var AskContent = React.createClass({
         expandable={true} >
         {showContent()}
         <div style={styles.vote}>
-          +{totalCount}
+          <VoteUser style={styles.totalVote} color={Colors.grey600} /> {totalCount}
         </div>
         <VoteButton
           data={this.props.data} />
