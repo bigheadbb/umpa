@@ -39,7 +39,9 @@ var CardList = React.createClass({
               userName={ask.userName}
               userId={ask.userId}
               date={ask.date}
-              rank={ask.rank} />
+              rank={ask.rank}
+              age={ask.age}
+              gender={ask.gender} />
             <AskContent
               data={ask} />
           </Card>
