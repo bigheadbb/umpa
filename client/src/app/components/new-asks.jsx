@@ -6,12 +6,12 @@ var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var MoreButton = require('./more-button.jsx');
 
-newAsks = {};
+newAsks = [];
 
 var NewAsks = React.createClass({
 
   getInitialState: function () {
-    return {data: [], valid: false};
+    return {data: []};
   },
 
   componentWillMount: function () {
@@ -19,22 +19,18 @@ var NewAsks = React.createClass({
     console.log('window.newAsksState is ', window.newAsksState);
     var query = {};
     query.date = new Date().getTime();
-    query.askerId = '';
-    if (document.user !== undefined) {
-      query.askerId = document.user.id || '';
-    }
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       window.newAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getNewAsks',
+        url: 'http://54.65.152.112:6002/getNewAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
         cache: false,
         success: function (data) {
           newAsks = data.Items;
-          this.setState({data: newAsks, valid: true});
+          this.setState({data: newAsks});
 
           // prepare hot asks data
           setTimeout( function() {
@@ -64,20 +60,16 @@ var NewAsks = React.createClass({
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
       query.date = new Date().getTime();
-      query.askerId = '';
-      if (document.user !== undefined) {
-        query.askerId = document.user.id || '';
-      }
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getNewAsks',
+        url: 'http://54.65.152.112:6002/getNewAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
         cache: false,
         success: function (data) {
           newAsks = data.Items;
-          this.setState({data: newAsks, valid: true});
+          this.setState({data: newAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -93,13 +85,9 @@ var NewAsks = React.createClass({
     var query = {};
     var now = new Date().getTime();
     query.date = dateTime ? dateTime : now;
-    query.askerId = '';
-    if (document.user !== undefined) {
-      query.askerId = document.user.id;
-    }
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getNewAsks',
+      url: 'http://54.65.152.112:6002/getNewAsks',
       dataType: 'json',
       data : query,
       type: 'POST',
@@ -109,7 +97,7 @@ var NewAsks = React.createClass({
         if (recievedData.Items !== undefined && recievedData.Count > 1) {
           newAsks = newAsks.concat(recievedData.Items);
           setTimeout( function() {
-            this.setState({data: newAsks, valid: true})
+            this.setState({data: newAsks})
           }.bind(this), 1000);
         }
         setTimeout( function() {
@@ -132,7 +120,7 @@ var NewAsks = React.createClass({
     if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
       window.hotAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getHotAsks',
+        url: 'http://54.65.152.112:6002/getHotAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
