@@ -5,6 +5,8 @@ var {Avatar,
 var Colors = mui.Styles.Colors;
 
 var Crowns = require('./crowns.jsx');
+var Ages = require('./ages.jsx');
+var Gender = require('./gender.jsx');
 
 var AskHeader = React.createClass({
   render: function () {
@@ -14,7 +16,7 @@ var AskHeader = React.createClass({
         float: 'left',
       },
       crownContainer: {
-        width:'48px',
+        width:'64px',
         height:'72px',
         float:'right',
         paddingRight:'16px',
@@ -32,31 +34,25 @@ var AskHeader = React.createClass({
     var readable = this.readableDate(this.props.date.S);
     var profile_photo = "http://graph.facebook.com/"+userId+"/picture?type=small";
     var rank = this.props.rank;
+    var age = this.props.age ? this.props.age.S : 'ALL';
+    var gender = this.props.gender ? this.props.gender.S : 'ALL';
 
-    if(rank !== undefined ){
-      return (   
-        <div>   
-          <div style={styles.author}>
-          <CardHeader
-            avatar={<Avatar src={profile_photo}></Avatar>}
-            title={author}
-            subtitle={readable}
-            showExpandableButton={true} />
-          </div>
-          <div style={styles.crownContainer}>
-            <Crowns index={rank}/>
-          </div>
-          </div>
-      );
-    }else{
-      return(
+    return (
+      <div>
+        <div style={styles.author}>
         <CardHeader
           avatar={<Avatar src={profile_photo}></Avatar>}
           title={author}
           subtitle={readable}
           showExpandableButton={true} />
-      );
-    }
+        </div>
+        <div style={styles.crownContainer}>
+          <Crowns rank={rank}/>
+          <Gender gender={gender}/>
+          <Ages age={age}/>
+        </div>
+      </div>
+    );
   },
 
   readableDate: function(datetime) {
