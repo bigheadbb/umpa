@@ -4,38 +4,47 @@ var Colors = mui.Styles.Colors;
 
 var Crowns = React.createClass({
   render: function(){
-    var rank = this.props.index;
+    console.log("!!!!!!crown rendered");
+    var rank = this.props.rank;
     var styles = {
-      gold: {
-        backgroundImage: "url('img/crown_gold.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        height: '100%',
+      root: {
+        position: 'relative',
+        top: '20%',
+        width: '52px',
+        height: '32px',
+        float:'right'
       },
-      silver: {
-        backgroundImage: "url('img/crown_silver.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        height: '100%',
-      },
-      bronze: {
-        backgroundImage: "url('img/crown_bronze.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        height: '100%',
-      },
-
+      crownStyle: {
+        position: 'relative',
+        top: '-20%',
+        width: '48px',
+        height: '48px',
+      }
     };
 
-    if(rank == 1)
-      return (<div style={styles.gold} />);
-    else if(rank == 2)
-      return (<div style={styles.silver} />);
-    else if(rank == 3)
-      return (<div style={styles.bronze} />);
-    else
-      return (<div />);
-        
+  if(rank === 1){
+    return (<div style={styles.root}>
+              <img src="img/crown_gold.png" style={styles.crownStyle} />
+            </div>
+    );
+  }
+
+  if(rank === 2){
+    return (<div style={styles.root}>
+              <img src="img/crown_silver.png" style={styles.crownStyle}/>
+            </div>
+    );
+  }
+
+  if(rank === 3){
+    return (<div style={styles.root}>
+              <img src="img/crown_bronze.png" style={styles.crownStyle} />
+            </div>
+    );
+  }
+
+  return (<div />);
+
   },
 });
 
