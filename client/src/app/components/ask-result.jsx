@@ -7,12 +7,6 @@ var Colors = mui.Styles.Colors;
 
 var AskResult = React.createClass({
 
-  getInitialState: function() {
-    return {
-      show : this.props.show 
-    };
-  },
-
   render:  function () {
     console.log("!!!!!!AskResult render");
 
@@ -24,7 +18,7 @@ var AskResult = React.createClass({
     var progressColor = this.props.color;
     var result = yesNoCount + " (" +  yesNoResultPercent + "%)";
     var styles = {
-      root: this.state.show === true ?
+      root: this.props.show === true ?
       {
         marginTop: 10,
         height: 20,
@@ -60,11 +54,7 @@ var AskResult = React.createClass({
       </div>
     );
   },
-
-  show: function (count) {
-    console.log('AskResult show');
-    this.setState({show: true});
-  },
 });
 
 module.exports = AskResult;
+
