@@ -104,7 +104,7 @@ var VoteButton = React.createClass({
       <div>
         <div style={styles.full}>
           <span style={styles.yesButtonTitle}>YES</span>
-          {showVotedCheck('yes', voted)}
+          {showVotedCheck('yes', this.props.voted)}
           <FlatButton
             style={styles.yesButton}
             primary={true}
@@ -124,7 +124,7 @@ var VoteButton = React.createClass({
         {showResult('yes')}
         <div style={{marginTop : 15}}>
           <span style={styles.noButtonTitle}>NO</span>
-          {showVotedCheck('no', voted)}
+          {showVotedCheck('no', this.props.voted)}
           <FlatButton
             style={styles.noButton}
             secondary={true}
