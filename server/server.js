@@ -352,13 +352,12 @@ app.post('/getMyVotedAsks', function (req, res) {
                               // true : order by sort key value
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
     Limit : 10,
-};
+  };
 
   dynamodb.query(params, function(err, data) {
     if (err){
       console.log(err); // an error occurred
-    }
-    else {
+    } else {
       console.log(data); // successful response
 
       if (data.Items.length < 1) {
@@ -367,8 +366,8 @@ app.post('/getMyVotedAsks', function (req, res) {
         return;
       }
 
-      var myVotedAsks = { "Items": [], "ScanCount": 0 };
-      for (var it=0; it < data.Items.length; it++) {
+      var myVotedAsks = { "Items": [], "Count": 0, "ScanCount": 0 };
+      for (var it = 0; it < data.Items.length; it++) {
         var params = {
           TableName: 'yesno',
           IndexName: 'index-index',
@@ -386,23 +385,25 @@ app.post('/getMyVotedAsks', function (req, res) {
         };
 
         dynamodb.query(params, function(err, yesnoData) {
-          if (err){
+          if (err) {
             console.log(err); // an error occurred
-            myVotedAsks.ScanCount++;
-            if (data.Items.length === myVotedAsks.ScanCount) {
-              console.log("response myVotedAsks");
-              console.log(myVotedAsks.Items);
-              res.json(myVotedAsks.Items);
+          } else {
+            var order;
+            for (order = 0; order < data.Items.length; order++) {
+              if (data.Items[order].yesnoIndex.S ===
+                  yesnoData.Items[0].index.S) {
+                break;
+              }
             }
+            myVotedAsks.Items[order] = yesnoData.Items[0];
+            myVotedAsks.Count++;
           }
-          else {
-            myVotedAsks.Items.push(yesnoData.Items[0]);
-            myVotedAsks.ScanCount++;
-            if (data.Items.length === myVotedAsks.ScanCount) {
-              console.log("response myVotedAsks");
-              console.log(myVotedAsks.Items);
-              res.json(myVotedAsks.Items);
-            }
+          myVotedAsks.ScanCount++;
+
+          if (data.Items.length === myVotedAsks.ScanCount) {
+            console.log("response myVotedAsks");
+            console.log(myVotedAsks);
+            res.json(myVotedAsks);
           }
         });
       }
