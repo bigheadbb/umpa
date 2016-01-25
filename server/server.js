@@ -293,6 +293,123 @@ app.post('/getMyAsks', function (req, res) {
   });
 });
 
+app.post('/getAskByIndex', function (req, res) {
+  console.log("body: " + JSON.stringify(req.body));
+
+  var params = {
+    TableName: 'yesno',
+    IndexName: 'index-index',
+    KeyConditions: {
+      index: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [
+          {
+            S: req.body.index,
+          }
+        ],
+      },
+    },
+    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+};
+
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+    }
+    else {
+      res.json(data);
+    }
+  });
+});
+
+
+app.post('/getMyVotedAsks', function (req, res) {
+  console.log("body: " + JSON.stringify(req.body));
+
+  var params = {
+    TableName: 'yesnoPoll',
+    IndexName: 'userid-date-index',
+    KeyConditions: { // indexed attributes to query
+                     // must include the hash key value of the table or index
+      userid: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [
+          {
+            S: req.body.askerId,
+          }
+        ],
+      },
+      date: {
+        ComparisonOperator: 'LE',
+        AttributeValueList: [
+          {
+            S: req.body.date,
+          }
+        ],
+      },
+    },
+    ScanIndexForward: false,  // false : reverse order by sort key value
+                              // true : order by sort key value
+    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+    Limit : 10,
+  };
+
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+    } else {
+      console.log(data); // successful response
+
+      if (data.Items.length < 1) {
+        console.log("data.Items is empty");
+        res.json(data);
+        return;
+      }
+
+      var myVotedAsks = { "Items": [], "Count": 0, "ScanCount": 0 };
+      for (var it = 0; it < data.Items.length; it++) {
+        var params = {
+          TableName: 'yesno',
+          IndexName: 'index-index',
+          KeyConditions: { // indexed attributes to query
+                           // must include the hash key value of the table or index
+            index: {
+              ComparisonOperator: 'EQ',
+              AttributeValueList: [
+                {
+                  S: data.Items[it].yesnoIndex.S
+                }
+              ]
+            }
+          }
+        };
+
+        dynamodb.query(params, function(err, yesnoData) {
+          if (err) {
+            console.log(err); // an error occurred
+          } else {
+            var order;
+            for (order = 0; order < data.Items.length; order++) {
+              if (data.Items[order].yesnoIndex.S ===
+                  yesnoData.Items[0].index.S) {
+                break;
+              }
+            }
+            myVotedAsks.Items[order] = yesnoData.Items[0];
+            myVotedAsks.Count++;
+          }
+          myVotedAsks.ScanCount++;
+
+          if (data.Items.length === myVotedAsks.ScanCount) {
+            console.log("response myVotedAsks");
+            console.log(myVotedAsks);
+            res.json(myVotedAsks);
+          }
+        });
+      }
+    }
+  });
+})
 
 // makeNewVote
 app.post('/makeNewVote', function (req, res) {
