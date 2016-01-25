@@ -10,7 +10,6 @@ var FullWidthSection = require('./full-width-section.jsx');
 var {StylePropable, StyleResizable} = mui.Mixins;
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var FacebookLogin = require('./fblogin.jsx');
 
 var HomePage = React.createClass({
 

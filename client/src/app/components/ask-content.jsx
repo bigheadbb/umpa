@@ -5,8 +5,17 @@ var Colors = mui.Styles.Colors;
 
 var AskResult = require('./ask-result.jsx');
 var VoteButton = require('./vote-button.jsx');
+var VoteUser = require('./svg-icons/vote-user.jsx');
 
 var AskContent = React.createClass({
+
+  getInitialState: function () {
+    return {
+      voted: this.props.data.voted ? this.props.data.voted.S : 'none',
+      yesCount: parseInt(this.props.data.yesCount.N),
+      noCount: parseInt(this.props.data.noCount.N)
+    };
+  },
 
   childContextTypes: {
     muiTheme: React.PropTypes.object,
@@ -15,8 +24,8 @@ var AskContent = React.createClass({
   render: function () {
     console.log("!!!!!!!Content rendered");
     var mainContent = this.props.data.mainContent.S;
-    var yesCount = parseInt(this.props.data.yesCount.N);
-    var noCount = parseInt(this.props.data.noCount.N);
+    var yesCount = this.state.yesCount;
+    var noCount = this.state.noCount;
     var totalCount = yesCount + noCount;
 
     var styles = {
@@ -26,7 +35,7 @@ var AskContent = React.createClass({
       vote: {
         textAlign: 'right',
         color : Colors.grey600,
-        fontSize : 12,
+        fontSize : 13,
         paddingRight: "5px"
       },
       text: {
@@ -35,6 +44,12 @@ var AskContent = React.createClass({
       },
       underline: {
         display: 'none',
+      },
+      totalVote: {
+        position: 'relative',
+        top: 2,
+        width: 15,
+        height: 15,
       }
     };
     var showContent = function () {
@@ -58,12 +73,25 @@ var AskContent = React.createClass({
         expandable={true} >
         {showContent()}
         <div style={styles.vote}>
-          +{totalCount}
+          <VoteUser style={styles.totalVote} color={Colors.grey600} /> {totalCount}
         </div>
         <VoteButton
-          data={this.props.data} />
+          index={this.props.data.index.S}
+          voted={this.state.voted}
+          yesContent={this.props.data.yesContent.S}
+          noContent={this.props.data.noContent.S}
+          yesCount={this.state.yesCount}
+          noCount={this.state.noCount}
+          handle={this.setVotesCount}/>
       </CardText>
     );
+  },
+
+  setVotesCount: function (voted, yesCount, noCount) {
+    this.props.data.voted = this.props.voted ? voted : {S: voted};
+    this.props.data.yesCount.N = yesCount.toString();
+    this.props.data.noCount.N = noCount.toString();
+    this.setState({voted: voted, yesCount: yesCount, noCount: noCount});
   }
 
 });

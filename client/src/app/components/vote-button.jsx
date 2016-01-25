@@ -8,22 +8,18 @@ var AskResult = require('./ask-result.jsx');
 var VotedCheck = require('./svg-icons/voted-check.jsx');
 var VoteButton = React.createClass({
 
-  askId: function () {
-    return this.props.data.index.S;
-  },
-
-  getInitialState: function () {
-    return {voted: false, yesno: '', yesCount: 0, noCount: 0};
+  askIndex: function () {
+    return this.props.index;
   },
 
   render: function () {
     console.log('!!!!!!VoteButton render');
-    var yesContent = this.props.data.yesContent.S;
-    var noContent = this.props.data.noContent.S;
-    var yesCount = parseInt(this.props.data.yesCount.N) + this.state.yesCount;
-    var noCount = parseInt(this.props.data.noCount.N) + this.state.noCount;
+    var yesContent = this.props.yesContent;
+    var noContent = this.props.noContent;
+    var yesCount = this.props.yesCount;
+    var noCount = this.props.noCount;
     var totalCount = yesCount + noCount;
-    var voted = this.state.voted || false; //this.props.data.voted
+    var voted = this.props.voted === 'none' ? false : true;
 
     var styles = {
       full: {
@@ -74,7 +70,7 @@ var VoteButton = React.createClass({
     };
 
     var showResult = function (select) {
-      console.log('!!!!!!show result: ' + select);
+      console.log('!!!!!!show result: ' + select + ' , voted: ' + voted);
       var name = 'yesResult';
       var count = yesCount;
       var barColor = Colors.pink300;
@@ -108,12 +104,12 @@ var VoteButton = React.createClass({
       <div>
         <div style={styles.full}>
           <span style={styles.yesButtonTitle}>YES</span>
-          {showVotedCheck('yes', this.state.yesno)}
+          {showVotedCheck('yes', voted)}
           <FlatButton
             style={styles.yesButton}
             primary={true}
             disabled={voted}
-            onTouchTap={this._handleYesButton} >
+            onTouchTap={this._handleYesButtonTouched} >
             <TextField
               style={styles.yesText}
               underlineStyle={styles.underline}
@@ -128,12 +124,12 @@ var VoteButton = React.createClass({
         {showResult('yes')}
         <div style={{marginTop : 15}}>
           <span style={styles.noButtonTitle}>NO</span>
-          {showVotedCheck('no', this.state.yesno)}
+          {showVotedCheck('no', voted)}
           <FlatButton
             style={styles.noButton}
             secondary={true}
             disabled={voted}
-            onTouchTap={this._handleNoButton} >
+            onTouchTap={this._handleNoButtonTouched} >
             <TextField
               style={styles.noText}
               underlineStyle={styles.underline}
@@ -150,59 +146,80 @@ var VoteButton = React.createClass({
     );
   },
 
-  _handleYesButton: function (e) {
-    console.log('!!!!!!!_handleYesButton');
-    if (this.lastTouchEvent && (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
-      var url = 'http://54.65.152.112:5000/makeNewVote';
-      var query = {};
+  getVoted: function (yesno) {
+    var url = 'http://54.65.152.112:5000/getVoted';
+    var query = {};
+    if (document.user !== undefined && document.user.id !== undefined) {
       query.askerId = document.user.id;
-      query.index = this.askId();
-      query.yesno = 1;
-      $.ajax({
-        url: url,
-        dataType: 'json',
-        data: query,
-        type: 'POST',
-        cache: false,
-        success: function (data) {
-          console.log('!!!!!data: ' + JSON.stringify(data));
-          this.setState({voted: true, yesno: 'yes', yesCount: 1, noCount: 0});
-          this.refs.yesResult.show();
-          this.refs.noResult.show();
+    } else {
+      FB.login(window.loginStatusCallback, {scope: 'public_profile, email'});
+    }
+    query.index = this.askIndex();
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      data:query,
+      type: 'POST',
+      cache: false,
+      success: function (data) {
+        console.log(JSON.stringify(data));
+        if (data.Count > 0 && 'none' !== data.Items[0].voted) {
+          this.props.handle(data.Items[0].voted,
+                            this.props.yesCount,
+                            this.props.noCount);
           window.myVotedAsksState = "UpdatedNeeded";
-        }.bind(this),
-        error: function (xhr, status, err) {
-          console.error(url, status, err.toString());
-        }.bind(this)
-      });
+        } else {
+          this.vote(yesno);
+        }
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(url, status, err.toString());
+      }.bind(this)
+    });
+  },
+
+  vote: function (yesno) {
+    console.log('!!!!!!!   vote');
+    var url = 'http://54.65.152.112:5000/makeNewVote';
+    var query = {};
+    query.askerId = document.user.id;
+    query.index = this.askIndex();
+    query.yesno = yesno === 'yes' ? 1 : 0;
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      data: query,
+      type: 'POST',
+      cache: false,
+      success: function (data) {
+        console.log(JSON.stringify(data));
+        if (data.Count > 0) {
+          this.props.handle(yesno,
+                            parseInt(data.Items[0].yesCount.N),
+                            parseInt(data.Items[0].noCount.N));
+          window.myVotedAsksState = "UpdatedNeeded";
+        }
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(url, status, err.toString());
+      }.bind(this)
+    });
+  },
+
+  _handleYesButtonTouched: function (e) {
+    console.log('!!!!!!!_handleYesButton');
+    if (this.lastTouchEvent &&
+        (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
+      this.getVoted('yes');
     }
     this.lastTouchEvent = e.nativeEvent.timeStamp;
   },
 
-  _handleNoButton: function (e) {
+  _handleNoButtonTouched: function (e) {
     console.log('!!!!!!!_handleNoButton');
-    if (this.lastTouchEvent && (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
-      var url = 'http://54.65.152.112:5000/makeNewVote';
-      var query = {};
-      query.askerId = document.user.id;
-      query.index = this.askId();
-      query.yesno = 0;
-      $.ajax({
-        url: url,
-        dataType: 'json',
-        data: query,
-        type: 'POST',
-        cache: false,
-        success: function (data) {
-          this.setState({voted: true, yesno: 'no', yesCount: 0, noCount: 1});
-          this.refs.yesResult.show();
-          this.refs.noResult.show();
-          window.myVotedAsksState = "UpdatedNeeded";
-        }.bind(this),
-        error: function (xhr, status, err) {
-          console.error(url, status, err.toString());
-        }.bind(this)
-      });
+    if (this.lastTouchEvent &&
+        (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
+      this.getVoted('no');
     }
     this.lastTouchEvent = e.nativeEvent.timeStamp;
   },

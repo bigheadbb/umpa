@@ -20,15 +20,14 @@ var CardList = React.createClass({
       }
     };
 
-    if (this.props.valid === false || this.props.data.length < 1) {
-      console.log(".............. invalid");
+    if (this.props.data.length < 1) {
+      console.log(".............. no data");
       cards = function () {
         return (
           <div></div>
         );
       }();
     } else {
-      console.log(".............. valid");
       cards = this.props.data.map(function (ask) {
         return (
           <Card
@@ -39,7 +38,9 @@ var CardList = React.createClass({
               userName={ask.userName}
               userId={ask.userId}
               date={ask.date}
-              rank={ask.rank} />
+              rank={ask.rank}
+              age={ask.age}
+              gender={ask.gender} />
             <AskContent
               data={ask} />
           </Card>
