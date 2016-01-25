@@ -167,6 +167,7 @@ var VoteButton = React.createClass({
           this.props.handle(data.Items[0].voted,
                             this.props.yesCount,
                             this.props.noCount);
+          window.myVotedAsksState = "UpdatedNeeded";
         } else {
           this.vote(yesno);
         }
@@ -196,6 +197,7 @@ var VoteButton = React.createClass({
           this.props.handle(yesno,
                             parseInt(data.Items[0].yesCount.N),
                             parseInt(data.Items[0].noCount.N));
+          window.myVotedAsksState = "UpdatedNeeded";
         }
       }.bind(this),
       error: function (xhr, status, err) {
