@@ -36,7 +36,7 @@ var VotedAsks = React.createClass({
     if (window.myVotedAsksState === undefined || window.myVotedAsksState === "UpdateNeeded") {
       window.myVotedAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyVotedAsks',
+        url: 'http://54.65.152.112:7000/getMyVotedAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -77,7 +77,7 @@ var VotedAsks = React.createClass({
       query.askerId = document.user.id;
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyVotedAsks',
+        url: 'http://54.65.152.112:7000/getMyVotedAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -103,7 +103,7 @@ var VotedAsks = React.createClass({
     query.askerId = document.user.id;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getMyVotedAsks',
+      url: 'http://54.65.152.112:7000/getMyVotedAsks',
       dataType: 'json',
       data : query,
       type: 'POST',
@@ -167,7 +167,7 @@ var VotedAsks = React.createClass({
     console.log(myVotedAsksItem);
     console.log(myVotedAsksItem.length);
     this.refs.moreButton.showSpinner();
-    this.getMyAsks(myAsks[myAsks.length-1].date.S);
+    this.getMyVotedAsks(myAsks[myAsks.length-1].date.S);
   },
 });
 
