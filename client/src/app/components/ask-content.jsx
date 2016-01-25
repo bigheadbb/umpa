@@ -11,7 +11,7 @@ var AskContent = React.createClass({
 
   getInitialState: function () {
     return {
-      voted: 'none',
+      voted: this.props.data.voted ? this.props.data.voted.S : 'none',
       yesCount: parseInt(this.props.data.yesCount.N),
       noCount: parseInt(this.props.data.noCount.N)
     };
@@ -88,6 +88,9 @@ var AskContent = React.createClass({
   },
 
   setVotesCount: function (voted, yesCount, noCount) {
+    this.props.data.voted = this.props.voted ? voted : {S: voted};
+    this.props.data.yesCount.N = yesCount.toString();
+    this.props.data.noCount.N = noCount.toString();
     this.setState({voted: voted, yesCount: yesCount, noCount: noCount});
   }
 
