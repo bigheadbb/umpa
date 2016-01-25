@@ -7,6 +7,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var Send = require('./svg-icons/send.jsx');
 var Back = require('./svg-icons/back.jsx');
 var SelectTarget = require('./select-target.jsx');
+var MaxLength = 1000;
 
 var CreateNewAsk = React.createClass({
 
@@ -97,30 +98,36 @@ var CreateNewAsk = React.createClass({
               style={styles.textFieldStyle}
               floatingLabelStyle={{color: Colors.grey500}}
               underlineFocusStyle={{borderColor: Colors.grey500}}
+              id="title"
               ref="contentTextField"
               rows={1}
               rowsMax={7}
               floatingLabelText="What do you want to ask?"
-              multiLine={true} />
+              multiLine={true}
+              onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
               floatingLabelStyle={{color: Colors.pink500}}
               underlineFocusStyle={{borderColor: Colors.pink500}}
+              id="yes"
               ref="yesTextField"
               primary={true}
               floatingLabelText="Yes"
               rows={1}
               rowsMax={5}
-              multiLine={true} />
+              multiLine={true}
+              onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
               floatingLabelStyle={{color: Colors.cyan500}}
               underlineFocusStyle={{borderColor: Colors.cyan500}}
+              id="no"
               ref="noTextField"
               floatingLabelText="No"
               rows={1}
               rowsMax={5}
-              multiLine={true} />
+              multiLine={true}
+              onChange={this.countText} />
             <SelectTarget ref="selectTarget" />
           </Paper>
         </div>
@@ -131,6 +138,32 @@ var CreateNewAsk = React.createClass({
     );
   },
 
+  countText: function(e) {
+    var name = e.target.id;
+    var length = e.target.value.length;
+
+    switch(name){
+      case 'title' :
+        if (length > MaxLength)
+          this.refs.contentTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        else
+          this.refs.contentTextField.setErrorText("");
+        break;
+      case 'yes' :
+        if (length > MaxLength)
+          this.refs.yesTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        else
+          this.refs.yesTextField.setErrorText("");
+        break;
+      case 'no' :
+        if(length > MaxLength)
+          this.refs.noTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        else
+          this.refs.noTextField.setErrorText("");
+        break;
+    }    
+  },
+
   handleCreateNewAskTouchTap: function(e) {
     console.log('handleNewAskClick called');
 
@@ -138,9 +171,9 @@ var CreateNewAsk = React.createClass({
     var poll = {};
     poll.askerId = document.user.id;
     poll.askerName = document.user.name;
-    poll.mainContent = this.refs.contentTextField.getValue();
-    poll.yesContent = this.refs.yesTextField.getValue();
-    poll.noContent = this.refs.noTextField.getValue();
+    poll.mainContent = this.refs.contentTextField.getValue().substring(0, 1000);
+    poll.yesContent = this.refs.yesTextField.getValue().substring(0, 1000);
+    poll.noContent = this.refs.noTextField.getValue().substring(0, 1000);
     poll.gender = this.refs.selectTarget.getGender();
     poll.age = this.refs.selectTarget.getAge();
 
