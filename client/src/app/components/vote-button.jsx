@@ -169,6 +169,7 @@ var VoteButton = React.createClass({
           this.setState({voted: true, yesno: 'yes', yesCount: 1, noCount: 0});
           this.refs.yesResult.show();
           this.refs.noResult.show();
+          window.myVotedAsksState = "UpdatedNeeded";
         }.bind(this),
         error: function (xhr, status, err) {
           console.error(url, status, err.toString());
@@ -196,6 +197,7 @@ var VoteButton = React.createClass({
           this.setState({voted: true, yesno: 'no', yesCount: 0, noCount: 1});
           this.refs.yesResult.show();
           this.refs.noResult.show();
+          window.myVotedAsksState = "UpdatedNeeded";
         }.bind(this),
         error: function (xhr, status, err) {
           console.error(url, status, err.toString());
