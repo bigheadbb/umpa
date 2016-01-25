@@ -1,17 +1,17 @@
 var React = require('react');
 var Router = require('react-router');
 var mui = require('material-ui');
-var { Slider, Styles, Tab, Tabs, IconButton, Toolbar, ToolbarGroup } = require('material-ui');
+var { Slider, Styles, Tab, Tabs, IconButton, Toolbar, ToolbarTitle, ToolbarGroup } = require('material-ui');
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var MyVotedCardList = require('./voted-card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 var Back = require('./svg-icons/back.jsx');
+var MoreButton = require('./more-button.jsx');
+
+myVotedAsksItem = {};
 
 var VotedAsks = React.createClass({
-
-  myVotedAsksItem : {
-  },
 
   getInitialState: function () {
     return {data:[]};
@@ -23,6 +23,7 @@ var VotedAsks = React.createClass({
 
     if (document.user === undefined) {
       console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
       return;
     }
 
@@ -41,8 +42,8 @@ var VotedAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
           myVotedAsksItem = data.Items;
+          this.setState({data: myVotedAsksItem});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -65,6 +66,7 @@ var VotedAsks = React.createClass({
 
     if (document.user === undefined) {
       console.log("the user isn't logged yet");
+      this.context.router.transitionTo('new-asks');
       return;
     }
 
@@ -81,7 +83,8 @@ var VotedAsks = React.createClass({
         type: 'POST',
         cache: false,
         success: function (data) {
-          this.setState({data: data.Items});
+          myVotedAsksItem = data.Items;
+          this.setState({data: myVotedAsksItem});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -143,8 +146,12 @@ var VotedAsks = React.createClass({
               <Back />
             </IconButton>
           </ToolbarGroup>
+          <ToolbarTitle text="My Voted Asks" style={styles.toolbarTitle} />
         </Toolbar>
         <MyVotedCardList data={this.state.data}/>
+        <MoreButton
+          ref='moreButton'
+          onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
       </div>
@@ -153,6 +160,14 @@ var VotedAsks = React.createClass({
 
   handleBackButtonTouchTap: function(e) {
     this.context.router.transitionTo('new-asks');
+  },
+
+  handleMoreButtonTouchTap: function() {
+    console.log("handleMoreButtonTouchTap");
+    console.log(myVotedAsksItem);
+    console.log(myVotedAsksItem.length);
+    this.refs.moreButton.showSpinner();
+    this.getMyAsks(myAsks[myAsks.length-1].date.S);
   },
 });
 
