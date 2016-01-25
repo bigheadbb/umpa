@@ -35,7 +35,7 @@ var AskContent = React.createClass({
       vote: {
         textAlign: 'right',
         color : Colors.grey600,
-        fontSize : 13,
+        fontSize : 14,
         paddingRight: "5px"
       },
       text: {
@@ -47,9 +47,9 @@ var AskContent = React.createClass({
       },
       totalVote: {
         position: 'relative',
-        top: 2,
-        width: 15,
-        height: 15,
+        top: 3,
+        width: 17,
+        height: 17,
       }
     };
     var showContent = function () {
