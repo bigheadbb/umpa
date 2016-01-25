@@ -309,7 +309,7 @@ app.post('/makeNewVote', function (req, res) {
         "S": currentTime
       },
       "index": {
-        "S": yesnoIndex+'/'+userId+'#'+currentTime
+        "S": yesnoIndex+'/'+userId
       },
       "yesnoIndex": {
         "S": yesnoIndex
@@ -520,37 +520,32 @@ app.post('/getSearchAsksByTag', function (req, res) {
 app.post('/getVoted', function (req, res) {
   var askerId = req.body.askerId;
   var index = req.body.index;
+  var yesnoPollIndex = index+'/'+askerId;
+  console.log(yesnoPollIndex);
   var params = {
     TableName: 'yesnoPoll',
-    ScanFilter: {
-      userid: {
+    IndexName: 'index-index',
+    KeyConditions: {
+      index: {
         ComparisonOperator: 'EQ',
         AttributeValueList: [
           {
-            S: askerId,
-          }
-        ]
-      },
-      yesnoIndex: {
-        ComparisonOperator: 'EQ',
-        AttributeValueList: [
-          {
-            S: index,
+            S: yesnoPollIndex
           }
         ]
       }
-    },
-    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+    }
   };
 
-  dynamodb.scan(params, function(err, data) {
+  dynamodb.query(params, function(err, data) {
     if (err){
       console.log(err); // an error occurred
+      res.json(err);
     }
     else {
+      console.log(data);
       if (data.Count === 0) {
         console.log("there is no data");
-        console.log(data);
         var noneItem = { "voted" : "none" };
         data.Items.push(noneItem);
       } else if (data.Items[0].yes_no.N === "1") {
