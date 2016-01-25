@@ -309,7 +309,7 @@ app.post('/makeNewVote', function (req, res) {
         "S": currentTime
       },
       "index": {
-        "S": yesnoIndex+'/'+userId+'#'+currentTime
+        "S": yesnoIndex+'/'+userId
       },
       "yesnoIndex": {
         "S": yesnoIndex
@@ -393,43 +393,37 @@ app.post('/makeNewVote', function (req, res) {
   console.log("now updating..");
   dynamodb.updateItem(new_params, function(err, data) {
     if (err) {
-        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-        res.json(err);
-        return;
-    } else {
-        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-    }
-  });
-
-  console.log("get yesCount and noCount start");
-  var params = {
-    TableName: 'yesno',
-    IndexName: 'index-index',
-    KeyConditions: { // indexed attributes to query
-                     // must include the hash key value of the table or index
-      index: {
-        ComparisonOperator: 'EQ',
-        AttributeValueList: [
-          {
-            S: yesnoIndex
-          }
-        ]
-      }
-    }
-  };
-  dynamodb.query(params, function(err, data) {
-    if (err){
-      console.log(err); // an error occurred
+      console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
       res.json(err);
       return;
-    }
-    else {
-      console.log(data); // successful response
-      var nocount = JSON.stringify(data.Items[0].noCount);
-      var yescount = JSON.stringify(data.Items[0].yesCount);
-      console.log("noCount: "+nocount);
-      console.log("yesCount: "+yescount);
-      res.json('{"yesCount" : ' + yescount + ' , noCount" : ' + nocount +'}');
+    } else {
+      console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+      console.log("get yesCount and noCount start");
+      var params = {
+        TableName: 'yesno',
+        IndexName: 'index-index',
+        KeyConditions: { // indexed attributes to query
+        // must include the hash key value of the table or index
+          index: {
+            ComparisonOperator: 'EQ',
+            AttributeValueList: [
+              {
+                S: yesnoIndex
+              }
+            ]
+          }
+        }
+      };
+      dynamodb.query(params, function(err, data) {
+        if (err){
+          console.log(err); // an error occurred
+          res.json(err);
+          return;
+        } else {
+          console.log(data); // successful response
+          res.json(data);
+        }
+      });
     }
   });
 });
@@ -508,12 +502,9 @@ app.post('/getSearchAsksByTag', function (req, res) {
             }
           }
           else {
-            //console.log(yesnoData.Items[0]);
             searchAsks.Items.push(yesnoData.Items[0]);
             searchAsks.Count++;
             searchAsks.ScanCount++;
-            //console.log("data item length :" + data.Items.length);
-            //console.log(it);
             if (data.Items.length === searchAsks.ScanCount) {
               console.log("response searchAsks");
               console.log(searchAsks);
@@ -522,6 +513,50 @@ app.post('/getSearchAsksByTag', function (req, res) {
           }
         });
       }
+    }
+  });
+});
+
+app.post('/getVoted', function (req, res) {
+  var askerId = req.body.askerId;
+  var index = req.body.index;
+  var yesnoPollIndex = index+'/'+askerId;
+  console.log(yesnoPollIndex);
+  var params = {
+    TableName: 'yesnoPoll',
+    IndexName: 'index-index',
+    KeyConditions: {
+      index: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [
+          {
+            S: yesnoPollIndex
+          }
+        ]
+      }
+    }
+  };
+
+  dynamodb.query(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+      res.json(err);
+    }
+    else {
+      console.log(data);
+      if (data.Count === 0) {
+        console.log("there is no data");
+        var noneItem = { "voted" : "none" };
+        data.Items.push(noneItem);
+      } else if (data.Items[0].yes_no.N === "1") {
+        console.log("voted yes");
+        data.Items[0].voted = "yes"
+      } else {
+        console.log("voted no");
+        data.Items[0].voted = "no"
+      }
+      console.log(data); // successful response
+      res.json(data);
     }
   });
 });
