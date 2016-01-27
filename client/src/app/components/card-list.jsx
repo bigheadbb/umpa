@@ -29,6 +29,8 @@ var CardList = React.createClass({
       }();
     } else {
       cards = this.props.data.map(function (ask) {
+        if (ask === null || ask === undefined)
+          return;
         return (
           <Card
             key={ask.index.S}
