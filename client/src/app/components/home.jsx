@@ -100,7 +100,7 @@ var HomePage = React.createClass({
     return (
       <FullWidthSection style={styles.root}>
           <div style={styles.tagline}>
-            <img src="img/yesno.png" style={styles.logo}/>
+            <img src="img/askus.png" style={styles.logo}/>
           </div>
       </FullWidthSection>
     );
