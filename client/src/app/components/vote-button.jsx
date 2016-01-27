@@ -245,6 +245,9 @@ var VoteButton = React.createClass({
     if (this.props.age === undefined)
       return true;
 
+    if (this.props.age.S === "ALL")
+      return true;
+
     if (this.props.age.S === "OVER20") {
       if (document.user.age_range.min > 20) {
         return true;
@@ -268,6 +271,9 @@ var VoteButton = React.createClass({
 
   _checkTargetGender: function () {
     if (this.props.gender === undefined)
+      return true;
+
+    if (this.props.gender.S === "ALL")
       return true;
 
     if (this.props.gender.S === "MAN") {
