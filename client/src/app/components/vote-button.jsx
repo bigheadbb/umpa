@@ -212,9 +212,9 @@ var VoteButton = React.createClass({
           this.props.handle(yesno,
                             parseInt(data.Items[0].yesCount.N),
                             parseInt(data.Items[0].noCount.N));
-
           this.setState({snackbarMessage: "Your choice is " + yesno.toUpperCase()});
           this.refs.snackbar.show();
+          window.myVotedAsksState = "UpdateNeeded";
         }
       }.bind(this),
       error: function (xhr, status, err) {
@@ -293,4 +293,3 @@ var VoteButton = React.createClass({
 });
 
 module.exports = VoteButton;
-
