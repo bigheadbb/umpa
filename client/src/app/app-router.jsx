@@ -11,6 +11,7 @@ var Home = require('./components/home.jsx');
 var NewAsks = require('./components/new-asks.jsx');
 var HotAsks = require('./components/hot-asks.jsx');
 var MyAsks = require('./components/my-asks.jsx');
+var VotedAsks = require('./components/voted-asks.jsx')
 var CreateNewAsk = require('./components/create-new-ask.jsx');
 var SearchAsks = require('./components/search-asks.jsx');
 
@@ -29,6 +30,7 @@ var AppRoutes = (
     <Route name="new-asks" handler={NewAsks} />
     <Route name="hot-asks" handler={HotAsks} />
     <Route name="my-asks" handler={MyAsks} />
+    <Route name="voted-asks" handler={VotedAsks} />
     <Route name="create-new-ask" handler={CreateNewAsk} />
     <Route name="search-asks" handler={SearchAsks} />
     <DefaultRoute handler={Home}/>

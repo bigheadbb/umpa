@@ -130,6 +130,9 @@ var AppLeftNav = React.createClass({
     } else if (payload.text === "My Asks") {
       console.log('My Asks Click');
       this.context.router.transitionTo('my-asks');
+    } else if (payload.text === "Voted Asks") {
+      console.log('Voted Asks Click');
+      this.context.router.transitionTo('Voted-asks');
     }
   },
 
