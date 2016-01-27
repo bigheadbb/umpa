@@ -229,8 +229,8 @@ var Master = React.createClass({
         color: 'white'
       },
       logo: {
-        width: 72,
-        height: 18
+        width: 76,
+        height: 20
       }
     };
 
@@ -241,7 +241,7 @@ var Master = React.createClass({
       <EnhancedButton
         onTouchTap={this._onMainIconTouchTap}>
         <span style={styles.span}>
-          <img src="img/yesno.png" style={styles.logo}/>
+          <img src="img/askus.png" style={styles.logo}/>
         </span>
       </EnhancedButton>);
 
