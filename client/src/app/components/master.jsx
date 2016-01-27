@@ -229,8 +229,8 @@ var Master = React.createClass({
         color: 'white'
       },
       logo: {
-        width: 72,
-        height: 18
+        width: 76,
+        height: 20
       }
     };
 
@@ -241,7 +241,7 @@ var Master = React.createClass({
       <EnhancedButton
         onTouchTap={this._onMainIconTouchTap}>
         <span style={styles.span}>
-          <img src="img/yesno.png" style={styles.logo}/>
+          <img src="img/askus.png" style={styles.logo}/>
         </span>
       </EnhancedButton>);
 
@@ -337,7 +337,7 @@ var Master = React.createClass({
       var dXAbs = Math.abs(currentX - this._touchStartX);
       var dYAbs = Math.abs(currentY - this._touchStartY);
 
-      var thresholdX = 30;
+      var thresholdX = 150;
       var thresholdY = 20;
 
       if (this.refs.rightSideMenu.isOpen() === false) {

@@ -11,6 +11,7 @@ var Colors = mui.Styles.Colors;
 
 var AskResult = require('./ask-result.jsx');
 var VoteButton = require('./vote-button.jsx');
+var VoteUser = require('./svg-icons/vote-user.jsx');
 
 var Author = React.createClass({
   render: function () {
@@ -49,7 +50,7 @@ var Content = React.createClass({
 
     var yesCount = parseInt(this.props.yesCount.N);
     var noCount = parseInt(this.props.noCount.N);
-    var toTotalCount = yesCount + noCount;
+    var totalCount = yesCount + noCount;
 
     var styles = {
       yesButton: {
@@ -66,6 +67,18 @@ var Content = React.createClass({
         fontSize : 14,
         pointerEvents: 'none'
       },
+      vote: {
+        textAlign: 'right',
+        color : Colors.grey600,
+        fontSize : 14,
+        paddingRight: "5px"
+      },
+      totalVote: {
+        position: 'relative',
+        top: 3,
+        width: 17,
+        height: 17,
+      }
     };
     var showContent = function () {
       return (
@@ -80,6 +93,9 @@ var Content = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true} />
+          </div>
+          <div style={styles.vote}>
+            <VoteUser style={styles.totalVote} color={Colors.grey600} /> {totalCount}
           </div>
           <div>
             <span style={{color:Colors.pink500, fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>YES</span>
@@ -101,7 +117,7 @@ var Content = React.createClass({
             ref="yesResult"
             show={true}
             yesNoCount={yesCount}
-            totalCount={toTotalCount}
+            totalCount={totalCount}
             color={Colors.pink300} />
           <div style={{marginTop : 15}}>
             <span style={{color:Colors.cyan500 , fontSize: 9, fontWeight:'bold', paddingLeft: 3}}>NO</span>
@@ -123,7 +139,7 @@ var Content = React.createClass({
             ref="noResult"
             show={true}
             yesNoCount={noCount}
-            totalCount={toTotalCount}
+            totalCount={totalCount}
             color={Colors.cyan500} />
         </div>
       );
