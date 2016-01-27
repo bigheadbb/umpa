@@ -398,6 +398,14 @@ app.post('/getMyVotedAsks', function (req, res) {
               }
             }
             myVotedAsks.Items[order] = yesnoData.Items[0];
+            if (data.Items[order].yes_no.N === "1") {
+              console.log("voted yes");
+              myVotedAsks.Items[order].voted = "yes";
+            } else {
+              console.log("voted no");
+              myVotedAsks.Items[order].voted = "no";
+            }
+
             myVotedAsks.Count++;
           }
           myVotedAsks.ScanCount++;
