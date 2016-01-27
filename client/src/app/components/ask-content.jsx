@@ -11,7 +11,7 @@ var AskContent = React.createClass({
 
   getInitialState: function () {
     return {
-      voted: this.props.data.voted ? this.props.data.voted.S : 'none',
+      voted: this.props.data.voted ? this.props.data.voted : 'none',
       yesCount: parseInt(this.props.data.yesCount.N),
       noCount: parseInt(this.props.data.noCount.N)
     };
@@ -82,13 +82,15 @@ var AskContent = React.createClass({
           noContent={this.props.data.noContent.S}
           yesCount={this.state.yesCount}
           noCount={this.state.noCount}
+          age={this.props.data.age}
+          gender={this.props.data.gender}
           handle={this.setVotesCount}/>
       </CardText>
     );
   },
 
   setVotesCount: function (voted, yesCount, noCount) {
-    this.props.data.voted = this.props.voted ? voted : {S: voted};
+    this.props.data.voted = voted;
     this.props.data.yesCount.N = yesCount.toString();
     this.props.data.noCount.N = noCount.toString();
     this.setState({voted: voted, yesCount: yesCount, noCount: noCount});

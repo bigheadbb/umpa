@@ -1,12 +1,20 @@
 var React = require('react');
 var mui = require('material-ui');
-var {FlatButton,
-  TextField} = mui;
+var {
+  FlatButton,
+  TextField,
+  Snackbar } = mui;
 var Colors = mui.Styles.Colors;
 
 var AskResult = require('./ask-result.jsx');
 var VotedCheck = require('./svg-icons/voted-check.jsx');
 var VoteButton = React.createClass({
+
+  getInitialState: function() {
+    return {
+      snackbarMessage : '',
+    };
+  },
 
   askIndex: function () {
     return this.props.index;
@@ -142,6 +150,10 @@ var VoteButton = React.createClass({
           </FlatButton>
         </div>
         {showResult('no')}
+        <Snackbar
+          ref="snackbar"
+          autoHideDuration={1500}
+          message={this.state.snackbarMessage} />
       </div>
     );
   },
@@ -167,8 +179,12 @@ var VoteButton = React.createClass({
           this.props.handle(data.Items[0].voted,
                             this.props.yesCount,
                             this.props.noCount);
+          this.setState({snackbarMessage: "You already chose " + data.Items[0].voted.toUpperCase()});
+          this.refs.snackbar.show();
         } else {
-          this.vote(yesno);
+          if (this._checkTargetAge() && this._checkTargetGender()) {
+            this.vote(yesno);
+          }
         }
       }.bind(this),
       error: function (xhr, status, err) {
@@ -196,6 +212,9 @@ var VoteButton = React.createClass({
           this.props.handle(yesno,
                             parseInt(data.Items[0].yesCount.N),
                             parseInt(data.Items[0].noCount.N));
+
+          this.setState({snackbarMessage: "Your choice is " + yesno.toUpperCase()});
+          this.refs.snackbar.show();
         }
       }.bind(this),
       error: function (xhr, status, err) {
@@ -221,6 +240,56 @@ var VoteButton = React.createClass({
     }
     this.lastTouchEvent = e.nativeEvent.timeStamp;
   },
+
+  _checkTargetAge: function () {
+    if (this.props.age === undefined)
+      return true;
+
+    if (this.props.age.S === "OVER20") {
+      if (document.user.age_range.min > 20) {
+        return true;
+      } else {
+        this.setState({snackbarMessage: "Only 21 years and older."});
+        this.refs.snackbar.show();
+        return false;
+      }
+    }
+
+    if (this.props.age.S === "UNDER20") {
+      if (document.user.age_range.max <= 20) {
+        return true;
+      } else {
+        this.setState({snackbarMessage: "Only less than 20 years and 20 years."});
+        this.refs.snackbar.show();
+        return false;
+      }
+    }
+  },
+
+  _checkTargetGender: function () {
+    if (this.props.gender === undefined)
+      return true;
+
+    if (this.props.gender.S === "MAN") {
+      if (document.user.gender === "male") {
+        return true;
+      } else {
+        this.setState({snackbarMessage: "Only men can vote"});
+        this.refs.snackbar.show();
+        return false;
+      }
+    }
+
+    if (this.props.gender.S === "WOMAN") {
+      if (document.user.gender === "female") {
+        return true;
+      } else {
+        this.setState({snackbarMessage: "Only women can vote"});
+        this.refs.snackbar.show();
+        return false;
+      }
+    }
+  }
 });
 
 module.exports = VoteButton;
