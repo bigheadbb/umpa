@@ -337,7 +337,7 @@ var Master = React.createClass({
       var dXAbs = Math.abs(currentX - this._touchStartX);
       var dYAbs = Math.abs(currentY - this._touchStartY);
 
-      var thresholdX = 30;
+      var thresholdX = 150;
       var thresholdY = 20;
 
       if (this.refs.rightSideMenu.isOpen() === false) {
