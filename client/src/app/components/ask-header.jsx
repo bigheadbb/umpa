@@ -27,12 +27,12 @@ var AskHeader = React.createClass({
     console.log(this.props.userId.S);
     console.log(this.props.userName.S);
     console.log(this.props.date.S);
+    var secret = this.props.secret === undefined ? "none" : this.props.secret.S;
     var userId = this.props.userId.S;
-    var author = this.props.userName.S;
+    var author = secret === "none" ? this.props.userName.S : secret;
     var yearMonthDay = new Date(parseInt(this.props.date.S)).toDateString();
     var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
     var readable = this.readableDate(this.props.date.S);
-    var profile_photo = "http://graph.facebook.com/"+userId+"/picture?type=small";
     var rank = this.props.rank;
     var age = this.props.age ? this.props.age.S : 'ALL';
     var gender = this.props.gender ? this.props.gender.S : 'ALL';
@@ -41,7 +41,7 @@ var AskHeader = React.createClass({
       <div>
         <div style={styles.author}>
         <CardHeader
-          avatar={<Avatar src={profile_photo}></Avatar>}
+          avatar={this.makeAvata(secret)}
           title={author}
           subtitle={readable}
           showExpandableButton={true} />
@@ -87,6 +87,17 @@ var AskHeader = React.createClass({
     var year = day / 365;
     return year.toFixed(0) + ((year.toFixed(0) <= 1) ? ' year' : ' years');
   },
+
+  makeAvata: function(secret) {
+    if (secret === "none")
+      return <Avatar src={"http://graph.facebook.com/"+this.props.userId.S+"/picture?type=small"}></Avatar>;
+    if (secret === "Mr. Gentleman")
+      return <Avatar>G</Avatar>;
+    if (secret === "Ms. Lady")
+      return <Avatar>L</Avatar>;
+
+    return <Avatar>A</Avatar>;
+  }
 
 });
 
