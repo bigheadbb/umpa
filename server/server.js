@@ -26,6 +26,34 @@ app.all('*', function(req, res, next) {
 });
 
 
+app.get('/scan', function (req, res) {
+  var params = {
+    TableName: 'yesno',
+    ScanFilter: {
+      date: {
+        ComparisonOperator: 'GT',
+        AttributeValueList: [
+          {
+            S: '0'
+          }
+        ]
+      }
+    },
+    Limit : '10',
+    ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
+  };
+
+  dynamodb.scan(params, function(err, data) {
+    if (err){
+      console.log(err); // an error occurred
+    }
+    else {
+      console.log(data); // successful response
+      res.json(data);
+    }
+  });
+});
+
 // makeNewAsks
 app.post('/makeNewAsk', function (req, res) {
   console.log("body: " + JSON.stringify(req.body));
@@ -78,7 +106,10 @@ app.post('/makeNewAsk', function (req, res) {
       },
       "age": {
         "S": req.body.age
-      }
+      },
+      "secret": {
+        "S": req.body.secret
+      ,}
     },
     TableName: 'yesno'
   };
