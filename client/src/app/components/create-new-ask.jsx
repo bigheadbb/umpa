@@ -86,10 +86,15 @@ var CreateNewAsk = React.createClass({
         marginTop: 4,
       },
       checkbox: {
-        marginLeft : "calc(100% - 80px)"
+        width: 70,
+        marginTop: 5,
+        marginLeft : "calc(100% - 65px)"
       },
       checkboxLabel: {
         color: Colors.grey700
+      },
+      checkboxIcon: {
+        marginRight : 6,
       }
     };
 
@@ -148,6 +153,7 @@ var CreateNewAsk = React.createClass({
             <Checkbox
               label="secret"
               ref="secretCheckBox"
+              iconStyle={styles.checkboxIcon}
               labelStyle={styles.checkboxLabel}
               style={styles.checkbox} />
           </Paper>
