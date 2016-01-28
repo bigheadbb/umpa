@@ -184,6 +184,10 @@ var VoteButton = React.createClass({
         } else {
           if (this._checkTargetAge() && this._checkTargetGender()) {
             this.vote(yesno);
+          } else {
+            this.props.handle("show",
+                            this.props.yesCount,
+                            this.props.noCount);
           }
         }
       }.bind(this),
