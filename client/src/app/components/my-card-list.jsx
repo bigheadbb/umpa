@@ -36,8 +36,9 @@ var AskHeader = React.createClass({
     console.log(this.props.userId.S);
     console.log(this.props.userName.S);
     console.log(this.props.date.S);
+    var secret = this.props.secret === undefined ? "none" : this.props.secret.S;
     var userId = this.props.userId.S;
-    var author = this.props.userName.S;
+    var author = secret === "none" ? this.props.userName.S : secret;
     var yearMonthDay = new Date(parseInt(this.props.date.S)).toDateString();
     var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
     var readable = this.readableDate(this.props.date.S);
@@ -50,9 +51,9 @@ var AskHeader = React.createClass({
       <div>
         <div style={styles.author}>
         <CardHeader
-          avatar={<Avatar src={profile_photo}></Avatar>}
+          avatar={this.makeAvata(secret)}
           title={author}
-          subtitle={readable+" ("+yearMonthDay+", "+time+")"}
+          subtitle={readable}
           showExpandableButton={true} />
         </div>
         <div style={styles.crownContainer}>
@@ -96,6 +97,17 @@ var AskHeader = React.createClass({
     var year = day / 365;
     return year.toFixed(0) + ((year.toFixed(0) <= 1) ? ' year' : ' years');
   },
+
+  makeAvata: function(secret) {
+    if (secret === "none")
+      return <Avatar src={"http://graph.facebook.com/"+this.props.userId.S+"/picture?type=small"}></Avatar>;
+    if (secret === "Mr. Gentleman")
+      return <Avatar>G</Avatar>;
+    if (secret === "Ms. Lady")
+      return <Avatar>L</Avatar>;
+
+    return <Avatar>A</Avatar>;
+  }
 });
 
 
@@ -239,7 +251,6 @@ var MyCardList = React.createClass({
               age={ask.age}
               gender={ask.gender}
               secret={ask.secret} />
-            {this.makeSecretCheckBox(ask.secret)}
             <Content mainContent={ask.mainContent}
               yesContent={ask.yesContent}
               noContent={ask.noContent}
@@ -256,29 +267,6 @@ var MyCardList = React.createClass({
       </div>
     );
   },
-
-  makeSecretCheckBox: function(askSecret) {
-    var secret = askSecret === undefined ? "none" : askSecret.S;
-
-    var styles = {
-      checkbox: {
-        marginLeft : "calc(100% - 100px)",
-        marginBottom: 5,
-      },
-      checkboxLabel: {
-        color: Colors.grey700
-      }
-    };
-
-    if (secret !== "none") {
-     return <Checkbox
-              label="secret"
-              defaultChecked={true}
-              disabled={true}
-              labelStyle={styles.checkboxLabel}
-              style={styles.checkbox} />;
-    }
-  }
 });
 
 module.exports = MyCardList;
