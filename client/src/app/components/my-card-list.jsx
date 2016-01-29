@@ -24,7 +24,7 @@ var AskHeader = React.createClass({
         width:'70%',
         float: 'left',
       },
-      crownContainer: {
+      targetContainer: {
         width:'64px',
         height:'72px',
         float:'right',
@@ -39,13 +39,9 @@ var AskHeader = React.createClass({
     var secret = this.props.secret === undefined ? "none" : this.props.secret.S;
     var userId = this.props.userId.S;
     var author = secret === "none" ? this.props.userName.S : secret;
-    var yearMonthDay = new Date(parseInt(this.props.date.S)).toDateString();
-    var time = new Date(parseInt(this.props.date.S)).toTimeString().split(' ')[0];
     var readable = this.readableDate(this.props.date.S);
-    var rank = this.props.rank;
     var age = this.props.age ? this.props.age.S : 'ALL';
     var gender = this.props.gender ? this.props.gender.S : 'ALL';
-    var profile_photo = "http://graph.facebook.com/"+userId+"/picture?type=small";
 
     return (
       <div>
@@ -56,7 +52,7 @@ var AskHeader = React.createClass({
           subtitle={readable}
           showExpandableButton={true} />
         </div>
-        <div style={styles.crownContainer}>
+        <div style={styles.targetContainer}>
           <Gender gender={gender}/>
           <Ages age={age}/>
         </div>
@@ -261,7 +257,6 @@ var MyCardList = React.createClass({
               userName={ask.userName}
               userId={ask.userId}
               date={ask.date}
-              rank={ask.rank}
               age={ask.age}
               gender={ask.gender}
               secret={ask.secret} />
