@@ -14,7 +14,6 @@ var AskResult = require('./ask-result.jsx');
 var VoteButton = require('./vote-button.jsx');
 var VoteUser = require('./svg-icons/vote-user.jsx');
 
-var Crowns = require('./crowns.jsx');
 var Ages = require('./ages.jsx');
 var Gender = require('./gender.jsx');
 
@@ -58,7 +57,6 @@ var AskHeader = React.createClass({
           showExpandableButton={true} />
         </div>
         <div style={styles.crownContainer}>
-          <Crowns rank={rank}/>
           <Gender gender={gender}/>
           <Ages age={age}/>
         </div>
