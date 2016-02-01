@@ -84,7 +84,8 @@ var Master = React.createClass({
       }.bind(this)
     );
 
-    document.body.addEventListener('touchstart', this._onBodyTouchStart);
+    // FIXME : Diable swipe because it makes wrong behavior sometimes
+    //document.body.addEventListener('touchstart', this._onBodyTouchStart);
   },
 
   componentWillMount: function(){
