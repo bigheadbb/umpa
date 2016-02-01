@@ -1,7 +1,17 @@
 var React = require('react');
 var Router = require('react-router');
 var mui = require('material-ui');
-var { Card, FlatButton, IconButton, TextField, Paper, Snackbar, Toolbar, ToolbarGroup, ToolbarTitle, RaisedButton } = mui;
+var { Card,
+  Checkbox,
+  FlatButton,
+  IconButton,
+  TextField,
+  Paper,
+  Snackbar,
+  Toolbar,
+  ToolbarGroup,
+  ToolbarTitle,
+  RaisedButton } = mui;
 var { Colors, Spacing, Typography } = mui.Styles;
 
 var Send = require('./svg-icons/send.jsx');
@@ -74,6 +84,17 @@ var CreateNewAsk = React.createClass({
       },
       iconButton: {
         marginTop: 4,
+      },
+      checkbox: {
+        width: 70,
+        marginTop: 5,
+        marginLeft : "calc(100% - 65px)"
+      },
+      checkboxLabel: {
+        color: Colors.grey700
+      },
+      checkboxIcon: {
+        marginRight : 6,
       }
     };
 
@@ -96,8 +117,8 @@ var CreateNewAsk = React.createClass({
           <Paper style={styles.textFieldContainer}>
             <TextField
               style={styles.textFieldStyle}
-              floatingLabelStyle={{color: Colors.grey500}}
-              underlineFocusStyle={{borderColor: Colors.grey500}}
+              floatingLabelStyle={{color: Colors.grey700}}
+              underlineFocusStyle={{borderColor: Colors.grey700}}
               id="title"
               ref="contentTextField"
               rows={1}
@@ -129,6 +150,12 @@ var CreateNewAsk = React.createClass({
               multiLine={true}
               onChange={this.countText} />
             <SelectTarget ref="selectTarget" />
+            <Checkbox
+              label="secret"
+              ref="secretCheckBox"
+              iconStyle={styles.checkboxIcon}
+              labelStyle={styles.checkboxLabel}
+              style={styles.checkbox} />
           </Paper>
         </div>
         <Snackbar
@@ -176,6 +203,10 @@ var CreateNewAsk = React.createClass({
     poll.noContent = this.refs.noTextField.getValue().substring(0, 1000);
     poll.gender = this.refs.selectTarget.getGender();
     poll.age = this.refs.selectTarget.getAge();
+    poll.secret = this.makeSecretValue();
+
+    console.log("poll");
+    console.log(poll);
 
     if (poll.mainContent.length < 1
        || poll.yesContent.length < 1
@@ -217,6 +248,20 @@ var CreateNewAsk = React.createClass({
   handleBackButtonTouchTap: function(e) {
     this.context.router.transitionTo('new-asks');
   },
+
+  makeSecretValue: function() {
+    if (!this.refs.secretCheckBox.isChecked())
+      return "none";
+
+    if (document.user !== undefined && document.user.gender !== undefined ) {
+      if (document.user.gender === "female")
+        return "Ms. Lady"
+      if (document.user.gender === "male")
+        return "Mr. Gentleman"
+    }
+
+    return "Anonymous"
+  }
 });
 
 CreateNewAsk.contextTypes = {
