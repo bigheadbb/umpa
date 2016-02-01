@@ -19,6 +19,7 @@ var ToggleStarBorder = require('./svg-icons/toggle-star-border.jsx');
 var NavigationMoreButton = require('./svg-icons/navigation-more-button.jsx');
 
 var menuItems = [
+    { type: MenuItem.Types.SUBHEADER , text: 'Asks' },
     { route: 'my-asks', text: 'My Asks' },
     { route: 'voted-asks', text: 'Voted Asks' },
     { type: MenuItem.Types.SUBHEADER , text: 'Setting' },
