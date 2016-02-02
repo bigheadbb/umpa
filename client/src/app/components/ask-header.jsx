@@ -91,10 +91,8 @@ var AskHeader = React.createClass({
   makeAvata: function(secret) {
     if (secret === "none")
       return <Avatar src={"http://graph.facebook.com/"+this.props.userId.S+"/picture?type=small"}></Avatar>;
-    if (secret === "Mr. Gentleman")
-      return <Avatar>G</Avatar>;
-    if (secret === "Ms. Lady")
-      return <Avatar>L</Avatar>;
+    if (secret === "Mr. Gentleman" || secret === "Ms. Lady")
+      return <Avatar src="img/anonymous.png"></Avatar>;
 
     return <Avatar>A</Avatar>;
   }
