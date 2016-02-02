@@ -1,13 +1,8 @@
-var schedule = require('node-schedule');
-
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'ap-northeast-1'});
 var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-exports.startHotAsksScheduler = function() {
-  console.log("startHotAsksScheduler start");
-
-  schedule.scheduleJob('*/10 * * * *', function() {
+makeHotAsks = function() {
     console.log('HotAsksSchedule called, now date : ' + new Date());
     var NUMBER_MAX_VALUE = "999999999999999999999999";
     var language = "*";
@@ -50,6 +45,11 @@ exports.startHotAsksScheduler = function() {
         exports.hotAsks = data;
         console.log(exports.hotAsks); // successful response
       }
-    }); 
-  });
+    });
+}
+
+exports.startHotAsksScheduler = function() {
+  console.log("startHotAsksScheduler start");
+  makeHotAsks();
+  setInterval( makeHotAsks, 600000);
 }
