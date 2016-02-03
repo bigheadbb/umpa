@@ -221,11 +221,14 @@ app.post('/getNewAsks', function (req, res) {
 
 // getHotAsks
 app.post('/getHotAsks', function (req, res) {
-  if (batch.hotAsks !== undefined && batch.hotAsks.Items.length > 0) {
+  if (batch.hotAsks && batch.hotAsks.Items.length > 0) {
     console.log("batch.hotAsks data exist, use this");
-    batch.hotAsks.Items[0]['rank'] = 1;
-    batch.hotAsks.Items[1]['rank'] = 2;
-    batch.hotAsks.Items[2]['rank'] = 3;
+
+    for (var it = 0; it < batch.hotAsks.Items.length; it++) {
+      batch.hotAsks.Items[it]['rank'] = it+1;
+      if (it === 2) break;
+    }
+
     res.json(batch.hotAsks);
     return;
   }
@@ -271,9 +274,12 @@ app.post('/getHotAsks', function (req, res) {
     }
     else {
       console.log(data); // successful response
-      data.Items[0]['rank'] = 1;
-      data.Items[1]['rank'] = 2;
-      data.Items[2]['rank'] = 3;
+      if (data && data.Items.length > 0) {
+        for (var it = 0; it < data.Items.length; it++) {
+          data.Items[it]['rank'] = it+1;
+          if (it === 2) break;
+        }
+      }
       res.json(data);
     }
   });
