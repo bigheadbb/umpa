@@ -168,7 +168,9 @@ var NewAsks = React.createClass({
     console.log(newAsks);
     console.log(newAsks.length);
     this.refs.moreButton.showSpinner();
-    this.getNewAsks(newAsks[newAsks.length-1].date.S);
+    if (newAsks.length !== 0) {
+      this.getNewAsks(newAsks[newAsks.length-1].date.S);
+    }
   },
 });
 

@@ -9,7 +9,7 @@ var WriteButton = require('./write-button.jsx');
 var Back = require('./svg-icons/back.jsx');
 var MoreButton = require('./more-button.jsx');
 
-myVotedAsksItem = {};
+myVotedAsksItem = [];
 
 var VotedAsks = React.createClass({
 
@@ -185,7 +185,9 @@ var VotedAsks = React.createClass({
     console.log(myVotedAsksItem);
     console.log(myVotedAsksItem.length);
     this.refs.moreButton.showSpinner();
-    this.getMyVotedAsks(myVotedAsksItem[myVotedAsksItem.length-1].date.S);
+    if (myVotedAsksItem.length !== 0) {
+      this.getMyVotedAsks(myVotedAsksItem[myVotedAsksItem.length-1].date.S);
+    }
   },
 });
 
@@ -194,3 +196,4 @@ VotedAsks.contextTypes = {
 };
 
 module.exports = VotedAsks;
+

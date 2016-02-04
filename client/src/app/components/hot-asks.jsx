@@ -6,7 +6,7 @@ var { Colors, Spacing, Typography } = mui.Styles;
 var CardList = require('./card-list.jsx');
 var WriteButton = require('./write-button.jsx');
 
-hotAsks = {};
+hotAsks = [];
 
 var HotAsks = React.createClass({
 
@@ -85,3 +85,4 @@ HotAsks.contextTypes = {
 };
 
 module.exports = HotAsks;
+
