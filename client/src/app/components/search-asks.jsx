@@ -11,7 +11,7 @@ var CloseCircle = require('./svg-icons/close-circle.jsx');
 var CardList = require('./card-list.jsx');
 var MoreButton = require('./more-button.jsx');
 
-searchAsks = {};
+searchAsks = [];
 
 var SearchAsks = React.createClass({
 
@@ -211,8 +211,10 @@ var SearchAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(searchAsks);
     console.log(searchAsks.length);
-    this.refs.moreButton.showSpinner();
-    this.getMoreSearchAsksByTag(searchAsks[searchAsks.length-1].date.S);
+    if (searchAsks.length !== 0) {
+      this.refs.moreButton.showSpinner();
+      this.getMoreSearchAsksByTag(searchAsks[searchAsks.length-1].date.S);
+    }
   },
 });
 
@@ -221,3 +223,4 @@ SearchAsks.contextTypes = {
 };
 
 module.exports = SearchAsks;
+

@@ -9,7 +9,7 @@ var WriteButton = require('./write-button.jsx');
 var Back = require('./svg-icons/back.jsx');
 var MoreButton = require('./more-button.jsx');
 
-myAsks = {};
+myAsks = [];
 
 var MyAsks = React.createClass({
 
@@ -169,6 +169,7 @@ var MyAsks = React.createClass({
         <MyCardList data={this.state.data}/>
         <MoreButton
           ref='moreButton'
+          show={myAsks.length === 0 ? 'noShow' : 'showButton'}
           onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
@@ -184,8 +185,10 @@ var MyAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(myAsks);
     console.log(myAsks.length);
-    this.refs.moreButton.showSpinner();
-    this.getMyAsks(myAsks[myAsks.length-1].date.S);
+    if (myAsks.length !== 0) {
+      this.refs.moreButton.showSpinner();
+      this.getMyAsks(myAsks[myAsks.length-1].date.S);
+    }
   },
 });
 
@@ -194,3 +197,4 @@ MyAsks.contextTypes = {
 };
 
 module.exports = MyAsks;
+

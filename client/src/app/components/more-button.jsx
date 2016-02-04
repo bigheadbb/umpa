@@ -5,7 +5,8 @@ var { Colors, } = mui.Styles;
 
 var MoreButton = React.createClass({
   getInitialState: function () {
-    return {show: 'showButton'};
+    // noShow, showButton, showSpinner
+    return {show: this.props.show};
   },
 
   render: function () {
@@ -25,19 +26,27 @@ var MoreButton = React.createClass({
         display: 'block',
         paddingRight: 10
       },
-     };
+      no: {
+        textAlign: 'center',
+        color: Colors.grey500
+      }
+    };
 
-    var showButtonOrSpinner =
-      this.state.show == "showButton" ?
-      <FlatButton
+    var showButtonOrSpinner;
+    if (this.state.show === 'showButton') {
+      showButtonOrSpinner = <FlatButton
         onTouchTap={this.props.onTouchTap}
         label={'more'}
-        style={styles.button} />
-      : <CircularProgress
+        style={styles.button} />;
+    } else if (this.state.show === 'showSpinner') {
+      showButtonOrSpinner = <CircularProgress
         style={styles.spinner}
         mode="indeterminate"
         color={Colors.deepPurple500}
         size={0.5} />;
+    } else {
+      showButtonOrSpinner = <div style={styles.no}>{'NO ASK'}</div>;
+    }
 
     return (
       <div style={styles.buttonArea} >

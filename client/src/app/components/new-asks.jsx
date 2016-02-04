@@ -156,6 +156,7 @@ var NewAsks = React.createClass({
         <CardList data={this.state.data}/>
         <MoreButton
           ref='moreButton'
+          show={newAsks.length === 0 ? 'noShow' : 'showButton'}
           onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
@@ -167,8 +168,10 @@ var NewAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(newAsks);
     console.log(newAsks.length);
-    this.refs.moreButton.showSpinner();
-    this.getNewAsks(newAsks[newAsks.length-1].date.S);
+    if (newAsks.length !== 0) {
+      this.refs.moreButton.showSpinner();
+      this.getNewAsks(newAsks[newAsks.length-1].date.S);
+    }
   },
 });
 
