@@ -184,9 +184,11 @@ var MyAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(myAsks);
     console.log(myAsks.length);
+    this.refs.moreButton.showSpinner();
     if (myAsks.length !== 0) {
-      this.refs.moreButton.showSpinner();
       this.getMyAsks(myAsks[myAsks.length-1].date.S);
+    } else {
+      this.getMyAsks(new Date().getTime().toString());
     }
   },
 });
