@@ -156,6 +156,7 @@ var NewAsks = React.createClass({
         <CardList data={this.state.data}/>
         <MoreButton
           ref='moreButton'
+          show={newAsks.length === 0 ? 'noShow' : 'showButton'}
           onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
