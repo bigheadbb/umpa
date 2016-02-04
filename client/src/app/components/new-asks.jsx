@@ -167,8 +167,8 @@ var NewAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(newAsks);
     console.log(newAsks.length);
-    this.refs.moreButton.showSpinner();
     if (newAsks.length !== 0) {
+      this.refs.moreButton.showSpinner();
       this.getNewAsks(newAsks[newAsks.length-1].date.S);
     }
   },

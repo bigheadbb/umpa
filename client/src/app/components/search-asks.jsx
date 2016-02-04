@@ -211,8 +211,8 @@ var SearchAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(searchAsks);
     console.log(searchAsks.length);
-    this.refs.moreButton.showSpinner();
     if (searchAsks.length !== 0) {
+      this.refs.moreButton.showSpinner();
       this.getMoreSearchAsksByTag(searchAsks[searchAsks.length-1].date.S);
     }
   },
