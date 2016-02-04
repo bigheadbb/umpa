@@ -169,7 +169,6 @@ var MyAsks = React.createClass({
         <MyCardList data={this.state.data}/>
         <MoreButton
           ref='moreButton'
-          show={myAsks.length === 0 ? 'noShow' : 'showButton'}
           onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
