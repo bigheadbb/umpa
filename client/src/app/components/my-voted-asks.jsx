@@ -184,8 +184,8 @@ var VotedAsks = React.createClass({
     console.log("handleMoreButtonTouchTap");
     console.log(myVotedAsksItem);
     console.log(myVotedAsksItem.length);
-    this.refs.moreButton.showSpinner();
     if (myVotedAsksItem.length !== 0) {
+      this.refs.moreButton.showSpinner();
       this.getMyVotedAsks(myVotedAsksItem[myVotedAsksItem.length-1].date.S);
     }
   },
