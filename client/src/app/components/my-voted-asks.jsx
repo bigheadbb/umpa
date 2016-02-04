@@ -169,6 +169,7 @@ var VotedAsks = React.createClass({
         <CardList data={this.state.data}/>
         <MoreButton
           ref='moreButton'
+          show={myVotedAsksItem.length === 0 ? 'noShow' : 'showButton'}
           onTouchTap={this.handleMoreButtonTouchTap} />
       </div>
       <WriteButton />
