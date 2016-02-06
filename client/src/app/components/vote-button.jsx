@@ -232,8 +232,10 @@ var VoteButton = React.createClass({
     if (this.lastTouchEvent &&
         (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
       this.getVoted('yes');
+      this.lastTouchEvent = 0;
+    } else {
+      this.lastTouchEvent = e.nativeEvent.timeStamp;
     }
-    this.lastTouchEvent = e.nativeEvent.timeStamp;
   },
 
   _handleNoButtonTouched: function (e) {
@@ -241,8 +243,10 @@ var VoteButton = React.createClass({
     if (this.lastTouchEvent &&
         (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
       this.getVoted('no');
+      this.lastTouchEvent = 0;
+    } else {
+      this.lastTouchEvent = e.nativeEvent.timeStamp;
     }
-    this.lastTouchEvent = e.nativeEvent.timeStamp;
   },
 
   _checkTargetAge: function () {
