@@ -23,6 +23,7 @@ var CreateNewAsk = React.createClass({
 
   getInitialState: function() {
     return {
+      sent : false,
       result : '',
     };
   },
@@ -109,7 +110,7 @@ var CreateNewAsk = React.createClass({
             </ToolbarGroup>
             <ToolbarTitle text="Make Ask" style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
-              <IconButton style={styles.iconButton} tooltip="Send" onTouchTap={this.handleCreateNewAskTouchTap} >
+              <IconButton style={styles.iconButton} tooltip="Send" disabled={this.sent} onTouchTap={this.handleCreateNewAskTouchTap} >
                 <Send />
               </IconButton>
             </ToolbarGroup>
@@ -194,6 +195,12 @@ var CreateNewAsk = React.createClass({
   handleCreateNewAskTouchTap: function(e) {
     console.log('handleNewAskClick called');
 
+    if (this.sent === true) {
+      console.log('cancel duplicate call');
+      return;
+    }
+
+    this.sent = true;
     var url = 'http://54.65.152.112:5000/makeNewAsk';
     var poll = {};
     poll.askerId = document.user.id;
@@ -213,6 +220,7 @@ var CreateNewAsk = React.createClass({
        || poll.noContent.length < 1) {
       this.setState({result: "One and more text field value were empty"});
       this.refs.snackbar.show();
+      this.sent = false;
       return;
     }
 
@@ -241,6 +249,7 @@ var CreateNewAsk = React.createClass({
       error: function (xhr, status, err) {
         this.setState({result: "Ask create fail.."});
         this.refs.snackbar.show();
+	this.sent = false;
       }.bind(this),
     });
   },
