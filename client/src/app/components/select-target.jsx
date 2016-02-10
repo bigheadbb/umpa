@@ -10,8 +10,8 @@ var MyTheme = require('./my-theme.jsx');
 var SelectTarget = React.createClass({
   getInitialState: function() {
     return {
-      genderValue: '1',
-      ageValue: '1'
+      genderValue: 1,
+      ageValue: 1
     };
   },
 
@@ -42,15 +42,15 @@ var SelectTarget = React.createClass({
     };
 
     this.genderItems = [
-      { payload: '1', text: 'ALL' },
-      { payload: '2', text: 'MAN' },
-      { payload: '3', text: 'WOMAN' },
+      { payload: 1, text: 'ALL' },
+      { payload: 2, text: 'MAN' },
+      { payload: 3, text: 'WOMAN' },
     ];
 
     this.ageItems = [
-      { payload: '1', text: 'ALL' },
-      { payload: '2', text: 'UNDER 20' },
-      { payload: '3', text: 'OVER 20' },
+      { payload: 1, text: 'ALL' },
+      { payload: 2, text: 'UNDER 20' },
+      { payload: 3, text: 'OVER 20' },
     ];
 
     return (
