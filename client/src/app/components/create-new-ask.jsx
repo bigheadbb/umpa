@@ -110,7 +110,11 @@ var CreateNewAsk = React.createClass({
             </ToolbarGroup>
             <ToolbarTitle text="Make Ask" style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
-              <IconButton style={styles.iconButton} tooltip="Send" disabled={this.state.sent} onTouchTap={this.handleCreateNewAskTouchTap} >
+              <IconButton
+                style={styles.iconButton}
+                tooltip="Send"
+                disabled={this.state.sent}
+                onTouchTap={this.handleCreateNewAskTouchTap} >
                 <Send />
               </IconButton>
             </ToolbarGroup>
@@ -249,7 +253,7 @@ var CreateNewAsk = React.createClass({
       error: function (xhr, status, err) {
         this.setState({result: "Ask create fail.."});
         this.refs.snackbar.show();
-	this.setState({sent: false});
+        this.setState({sent: false});
       }.bind(this),
     });
   },
