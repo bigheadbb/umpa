@@ -66,7 +66,7 @@ var Master = React.createClass({
         console.log('master fbLogin statusChangeCallback');
         console.log(e.detail.res);
         var response = e.detail.res;
-        window.loginStatusCallback(response);
+        window.fbLoginStatusCallback(response);
         clearTimeout(timeout);
         this.setState({tabIndex: this._getSelectedIndex()});
 
@@ -77,6 +77,29 @@ var Master = React.createClass({
     );
 
     document.addEventListener("fbUserInfo",
+      function statusChangeCallback(e) {
+        console.log('master fbUserInfo statusChangeCallback');
+        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.refs.snackbar.show();
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoLogin",
+      function statusChangeCallback(e) {
+        console.log('master kakaoLogin statusChangeCallback');
+        console.log(e.detail.res);
+        var response = e.detail.res;
+        window.kakaoLoginStatusCallback(response);
+        clearTimeout(timeout);
+        this.setState({tabIndex: this._getSelectedIndex()});
+
+        if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
+          this.context.router.transitionTo('new-asks');
+        }
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoUserInfo",
       function statusChangeCallback(e) {
         console.log('master fbUserInfo statusChangeCallback');
         this.setState({snackbarMessage: "Hi, " + document.user.name});
@@ -119,7 +142,13 @@ var Master = React.createClass({
     }
     else {
       var valueScope = 'public_profile, email';
-      FB.login(window.loginStatusCallback, { scope: valueScope });
+      FB.login(window.fbLoginStatusCallback, { scope: valueScope });
+    //TODO: add kakao login after applying login dialog
+    /*
+      Kakao.Auth.login({success : function(response) {
+        this.kakaoLoginStatusCallback(response);
+      }.bind(this)});
+    */
     }
   },
 
