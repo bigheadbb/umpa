@@ -34,7 +34,13 @@ var WriteButton = React.createClass({
     }
     else {
       var valueScope = 'public_profile, email';
-      FB.login(window.loginStatusCallback, { scope: valueScope });
+      FB.login(window.fbLoginStatusCallback, { scope: valueScope });
+      //TODO: add kakao login after applying login dialog
+      /*
+      Kakao.Auth.login({success : function(response) {
+        this.kakaoLoginCallback(response);
+      }.bind(this)});
+      */
     }
   },
 });

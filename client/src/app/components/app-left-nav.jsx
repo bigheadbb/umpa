@@ -53,19 +53,23 @@ var AppLeftNav = React.createClass({
         this.setState({user: document.user});
       }.bind(this)
     );
-  },
 
+    document.addEventListener("kakaoUserInfo",
+      function statusChangeCallback(e) {
+        this.setState({user: document.user});
+      }.bind(this)
+    );
+  },
   componentWillUpdate: function() {
     console.log('AppLeftNav componentWillUpdate called');
   },
 
   render: function() {
-    var profile_photo = document.user === undefined ? "" : "http://graph.facebook.com/"+document.user.id+"/picture?type=small";
     var header = (
       <div onTouchTap={this._onHeaderClick}>
         <List style={this.getStyles().ListHead}>
           <ListItem
-            leftAvatar={ document.user === undefined ? <Avatar>A</Avatar> : <Avatar src={profile_photo}></Avatar> }
+            leftAvatar={ document.user === undefined ? <Avatar>A</Avatar> : <Avatar src={document.user.profile_image}></Avatar> }
             primaryText={ document.user === undefined ? "" : document.user.name }
             secondaryText={ document.user === undefined ? "" : document.user.email }
           >
@@ -124,10 +128,20 @@ var AppLeftNav = React.createClass({
     console.log("_onLeftNavChange payload : " + payload);
 
     if (payload.text === "Logout") {
-      console.log('FB Logout Click');
-      FB.logout(function(response) {
-        console.log(response);
-      }.bind(this));
+      if (document.fblogin === "connected") {
+        console.log('FB Logout Click');
+        FB.logout(function(response) {
+          console.log(response);
+        }.bind(this));
+      }
+
+       if (document.kakaologin === "connected") {
+         console.log('Kakao Logout Click');
+         Kakao.Auth.logout(function(response) {
+           this.kakaoLoginStatusCallback(response);
+           window.location.reload();
+         }.bind(this));
+       }
     } else if (payload.text === "My Asks") {
       console.log('My Asks Click');
       this.context.router.transitionTo('my-asks');
