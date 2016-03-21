@@ -5,9 +5,15 @@ var { FloatingActionButton, } = mui;
 var { Colors, } = mui.Styles;
 
 var WritePencil = require('./svg-icons/write-pencil.jsx');
-var CreateNewAsk = require('./create-new-ask.jsx');
+var LoginSel = require('./login-select.jsx');
 
 var WriteButton = React.createClass({
+
+  getInitialState: function() {
+    return {
+      dialOpen : false,
+    };
+  },
 
   render: function() {
     var floatingButtonStyle = {
@@ -24,6 +30,10 @@ var WriteButton = React.createClass({
           onTouchTap={this.handleCreateNewAsksButtonTouchTap}>
           <WritePencil />
         </FloatingActionButton>
+        <LoginSel
+          openstate={this.state.dialOpen}
+          close={this._loginClose}>
+        </LoginSel>
       </div>
     );
   },
@@ -33,9 +43,16 @@ var WriteButton = React.createClass({
       this.context.router.transitionTo('create-new-ask');
     }
     else {
-      var valueScope = 'public_profile, email';
-      FB.login(window.loginStatusCallback, { scope: valueScope });
+      this._loginOpen();
     }
+  },
+
+  _loginOpen: function() {
+    this.setState({dialOpen: true});
+  },
+
+  _loginClose: function() {
+    this.setState({dialOpen: false});
   },
 });
 
