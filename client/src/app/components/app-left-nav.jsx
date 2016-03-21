@@ -138,7 +138,7 @@ var AppLeftNav = React.createClass({
        if (document.kakaologin === "connected") {
          console.log('Kakao Logout Click');
          Kakao.Auth.logout(function(response) {
-           this.kakaoLoginStatusCallback(response);
+           window.kakaoLoginStatusCallback(response);
            window.location.reload();
          }.bind(this));
        }
