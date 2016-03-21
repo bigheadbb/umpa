@@ -130,7 +130,7 @@ module.exports = React.createClass({
   handleLogInClick: function() {
     console.log('Kakao Login Click');
     Kakao.Auth.login({success : function(response) {
-      this.kakaoLoginCallback(response);
+      this.kakaoLoginStatusCallback(response);
     }.bind(this)});
   },
 

@@ -146,7 +146,7 @@ var Master = React.createClass({
     //TODO: add kakao login after applying login dialog
     /*
       Kakao.Auth.login({success : function(response) {
-        this.kakaoLoginCallback(response);
+        this.kakaoLoginStatusCallback(response);
       }.bind(this)});
     */
     }

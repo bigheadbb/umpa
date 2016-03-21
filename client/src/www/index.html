@@ -46,7 +46,7 @@
           }
         });
         document.dispatchEvent(event);
-      }, true);
+      });
     };
 
     // Load the Kakao SDK asynchronously
@@ -121,6 +121,19 @@
       } else {
         console.log("the user isn't connected in to Kakao. Go login");
         document.kakaologin = "not_connected";
+      }
+    }
+
+    window.kakaoLoginSuccessCallback = function(response) {
+      console.log("kakaoLoginSuccessCallback");
+      console.log(response);
+
+      if (response !== undefined) {
+        Kakao.Auth.getStatus(function(e) {
+          window.kakaoLoginStatusCallback(e);
+        });
+      } else {
+        console.log("failed kakao login");
       }
     }
 
