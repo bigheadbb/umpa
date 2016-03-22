@@ -94,6 +94,8 @@ var AskHeader = React.createClass({
   },
 
   makeAvata: function(secret) {
+    //FIXME: Avatar src should be changed to each user's profile_image
+    //       after adding profile_image field in db table
     if (secret === "none")
       return <Avatar src={"http://graph.facebook.com/"+this.props.userId.S+"/picture?type=small"}></Avatar>;
     if (secret === "Mr. Gentleman" || secret === "Ms. Lady")

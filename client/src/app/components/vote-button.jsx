@@ -164,7 +164,13 @@ var VoteButton = React.createClass({
     if (document.user !== undefined && document.user.id !== undefined) {
       query.askerId = document.user.id;
     } else {
-      FB.login(window.loginStatusCallback, {scope: 'public_profile, email'});
+      FB.login(window.fbLoginStatusCallback, {scope: 'public_profile, email'});
+      //TODO: add kakao login after applying login dialog
+      /*
+      Kakao.Auth.login({success : function(response) {
+        this.kakaoLoginStatusCallback(response);
+      }.bind(this)});
+      */
     }
     query.index = this.askIndex();
     $.ajax({

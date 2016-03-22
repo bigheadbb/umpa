@@ -34,6 +34,109 @@
       s.parentNode.insertBefore(wf, s);
     })();
 
+    window.kakaoAsyncInit = function() {
+      Kakao.init("47815e0c965eecee6714c398085d482d");
+      console.log("Kakao.init called");
+
+      Kakao.Auth.getStatus(function(response) {
+        console.log("Kakao.Auth.getStatus called");
+        var event = new CustomEvent("kakaoLogin", {
+          detail: {
+              res: response
+          }
+        });
+        document.dispatchEvent(event);
+      });
+    };
+
+    // Load the Kakao SDK asynchronously
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
+/*
+        var done = false;
+        js.onload = js.onreadystatechange = function() {
+          if (!done && (!this.readyState || this.readyState === "loaded" ||
+              this.readyState === "complete")) {
+            done = true;
+            if (typeof window.kakaoAsyncInit === 'function') {
+              window.kakaoAsyncInit();
+            }
+            // Handle memory Leak in IE
+            js.onload = js.onreadystatechange = null;
+            if (fjs && js.parentNode) {
+              fjs.parentNode.removeChild(js);
+            }
+          }
+        }
+*/
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'kakao-jssdk'));
+
+    window.kakaoLoginStatusCallback = function(response) {
+      console.log('kakaoLoginStatusCallback');
+      console.log(response);
+      // app know the current login status of the person.
+      // Full docs on the response object can be found in the documentation
+      // for Kakao.Auth.getStatus().
+      if (response.status === 'connected') {
+        console.log('response.status is connected');
+        var uid = response.user.id;
+        var accessToken = Kakao.Auth.getAccessToken();
+        console.log('uid is : ' + uid);
+        console.log('accessToken is : ' + accessToken);
+
+        document.kakaologin = "connected";
+        // Logged into your app and kakao.
+        Kakao.API.request({
+          url: '/v1/user/me',
+          success: function(res) {
+            console.log('Successful login for: ' + res.id);
+            //doucument.user info must be configured identically with FB case
+	    document.user = {};
+            document.user.id = res.id;
+            document.user.name = res.properties.nickname;
+            document.user.gender = null;
+            document.user.email = null;
+            document.user.age_range = {};
+            document.user.age_range.min = 0;
+            document.user.age_range.max = 0;
+            document.user.profile_image = res.properties.thumbnail_image;
+
+            var event = new CustomEvent("kakaoUserInfo", {
+              detail: {
+                  userInfo: res
+              }
+            });
+            document.dispatchEvent(event);
+
+            console.log(res);
+          },
+          fail: function(error) {
+            alert(JSON.stringify(error))
+          }
+        });
+      } else {
+        console.log("the user isn't connected in to Kakao. Go login");
+        document.kakaologin = "not_connected";
+      }
+    }
+
+    window.kakaoLoginSuccessCallback = function(response) {
+      console.log("kakaoLoginSuccessCallback");
+      console.log(response);
+
+      if (response !== undefined) {
+        Kakao.Auth.getStatus(function(e) {
+          window.kakaoLoginStatusCallback(e);
+        });
+      } else {
+        console.log("failed kakao login");
+      }
+    }
+
     window.fbAsyncInit = function() {
       FB.init({
         appId      : '1685234781763535', //1685234781763535, 1632008093752871
@@ -78,8 +181,8 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    window.loginStatusCallback = function(response) {
-      console.log('loginStatusCallback');
+    window.fbLoginStatusCallback = function(response) {
+      console.log('fbLoginStatusCallback');
       console.log(response);
       // The response object is returned with a status field that lets the
       // app know the current login status of the person.
@@ -98,6 +201,7 @@
         FB.api('/me', {fields: 'id,name,email,age_range,gender'}, function(res) {
           console.log('Successful login for: ' + res.name);
           document.user = res;
+          document.user.profile_image = "http://graph.facebook.com/"+document.user.id+"/picture?type=small";
 
           var event = new CustomEvent("fbUserInfo", {
             detail: {

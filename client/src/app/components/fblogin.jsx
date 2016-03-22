@@ -75,13 +75,13 @@ module.exports = React.createClass({
         console.log('fbLogin statusChangeCallback');
         console.log(e.detail.res);
         var response = e.detail.res;
-        this.loginStatusCallback(e.detail.res)
+        this.fbLoginStatusCallback(e.detail.res)
       }.bind(this)
     );
   },
 
-  loginStatusCallback: function(response) {
-    console.log('loginStatusCallback');
+  fbLoginStatusCallback: function(response) {
+    console.log('fbLoginStatusCallback');
     console.log(response);
     // The response object is returned with a status field that lets the
     // app know the current login status of the person.
@@ -146,13 +146,13 @@ module.exports = React.createClass({
   handleLogInClick: function() {
     console.log('FB Login Click');
     var valueScope = this.props.scope || 'public_profile, email';
-    FB.login(this.loginStatusCallback, { scope: valueScope });
+    FB.login(this.fbLoginStatusCallback, { scope: valueScope });
   },
 
   handleLogOutClick: function() {
     console.log('FB Logout Click');
     FB.logout(function(response) {
-      this.loginStatusCallback(response);
+      this.fbLoginStatusCallback(response);
     }.bind(this));
   },
 

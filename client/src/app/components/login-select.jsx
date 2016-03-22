@@ -42,7 +42,17 @@ var LoginSel = React.createClass({
         position: 'absolute',
         top: '7px',
         left: '50px'
+      },
+      closeText: {
+        color: Colors.white,
+        fontSize: '15px',
+        fontWeight: '350',
+        height: '50px',
+        position: 'absolute',
+        top: '7px',
+        left: '100px'
       }
+
     };
 
     login = this.props.openstate;
@@ -54,7 +64,7 @@ var LoginSel = React.createClass({
           contentStyle={styles.loginDial}
           open={login}>
           <div style={styles.loginRoot}>
-            <FlatButton style={styles.loginBt} onTouchTap={this._onClose}>
+            <FlatButton style={styles.loginBt} onTouchTap={this._logInKakao}>
               <img src="img/kakaolong.png" style={styles.loginIcon}/>
               <div style={styles.kakaoText}>KakaoTalk</div>
             </FlatButton>
@@ -63,6 +73,12 @@ var LoginSel = React.createClass({
             <FlatButton style={styles.loginBt} onTouchTap={this._logInFB}>
               <img src="img/facebooklong.png" style={styles.loginIcon}/>
               <div style={styles.facebookText}>Facebook</div>
+            </FlatButton>
+          </div>
+          <div style={styles.loginRoot}>
+            <FlatButton style={styles.loginBt} onTouchTap={this._onClose}>
+              <img style={styles.loginIcon}/>
+              <div style={styles.closeText}>Close</div>
             </FlatButton>
           </div>
         </Dialog>
@@ -74,10 +90,17 @@ var LoginSel = React.createClass({
   	this.props.close();
   },
 
+  _logInKakao: function() {
+    this._onClose();
+    Kakao.Auth.login({success : function(response) {
+      window.kakaoLoginSuccessCallback(response);
+    }});
+  },
+
   _logInFB: function() {
     this._onClose();
-  	var valueScope = 'public_profile, email';
-    FB.login(window.loginStatusCallback, { scope: valueScope });
+    var valueScope = 'public_profile, email';
+    FB.login(window.fbLoginStatusCallback, { scope: valueScope });
   },
 });
 
