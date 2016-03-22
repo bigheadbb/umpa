@@ -8,11 +8,13 @@ var Colors = mui.Styles.Colors;
 
 var AskResult = require('./ask-result.jsx');
 var VotedCheck = require('./svg-icons/voted-check.jsx');
+var LoginSel = require('./login-select.jsx');
 var VoteButton = React.createClass({
 
   getInitialState: function() {
     return {
       snackbarMessage : '',
+      dialOpen : false,
     };
   },
 
@@ -154,6 +156,10 @@ var VoteButton = React.createClass({
           ref="snackbar"
           autoHideDuration={1500}
           message={this.state.snackbarMessage} />
+        <LoginSel
+          openstate={this.state.dialOpen}
+          close={this._loginClose}>
+        </LoginSel>
       </div>
     );
   },
@@ -164,13 +170,7 @@ var VoteButton = React.createClass({
     if (document.user !== undefined && document.user.id !== undefined) {
       query.askerId = document.user.id;
     } else {
-      FB.login(window.fbLoginStatusCallback, {scope: 'public_profile, email'});
-      //TODO: add kakao login after applying login dialog
-      /*
-      Kakao.Auth.login({success : function(response) {
-        this.kakaoLoginStatusCallback(response);
-      }.bind(this)});
-      */
+      this._loginOpen();
     }
     query.index = this.askIndex();
     $.ajax({
@@ -309,7 +309,15 @@ var VoteButton = React.createClass({
         return false;
       }
     }
-  }
+  },
+
+  _loginOpen: function() {
+    this.setState({dialOpen: true});
+  },
+
+  _loginClose: function() {
+    this.setState({dialOpen: false});
+  },
 });
 
 module.exports = VoteButton;
