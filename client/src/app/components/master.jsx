@@ -8,6 +8,7 @@ var LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme')
 var UserSetting = require('./svg-icons/user-setting.jsx');
 var Search = require('./svg-icons/search.jsx');
 var Home = require('./home.jsx');
+var LoginSel = require('./login-select.jsx');
 
 var { AppBar,
       AppCanvas,
@@ -41,6 +42,7 @@ var Master = React.createClass({
     return {
       tabIndex : '0',
       snackbarMessage : '',
+      dialOpen : false,
     };
   },
 
@@ -141,14 +143,7 @@ var Master = React.createClass({
       this.refs.rightSideMenu.toggle();
     }
     else {
-      var valueScope = 'public_profile, email';
-      FB.login(window.fbLoginStatusCallback, { scope: valueScope });
-    //TODO: add kakao login after applying login dialog
-    /*
-      Kakao.Auth.login({success : function(response) {
-        this.kakaoLoginStatusCallback(response);
-      }.bind(this)});
-    */
+      this._loginOpen();
     }
   },
 
@@ -341,6 +336,10 @@ var Master = React.createClass({
           ref="snackbar"
           autoHideDuration={2000}
           message={this.state.snackbarMessage} />
+        <LoginSel
+          openstate={this.state.dialOpen}
+          close={this._loginClose}>
+        </LoginSel>
       </div>
     );
   },
@@ -396,6 +395,14 @@ var Master = React.createClass({
 
     document.body.removeEventListener('touchend', this._onBodyTouchEnd);
     document.body.removeEventListener('touchcancel', this._onBodyTouchEnd);
+  },
+
+  _loginOpen: function() {
+    this.setState({dialOpen: true});
+  },
+
+  _loginClose: function() {
+    this.setState({dialOpen: false});
   },
 
 });
