@@ -11,17 +11,22 @@ var LoginSel = React.createClass({
       dialCont: {
         maxWidth: '350px',
       },
+      dialTitle: {
+        backgroundColor: Colors.grey300,
+        height: '40px',
+        paddingTop: '35px',        
+      },
       loginKaKaoBt: {
         width: '100%',
         height: '45px',
         float: 'left',
-        marginTop: '5px'
+        marginTop: '5px',
       },
       loginFaceBookBt: {
         width: '100%',
         height: '45px',
         float: 'left',
-        marginTop: '5px'
+        marginTop: '5px',
       },
       kakaoText: {
         color: "#3c1e1e",
@@ -47,6 +52,7 @@ var LoginSel = React.createClass({
         <Dialog
           title="Sign in"
           contentStyle={styles.dialCont}
+          titleStyle={styles.dialTitle}
           actions={actions}
           open={login}>
           <FlatButton
