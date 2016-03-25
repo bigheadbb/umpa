@@ -43,6 +43,7 @@ var CardList = React.createClass({
               rank={ask.rank}
               age={ask.age}
               gender={ask.gender}
+              profileImage={ask.profileImage}
               secret={ask.secret} />
             <AskContent
               data={ask} />

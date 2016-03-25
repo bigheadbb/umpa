@@ -42,12 +42,13 @@ var AskHeader = React.createClass({
     var readable = this.readableDate(this.props.date.S);
     var age = this.props.age ? this.props.age.S : 'ALL';
     var gender = this.props.gender ? this.props.gender.S : 'ALL';
+    var profile_image = this.props.profileImage ? this.props.profileImage.S : undefined;
 
     return (
       <div>
         <div style={styles.author}>
         <CardHeader
-          avatar={this.makeAvata(secret)}
+          avatar={this.makeAvata(secret, profile_image)}
           title={author}
           subtitle={readable}
           showExpandableButton={true} />
@@ -93,15 +94,17 @@ var AskHeader = React.createClass({
     return year.toFixed(0) + ((year.toFixed(0) <= 1) ? ' year' : ' years');
   },
 
-  makeAvata: function(secret) {
-    //FIXME: Avatar src should be changed to each user's profile_image
-    //       after adding profile_image field in db table
-    if (secret === "none")
-      return <Avatar src={"http://graph.facebook.com/"+this.props.userId.S+"/picture?type=small"}></Avatar>;
-    if (secret === "Mr. Gentleman" || secret === "Ms. Lady")
+  makeAvata: function(secret, profile_image) {
+    if (secret === "none") {
+      if (profile_image)
+        return <Avatar src={profile_image}></Avatar>;
+      else // For legacy asks
+        return <Avatar src={"http://graph.facebook.com/"+this.props.userId.S+"/picture?type=small"}></Avatar>;
+    }
+    if (secret === "Mr. Gentleman" || secret === "Ms. Lady" || secret === "Anonymous")
       return <Avatar src="img/anonymous.png"></Avatar>;
 
-    return <Avatar>A</Avatar>;
+    return <Avatar>A</Avatar>
   }
 });
 
@@ -259,6 +262,7 @@ var MyCardList = React.createClass({
               date={ask.date}
               age={ask.age}
               gender={ask.gender}
+              profileImage={ask.profileImage}
               secret={ask.secret} />
             <Content mainContent={ask.mainContent}
               yesContent={ask.yesContent}

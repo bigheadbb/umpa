@@ -95,8 +95,8 @@
           success: function(res) {
             console.log('Successful login for: ' + res.id);
             //doucument.user info must be configured identically with FB case
-	    document.user = {};
-            document.user.id = res.id;
+            document.user = {};
+            document.user.id = "kakao"+res.id;
             document.user.name = res.properties.nickname;
             document.user.gender = null;
             document.user.email = null;
