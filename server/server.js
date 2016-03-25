@@ -109,7 +109,10 @@ app.post('/makeNewAsk', function (req, res) {
       },
       "secret": {
         "S": req.body.secret
-      ,}
+      },
+      "profileImage": {
+        "S": req.body.profileImage
+      },
     },
     TableName: 'yesno'
   };
