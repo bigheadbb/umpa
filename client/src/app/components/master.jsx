@@ -8,6 +8,7 @@ var LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme')
 var UserSetting = require('./svg-icons/user-setting.jsx');
 var Search = require('./svg-icons/search.jsx');
 var Home = require('./home.jsx');
+var LoginSel = require('./login-select.jsx');
 
 var { AppBar,
       AppCanvas,
@@ -41,6 +42,7 @@ var Master = React.createClass({
     return {
       tabIndex : '0',
       snackbarMessage : '',
+      dialOpen : false,
     };
   },
 
@@ -66,7 +68,7 @@ var Master = React.createClass({
         console.log('master fbLogin statusChangeCallback');
         console.log(e.detail.res);
         var response = e.detail.res;
-        window.loginStatusCallback(response);
+        window.fbLoginStatusCallback(response);
         clearTimeout(timeout);
         this.setState({tabIndex: this._getSelectedIndex()});
 
@@ -77,6 +79,29 @@ var Master = React.createClass({
     );
 
     document.addEventListener("fbUserInfo",
+      function statusChangeCallback(e) {
+        console.log('master fbUserInfo statusChangeCallback');
+        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.refs.snackbar.show();
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoLogin",
+      function statusChangeCallback(e) {
+        console.log('master kakaoLogin statusChangeCallback');
+        console.log(e.detail.res);
+        var response = e.detail.res;
+        window.kakaoLoginStatusCallback(response);
+        clearTimeout(timeout);
+        this.setState({tabIndex: this._getSelectedIndex()});
+
+        if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
+          this.context.router.transitionTo('new-asks');
+        }
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoUserInfo",
       function statusChangeCallback(e) {
         console.log('master fbUserInfo statusChangeCallback');
         this.setState({snackbarMessage: "Hi, " + document.user.name});
@@ -118,8 +143,7 @@ var Master = React.createClass({
       this.refs.rightSideMenu.toggle();
     }
     else {
-      var valueScope = 'public_profile, email';
-      FB.login(window.loginStatusCallback, { scope: valueScope });
+      this._loginOpen();
     }
   },
 
@@ -312,6 +336,10 @@ var Master = React.createClass({
           ref="snackbar"
           autoHideDuration={2000}
           message={this.state.snackbarMessage} />
+        <LoginSel
+          openstate={this.state.dialOpen}
+          close={this._loginClose}>
+        </LoginSel>
       </div>
     );
   },
@@ -367,6 +395,14 @@ var Master = React.createClass({
 
     document.body.removeEventListener('touchend', this._onBodyTouchEnd);
     document.body.removeEventListener('touchcancel', this._onBodyTouchEnd);
+  },
+
+  _loginOpen: function() {
+    this.setState({dialOpen: true});
+  },
+
+  _loginClose: function() {
+    this.setState({dialOpen: false});
   },
 
 });
