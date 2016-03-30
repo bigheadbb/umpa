@@ -5,6 +5,7 @@ var Colors = mui.Styles.Colors;
 
 var AskContent = require('./ask-content.jsx');
 var AskHeader = require('./ask-header.jsx');
+var ShareAsk = require('./share-ask.jsx');
 
 var CardList = React.createClass({
   render: function () {
@@ -47,6 +48,7 @@ var CardList = React.createClass({
               secret={ask.secret} />
             <AskContent
               data={ask} />
+            <ShareAsk />
           </Card>
         );
       });

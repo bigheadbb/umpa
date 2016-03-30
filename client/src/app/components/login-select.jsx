@@ -54,7 +54,9 @@ var LoginSel = React.createClass({
           contentStyle={styles.dialCont}
           titleStyle={styles.dialTitle}
           actions={actions}
-          open={login}>
+          open={login}
+          modal={false}
+          onRequestClose={this._onClose}>
           <FlatButton
             style={styles.loginKaKaoBt}
             backgroundColor="#fce808"
