@@ -14,6 +14,7 @@ var MyAsks = require('./components/my-asks.jsx');
 var VotedAsks = require('./components/my-voted-asks.jsx')
 var CreateNewAsk = require('./components/create-new-ask.jsx');
 var SearchAsks = require('./components/search-asks.jsx');
+var AsksByIndex = require('./components/ask-by-index.jsx');
 
 /** Routes: https://github.com/rackt/react-router/blob/master/docs/api/components/Route.md
   *
@@ -33,6 +34,7 @@ var AppRoutes = (
     <Route name="voted-asks" handler={VotedAsks} />
     <Route name="create-new-ask" handler={CreateNewAsk} />
     <Route name="search-asks" handler={SearchAsks} />
+    <Route name="ask-by-index" handler={AsksByIndex} />
     <DefaultRoute handler={Home}/>
   </Route>
 );
