@@ -205,7 +205,7 @@ var CreateNewAsk = React.createClass({
     }
 
     this.setState({sent: true});
-    var url = 'http://54.65.152.112:5000/makeNewAsk';
+    var url = window.server.url+'/makeNewAsk';
     var poll = {};
     poll.askerId = document.user.id;
     poll.askerName = this.refs.secretCheckBox.isChecked() ? "Anonymous" : document.user.name;

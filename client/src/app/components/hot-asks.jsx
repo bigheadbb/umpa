@@ -24,7 +24,7 @@ var HotAsks = React.createClass({
     if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
       window.hotAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getHotAsks',
+        url: window.server.url+'/getHotAsks',
         dataType: 'json',
         data : query,
         type: 'POST',

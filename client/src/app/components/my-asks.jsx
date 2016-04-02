@@ -36,7 +36,7 @@ var MyAsks = React.createClass({
     if (window.myAsksState === undefined || window.myAsksState === "UpdateNeeded") {
       window.myAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyAsks',
+        url: window.server.url+'/getMyAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -77,7 +77,7 @@ var MyAsks = React.createClass({
       query.askerId = document.user.id;
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyAsks',
+        url: window.server.url+'/getMyAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -103,7 +103,7 @@ var MyAsks = React.createClass({
     query.askerId = document.user.id;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getMyAsks',
+      url: window.server.url+'/getMyAsks',
       dataType: 'json',
       data : query,
       type: 'POST',
