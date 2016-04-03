@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var Clipboard = require('react-copy-to-clipboard');
 var mui = require('material-ui');
 var { FlatButton, Dialog, TextField, IconButton, RaisedButton } = mui;
 var Colors = mui.Styles.Colors;
@@ -10,6 +11,8 @@ var ShareAsk = React.createClass({
   getInitialState: function() {
     return {
       dialOpen : false,
+      shareUrl : '',
+      result : '',
     };
   },
 
@@ -73,24 +76,66 @@ var ShareAsk = React.createClass({
             <img src="img/facebook-box.png" style={styles.logo}/>
             <div style={styles.fontSt}>Facebook</div>
           </FlatButton>
-          <FlatButton
-            style={styles.shareBt}
-            onTouchTap={this._share} >
-            <img src="img/paperclip.png" style={styles.logo}/>
-            <div style={styles.fontSt}>Copy URL</div>
-          </FlatButton>
+          <Clipboard
+            text={this.state.shareUrl}
+            onCopy={this.handleCopy} >
+            <FlatButton
+              style={styles.shareBt}
+              onTouchTap={this._share} >
+              <img src="img/paperclip.png" style={styles.logo}/>
+              <div style={styles.fontSt}>Copy URL</div>
+            </FlatButton>
+          </Clipboard>
         </Dialog>
       </div>
     );
   },
 
-  _share: function() {
+  _kakaotalkShare: function() {
+    Kakao.Link.sendTalkLink({
+      label: 'What is your choice?',
+      image: {
+        src: 'http://askus.me/img/askus.png',
+	width: '300',
+	height: '200'
+      },
+      webButton: {
+        text: 'Go to vote!',
+	url: "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex,
+        //TODO : enable askus url after applying to master
+	//url: 'http://askus.me/#/ask-by-index?index=' + this.props.shareIndex,
+      },
+      //TODO: add marketParams after release Native App
+      fail: function() {
+          console.log('not supported platform');
+          this.setState({result: "not supported device"});
+          this.refs.snackbar.show();
+      }.bind(this),
+    });
+  },
+
+  _facebookShare: function() {
     /* TO DO
-     * Make URL and share to kakao/Facebook/URL */
+     * Make URL and share to Facebook */
+  },
+
+  _share: function() {
+    console.log('copy url!!!!!!');
+    console.log(this.props.shareIndex);
+    var url = "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex;
+    console.log(url);
+    this.setState({shareUrl: url});
+    //TODO : enable askus url after applying to master
+    //'http://askus.me/#/ask-by-index?index=' + this.props.shareIndex
   },
 
   _onClose: function() {
     this.setState({dialOpen: false});
+  },
+
+  handleCopy: function() {
+    this.setState({result: "success copy this ask's url"});
+    this.refs.snackbar.show();
   },
 
   handleShareButtonTouchTap: function() {
