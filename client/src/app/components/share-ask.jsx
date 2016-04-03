@@ -66,7 +66,7 @@ var ShareAsk = React.createClass({
           onRequestClose={this._onClose}>
           <FlatButton
             style={styles.shareBt}
-            onTouchTap={this._share} >
+            onTouchTap={this._kakaotalkShare} >
             <img src="img/kakaoIcon.png" style={styles.logo}/>
             <div style={styles.fontSt}>Kakaotalk</div>
           </FlatButton>
