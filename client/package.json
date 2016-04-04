@@ -35,6 +35,7 @@
   "dependencies": {
     "material-ui": "0.13.4",
     "react": "0.14.6",
+    "react-copy-to-clipboard": "^4.0.2",
     "react-dom": "0.14.6",
     "react-router": "0.13.5",
     "react-tap-event-plugin": "0.2.1"
