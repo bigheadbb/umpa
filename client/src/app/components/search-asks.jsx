@@ -133,7 +133,7 @@ var SearchAsks = React.createClass({
     query.date = dateTime ? dateTime : now;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getSearchAsksByTag',
+      url: window.server.url+'/getSearchAsksByTag',
       dataType: 'json',
       data : query,
       type: 'POST',
@@ -163,7 +163,7 @@ var SearchAsks = React.createClass({
     query.date = dateTime ? dateTime : now;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getSearchAsksByTag',
+      url: window.server.url+'/getSearchAsksByTag',
       dataType: 'json',
       data : query,
       type: 'POST',

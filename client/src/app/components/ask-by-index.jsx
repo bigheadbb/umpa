@@ -19,7 +19,7 @@ var AskByIdex = React.createClass({
     query.index = window.location.href.split("index=")[1];
 
     $.ajax({
-      url: 'http://54.65.152.112:5001/getAskByIndex',
+      url: window.server.url+'/getAskByIndex',
       dataType: 'json',
       data : query,
       type: 'POST',

@@ -23,7 +23,7 @@ var NewAsks = React.createClass({
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       window.newAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getNewAsks',
+        url: window.server.url+'/getNewAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -62,7 +62,7 @@ var NewAsks = React.createClass({
       query.date = new Date().getTime();
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getNewAsks',
+        url: window.server.url+'/getNewAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -87,7 +87,7 @@ var NewAsks = React.createClass({
     query.date = dateTime ? dateTime : now;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getNewAsks',
+      url: window.server.url+'/getNewAsks',
       dataType: 'json',
       data : query,
       type: 'POST',
@@ -120,7 +120,7 @@ var NewAsks = React.createClass({
     if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
       window.hotAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getHotAsks',
+        url: window.server.url+'/getHotAsks',
         dataType: 'json',
         data : query,
         type: 'POST',

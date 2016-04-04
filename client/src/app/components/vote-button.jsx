@@ -165,7 +165,7 @@ var VoteButton = React.createClass({
   },
 
   getVoted: function (yesno) {
-    var url = 'http://54.65.152.112:5000/getVoted';
+    var url = window.server.url+'/getVoted';
     var query = {};
     if (document.user !== undefined && document.user.id !== undefined) {
       query.askerId = document.user.id;
@@ -205,7 +205,7 @@ var VoteButton = React.createClass({
 
   vote: function (yesno) {
     console.log('!!!!!!!   vote');
-    var url = 'http://54.65.152.112:5000/makeNewVote';
+    var url = window.server.url+'/makeNewVote';
     var query = {};
     query.askerId = document.user.id;
     query.index = this.askIndex();
