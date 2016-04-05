@@ -48,7 +48,8 @@ var CardList = React.createClass({
               secret={ask.secret} />
             <AskContent
               data={ask} />
-            <ShareAsk />
+            <ShareAsk
+	      shareIndex={ask.index.S} />
           </Card>
         );
       });

@@ -2,7 +2,12 @@ var React = require('react');
 var Router = require('react-router');
 var Clipboard = require('react-copy-to-clipboard');
 var mui = require('material-ui');
-var { FlatButton, Dialog, TextField, IconButton, RaisedButton } = mui;
+var { FlatButton,
+  Dialog,
+  TextField,
+  IconButton,
+  RaisedButton,
+  Snackbar } = mui;
 var Colors = mui.Styles.Colors;
 
 var Share = require('./svg-icons/share.jsx');
@@ -87,11 +92,20 @@ var ShareAsk = React.createClass({
             </FlatButton>
           </Clipboard>
         </Dialog>
+	<Snackbar
+	  ref="snackbar"
+	  message={this.state.result} />
       </div>
     );
   },
 
   _kakaotalkShare: function() {
+    if (!this.props.shareIndex) {
+      this.setState({result: "fail kakaktalk share : index is undefined"});
+      this.refs.snackbar.show();
+      return;
+    }
+
     Kakao.Link.sendTalkLink({
       label: 'What is your choice?',
       image: {
@@ -122,6 +136,11 @@ var ShareAsk = React.createClass({
   _share: function() {
     console.log('copy url!!!!!!');
     console.log(this.props.shareIndex);
+    if (!this.props.shareIndex) {
+      this.setState({result: "fail to copy url : index is undefined"});
+      this.refs.snackbar.show();
+      return;
+    }
     var url = "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex;
     console.log(url);
     this.setState({shareUrl: url});
@@ -134,7 +153,7 @@ var ShareAsk = React.createClass({
   },
 
   handleCopy: function() {
-    this.setState({result: "success copy this ask's url"});
+    this.setState({result: "success to copy this ask's url"});
     this.refs.snackbar.show();
   },
 
