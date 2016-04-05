@@ -100,7 +100,7 @@ var ShareAsk = React.createClass({
   },
 
   _kakaotalkShare: function() {
-    if (url === undefined) {
+    if (this.props.shareIndex === undefined) {
       this.setState({result: "fail kakaktalk share : index is undefined"});
       this.refs.snackbar.show();
       return;
@@ -136,13 +136,13 @@ var ShareAsk = React.createClass({
   _share: function() {
     console.log('copy url!!!!!!');
     console.log(this.props.shareIndex);
-    var url = "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex;
-    console.log(url);
-    if (url === undefined) {
+    if (this.props.shareIndex === undefined) {
       this.setState({result: "fail to copy url : index is undefined"});
       this.refs.snackbar.show();
       return;
     }
+    var url = "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex;
+    console.log(url);
     this.setState({shareUrl: url});
     //TODO : enable askus url after applying to master
     //'http://askus.me/#/ask-by-index?index=' + this.props.shareIndex
