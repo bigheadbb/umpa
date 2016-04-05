@@ -106,15 +106,11 @@ var ShareAsk = React.createClass({
     }
 
     Kakao.Link.sendTalkLink({
-      label: 'What is your choice?',
-      image: {
-        src: 'img/askus.png',
-        width: '300',
-        height: '200'
-      },
+      label: this.props.mainContent + ", " + this.props.yesContent + " VS " + this.props.noContent,
       webButton: {
-        text: 'Go to vote!',
-        url: window.client.url+"#/ask-by-index?index="+this.props.shareIndex,
+        text: 'ASKUS YES|NO',
+        //FIXME : '#' charactor encoded to %23 in case of kakao
+        url: window.client.url,
       },
       //TODO: add marketParams after release Native App
       fail: function() {
