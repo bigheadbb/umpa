@@ -100,7 +100,7 @@ var ShareAsk = React.createClass({
   },
 
   _kakaotalkShare: function() {
-    if (this.props.shareIndex === undefined) {
+    if (!this.props.shareIndex) {
       this.setState({result: "fail kakaktalk share : index is undefined"});
       this.refs.snackbar.show();
       return;
@@ -136,7 +136,7 @@ var ShareAsk = React.createClass({
   _share: function() {
     console.log('copy url!!!!!!');
     console.log(this.props.shareIndex);
-    if (this.props.shareIndex === undefined) {
+    if (!this.props.shareIndex) {
       this.setState({result: "fail to copy url : index is undefined"});
       this.refs.snackbar.show();
       return;
