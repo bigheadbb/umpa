@@ -5,8 +5,13 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>ASKUS YES|NO</title>
-  <meta name="description" content="ASKUS YES|NO">
+  <meta name="description" content="Ask anything you want">
   <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
+  <meta property="og:title" content="ASKUS YES|NO"/>
+  <meta property="og:url" content="http://askus.me"/>
+  <meta property="og:description" content="Ask anything you want"/>
+  <meta property="og:image" content="http://askus.me/img/anonymous.png"/>
+  <link rel="icon" href="img/anonymous.png">
   <link rel="stylesheet" type="text/css" href="main.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -20,6 +25,10 @@
   window.server.ip = "54.65.152.112";
   window.server.port = "5000";
   window.server.url = "http://"+window.server.ip+":"+window.server.port;
+
+  window.client = {}
+  window.client.url = "http://localhost:3000/";
+//  window.client.url = "http://umpa.s3-website-ap-northeast-1.amazonaws.com/";
 
   function init() {
     /* This script adds the Roboto font to our project.
@@ -59,23 +68,6 @@
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
         js.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
-/*
-        var done = false;
-        js.onload = js.onreadystatechange = function() {
-          if (!done && (!this.readyState || this.readyState === "loaded" ||
-              this.readyState === "complete")) {
-            done = true;
-            if (typeof window.kakaoAsyncInit === 'function') {
-              window.kakaoAsyncInit();
-            }
-            // Handle memory Leak in IE
-            js.onload = js.onreadystatechange = null;
-            if (fjs && js.parentNode) {
-              fjs.parentNode.removeChild(js);
-            }
-          }
-        }
-*/
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'kakao-jssdk'));
 
@@ -143,7 +135,7 @@
 
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '1685234781763535', //1685234781763535, 1632008093752871
+        appId      : '1685234781763535', //1685234781763535(localhost), 1632008093752871(askus.me), 1730619603891719(umpa)
         cookie     : true,  // enable cookies to allow the server to access the session
         xfbml      : true,  // parse social plugins on this page
         version    : 'v2.4', // use version 2.2
