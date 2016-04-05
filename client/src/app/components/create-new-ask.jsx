@@ -25,6 +25,9 @@ var CreateNewAsk = React.createClass({
     return {
       sent : false,
       result : '',
+      emptyTitle : false,
+      emptyYes : false,
+      emptyNo : false,
     };
   },
 
@@ -130,6 +133,7 @@ var CreateNewAsk = React.createClass({
               rowsMax={7}
               floatingLabelText="What do you want to ask?"
               multiLine={true}
+              errorText={this.state.emptyTitle ? "This field is required" : ""}
               onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
@@ -142,6 +146,7 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true}
+              errorText={this.state.emptyYes ? "This field is required" : ""}
               onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
@@ -153,6 +158,7 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true}
+              errorText={this.state.emptyNo ? "This field is required" : ""}
               onChange={this.countText} />
             <SelectTarget ref="selectTarget" />
             <Checkbox
@@ -178,18 +184,24 @@ var CreateNewAsk = React.createClass({
       case 'title' :
         if (length > MaxLength)
           this.refs.contentTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        else if (length > 1)
+          this.setState({emptyTitle: false});
         else
           this.refs.contentTextField.setErrorText("");
         break;
       case 'yes' :
         if (length > MaxLength)
           this.refs.yesTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        else if (length > 1)
+          this.setState({emptyYes: false});
         else
           this.refs.yesTextField.setErrorText("");
         break;
       case 'no' :
-        if(length > MaxLength)
+        if (length > MaxLength)
           this.refs.noTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        else if (length > 1)
+          this.setState({emptyNo: false});
         else
           this.refs.noTextField.setErrorText("");
         break;
@@ -226,6 +238,14 @@ var CreateNewAsk = React.createClass({
       this.setState({result: "One and more text field value were empty"});
       this.refs.snackbar.show();
       this.setState({sent: false});
+
+      if (poll.mainContent.length < 1)
+        this.setState({emptyTitle: true});
+      if (poll.yesContent.length < 1)
+        this.setState({emptyYes: true});
+      if (poll.noContent.length < 1)
+        this.setState({emptyNo: true});
+
       return;
     }
 
