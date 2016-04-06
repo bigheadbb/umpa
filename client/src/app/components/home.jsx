@@ -4,7 +4,6 @@ var RouteHandler = Router.RouteHandler;
 var mui = require('material-ui');
 var RaisedButton = mui.RaisedButton;
 var CircularProgress = mui.CircularProgress;
-var HomeFeature = require('./home-feature.jsx');
 var FullWidthSection = require('./full-width-section.jsx');
 
 var {StylePropable, StyleResizable} = mui.Mixins;
