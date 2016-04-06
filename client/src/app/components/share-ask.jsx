@@ -16,12 +16,17 @@ var ShareAsk = React.createClass({
   getInitialState: function() {
     return {
       dialOpen : false,
-      shareUrl : '',
+      copyUrl : '',
       result : '',
     };
   },
 
   render: function() {
+    this.askIndex = this.props.shareIndex.split('#')[0];
+    this.askDate = this.props.shareIndex.split('#')[1];
+    this.shareURL= window.client.url+"ask-by-index.html?index="+this.askIndex+"&date="+this.askDate;
+    this.shareContent = this.props.mainContent + "\n" + this.props.yesContent + "\n VS \n" + this.props.noContent;
+
     var styles = {
       iconButton: {
         marginRight: 10,
@@ -81,7 +86,7 @@ var ShareAsk = React.createClass({
             <div style={styles.fontSt}>Facebook</div>
           </FlatButton>
           <Clipboard
-            text={this.state.shareUrl}
+            text={this.state.copyUrl}
             onCopy={this.handleCopy} >
             <FlatButton
               style={styles.shareBt}
@@ -106,11 +111,11 @@ var ShareAsk = React.createClass({
     }
 
     Kakao.Link.sendTalkLink({
-      label: this.props.mainContent + ", " + this.props.yesContent + " VS " + this.props.noContent,
+      label: this.shareContent,
       webButton: {
         text: 'ASKUS YES|NO',
         //FIXME : '#' charactor encoded to %23 in case of kakao
-        url: window.client.url,
+        url: this.shareURL,
       },
       //TODO: add marketParams after release Native App
       fail: function() {
@@ -124,8 +129,8 @@ var ShareAsk = React.createClass({
   _facebookShare: function() {
     FB.ui({
       method: 'feed',
-      link: window.client.url+"#/ask-by-index?index="+this.props.shareIndex,
-      description: this.props.mainContent + ", " + this.props.yesContent + " VS " + this.props.noContent ,
+      link: this.shareURL,
+      description: this.shareContent,
       caption: 'http://askus.me',
     }, function(response){});
   },
@@ -138,9 +143,8 @@ var ShareAsk = React.createClass({
       this.refs.snackbar.show();
       return;
     }
-    var url = window.client.url+"#/ask-by-index?index="+this.props.shareIndex;
-    console.log(url);
-    this.setState({shareUrl: url});
+    console.log(this.shareURL);
+    this.setState({copyUrl: this.shareURL});
   },
 
   _onClose: function() {
