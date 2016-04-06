@@ -25,7 +25,6 @@ var ShareAsk = React.createClass({
     this.askIndex = this.props.shareIndex.split('#')[0];
     this.askDate = this.props.shareIndex.split('#')[1];
     this.shareURL= window.client.url+"ask-by-index.html?index="+this.askIndex+"&date="+this.askDate;
-    this.shareContent = this.props.mainContent + "\n" + this.props.yesContent + "\n VS \n" + this.props.noContent;
 
     var styles = {
       iconButton: {
@@ -111,10 +110,9 @@ var ShareAsk = React.createClass({
     }
 
     Kakao.Link.sendTalkLink({
-      label: this.shareContent,
+      label: this.props.mainContent + "\n" + this.props.yesContent + "\nVS\n" + this.props.noContent,
       webButton: {
         text: 'ASKUS YES|NO',
-        //FIXME : '#' charactor encoded to %23 in case of kakao
         url: this.shareURL,
       },
       //TODO: add marketParams after release Native App
@@ -129,8 +127,9 @@ var ShareAsk = React.createClass({
   _facebookShare: function() {
     FB.ui({
       method: 'feed',
+      name: "Ask us anything! ASKUS",
       link: this.shareURL,
-      description: this.shareContent,
+      description: this.props.mainContent + " " + this.props.yesContent + " VS " + this.props.noContent,
       caption: 'http://askus.me',
     }, function(response){});
   },
