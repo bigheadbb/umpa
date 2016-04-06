@@ -17,6 +17,8 @@ var VoteUser = require('./svg-icons/vote-user.jsx');
 var Ages = require('./ages.jsx');
 var Gender = require('./gender.jsx');
 
+var ShareAsk = require('./share-ask.jsx');
+
 var AskHeader = React.createClass({
   render: function () {
      var styles = {
@@ -269,6 +271,11 @@ var MyCardList = React.createClass({
               noContent={ask.noContent}
               yesCount={ask.yesCount}
               noCount={ask.noCount} />
+            <ShareAsk
+              mainContent={ask.mainContent.S}
+              yesContent={ask.yesContent.S}
+              noContent={ask.noContent.S}
+              shareIndex={ask.index.S} />
           </Card>
         );
       }.bind(this));

@@ -16,12 +16,16 @@ var ShareAsk = React.createClass({
   getInitialState: function() {
     return {
       dialOpen : false,
-      shareUrl : '',
+      copyUrl : '',
       result : '',
     };
   },
 
   render: function() {
+    this.askIndex = this.props.shareIndex.split('#')[0];
+    this.askDate = this.props.shareIndex.split('#')[1];
+    this.shareURL= window.client.url+"ask-by-index.html?index="+this.askIndex+"&date="+this.askDate;
+
     var styles = {
       iconButton: {
         marginRight: 10,
@@ -66,7 +70,6 @@ var ShareAsk = React.createClass({
           bodyStyle={styles.dialBody}
           contentStyle={styles.dialCont}
           actions={actions}
-          modal={false}
           open={this.state.dialOpen}
           onRequestClose={this._onClose}>
           <FlatButton
@@ -77,24 +80,24 @@ var ShareAsk = React.createClass({
           </FlatButton>
           <FlatButton
             style={styles.shareBt}
-            onTouchTap={this._share} >
+            onTouchTap={this._facebookShare} >
             <img src="img/facebook-box.png" style={styles.logo}/>
             <div style={styles.fontSt}>Facebook</div>
           </FlatButton>
           <Clipboard
-            text={this.state.shareUrl}
+            text={this.state.copyUrl}
             onCopy={this.handleCopy} >
             <FlatButton
               style={styles.shareBt}
-              onTouchTap={this._share} >
+              onTouchTap={this._copyUrlShare} >
               <img src="img/paperclip.png" style={styles.logo}/>
               <div style={styles.fontSt}>Copy URL</div>
             </FlatButton>
           </Clipboard>
         </Dialog>
-	<Snackbar
-	  ref="snackbar"
-	  message={this.state.result} />
+        <Snackbar
+          ref="snackbar"
+          message={this.state.result} />
       </div>
     );
   },
@@ -107,17 +110,10 @@ var ShareAsk = React.createClass({
     }
 
     Kakao.Link.sendTalkLink({
-      label: 'What is your choice?',
-      image: {
-        src: 'http://askus.me/img/askus.png',
-	width: '300',
-	height: '200'
-      },
+      label: this.props.mainContent + "\n" + this.props.yesContent + "\nVS\n" + this.props.noContent,
       webButton: {
-        text: 'Go to vote!',
-	url: "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex,
-        //TODO : enable askus url after applying to master
-	//url: 'http://askus.me/#/ask-by-index?index=' + this.props.shareIndex,
+        text: 'ASKUS YES|NO',
+        url: this.shareURL,
       },
       //TODO: add marketParams after release Native App
       fail: function() {
@@ -129,11 +125,16 @@ var ShareAsk = React.createClass({
   },
 
   _facebookShare: function() {
-    /* TO DO
-     * Make URL and share to Facebook */
+    FB.ui({
+      method: 'feed',
+      name: "Ask us anything! ASKUS",
+      link: this.shareURL,
+      description: this.props.mainContent + " " + this.props.yesContent + " VS " + this.props.noContent,
+      caption: 'http://askus.me',
+    }, function(response){});
   },
 
-  _share: function() {
+  _copyUrlShare: function() {
     console.log('copy url!!!!!!');
     console.log(this.props.shareIndex);
     if (!this.props.shareIndex) {
@@ -141,11 +142,8 @@ var ShareAsk = React.createClass({
       this.refs.snackbar.show();
       return;
     }
-    var url = "http://localhost:3000/#/ask-by-index?index="+this.props.shareIndex;
-    console.log(url);
-    this.setState({shareUrl: url});
-    //TODO : enable askus url after applying to master
-    //'http://askus.me/#/ask-by-index?index=' + this.props.shareIndex
+    console.log(this.shareURL);
+    this.setState({copyUrl: this.shareURL});
   },
 
   _onClose: function() {

@@ -49,7 +49,10 @@ var CardList = React.createClass({
             <AskContent
               data={ask} />
             <ShareAsk
-	      shareIndex={ask.index.S} />
+              mainContent={ask.mainContent.S}
+              yesContent={ask.yesContent.S}
+              noContent={ask.noContent.S}
+              shareIndex={ask.index.S} />
           </Card>
         );
       });

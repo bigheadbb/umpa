@@ -77,7 +77,7 @@ var AskByIdex = React.createClass({
 
     var CardContent = this.state.data.length > 0 ?
                         <CardList data={this.state.data}/>
-                        : <div style={styles.noData}>No data, Please recheck index value...</div>;
+                        : <div style={styles.noData}>Loading...</div>;
 
     return (
       <div style={styles.root}>
