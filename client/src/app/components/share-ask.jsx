@@ -9,7 +9,7 @@ var { FlatButton,
   RaisedButton,
   Snackbar } = mui;
 var Colors = mui.Styles.Colors;
-
+var Tooltip = require("react-tooltip");
 var Share = require('./svg-icons/share.jsx');
 
 var ShareAsk = React.createClass({
@@ -64,8 +64,9 @@ var ShareAsk = React.createClass({
     return (
       <div>
         <IconButton style={styles.iconButton} onTouchTap={this.handleShareButtonTouchTap}>
-          <Share />
+          <Share data-tip data-for="share" />
         </IconButton>
+        <Tooltip id="share" effect="solid" delayShow={500}>{window.textSet.share}</Tooltip>
         <Dialog
           bodyStyle={styles.dialBody}
           contentStyle={styles.dialCont}
