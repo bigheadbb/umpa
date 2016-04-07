@@ -160,11 +160,11 @@ var VotedAsks = React.createClass({
       <div style={styles.containerStyle}>
         <Toolbar style={styles.toolbar}>
           <ToolbarGroup firstChild={true} float="left">
-            <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+            <IconButton style={styles.iconButton} tooltip={window.textSet.back} onTouchTap={this.handleBackButtonTouchTap} >
               <Back />
             </IconButton>
           </ToolbarGroup>
-          <ToolbarTitle text="My Voted Asks" style={styles.toolbarTitle} />
+          <ToolbarTitle text={window.textSet.votedAsk} style={styles.toolbarTitle} />
         </Toolbar>
         <CardList data={this.state.data}/>
         <MoreButton

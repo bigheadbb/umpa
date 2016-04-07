@@ -19,11 +19,11 @@ var ToggleStarBorder = require('./svg-icons/toggle-star-border.jsx');
 var NavigationMoreButton = require('./svg-icons/navigation-more-button.jsx');
 
 var menuItems = [
-    { type: MenuItem.Types.SUBHEADER , text: 'Asks' },
-    { route: 'my-asks', text: 'My Asks' },
-    { route: 'voted-asks', text: 'Voted Asks' },
+    { type: MenuItem.Types.SUBHEADER , text: 'Ask' },
+    { route: 'my-asks', text: window.textSet.myAsk },
+    { route: 'voted-asks', text: window.textSet.votedAsk },
     { type: MenuItem.Types.SUBHEADER , text: 'Setting' },
-    { route: 'logout', text: 'Logout' },
+    { route: 'logout', text: window.textSet.navLogout },
   ];
 
 var AppLeftNav = React.createClass({
@@ -127,7 +127,7 @@ var AppLeftNav = React.createClass({
     console.log("_onLeftNavChange key : " + key);
     console.log("_onLeftNavChange payload : " + payload);
 
-    if (payload.text === "Logout") {
+    if (payload.text === window.textSet.navLogout) {
       if (document.fblogin === "connected") {
         console.log('FB Logout Click');
         FB.logout(function(response) {
@@ -142,10 +142,10 @@ var AppLeftNav = React.createClass({
            window.location.reload();
          }.bind(this));
        }
-    } else if (payload.text === "My Asks") {
+    } else if (payload.text === window.textSet.myAsk) {
       console.log('My Asks Click');
       this.context.router.transitionTo('my-asks');
-    } else if (payload.text === "Voted Asks") {
+    } else if (payload.text === window.textSet.votedAsk) {
       console.log('Voted Asks Click');
       this.context.router.transitionTo('voted-asks');
     }

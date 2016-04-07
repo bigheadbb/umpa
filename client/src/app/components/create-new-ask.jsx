@@ -95,6 +95,7 @@ var CreateNewAsk = React.createClass({
         marginLeft : "calc(100% - 65px)"
       },
       checkboxLabel: {
+        width: 'auto',
         color: Colors.grey700
       },
       checkboxIcon: {
@@ -107,15 +108,15 @@ var CreateNewAsk = React.createClass({
         <div style={styles.containerStyle}>
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+              <IconButton style={styles.iconButton} tooltip={window.textSet.back} onTouchTap={this.handleBackButtonTouchTap} >
                 <Back />
               </IconButton>
             </ToolbarGroup>
-            <ToolbarTitle text="Make Ask" style={styles.toolbarTitle} />
+            <ToolbarTitle text={window.textSet.makeAsks} style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
               <IconButton
                 style={styles.iconButton}
-                tooltip="Send"
+                tooltip={window.textSet.send}
                 disabled={this.state.sent}
                 onTouchTap={this.handleCreateNewAskTouchTap} >
                 <Send />
@@ -131,9 +132,9 @@ var CreateNewAsk = React.createClass({
               ref="contentTextField"
               rows={1}
               rowsMax={7}
-              floatingLabelText="What do you want to ask?"
+              floatingLabelText={window.textSet.makeTitle}
               multiLine={true}
-              errorText={this.state.emptyTitle ? "This field is required" : ""}
+              errorText={this.state.emptyTitle ? window.textSet.emptyErrText : ""}
               onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
@@ -146,7 +147,7 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true}
-              errorText={this.state.emptyYes ? "This field is required" : ""}
+              errorText={this.state.emptyYes ? window.textSet.emptyErrText : ""}
               onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
@@ -158,11 +159,11 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true}
-              errorText={this.state.emptyNo ? "This field is required" : ""}
+              errorText={this.state.emptyNo ? window.textSet.emptyErrText : ""}
               onChange={this.countText} />
             <SelectTarget ref="selectTarget" />
             <Checkbox
-              label="secret"
+              label={window.textSet.secret}
               ref="secretCheckBox"
               iconStyle={styles.checkboxIcon}
               labelStyle={styles.checkboxLabel}
@@ -183,7 +184,7 @@ var CreateNewAsk = React.createClass({
     switch(name){
       case 'title' :
         if (length > MaxLength)
-          this.refs.contentTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+          this.refs.contentTextField.setErrorText(window.textSet.limitErr+"("+length+"/"+MaxLength+")");
         else if (length > 1)
           this.setState({emptyTitle: false});
         else
@@ -191,7 +192,7 @@ var CreateNewAsk = React.createClass({
         break;
       case 'yes' :
         if (length > MaxLength)
-          this.refs.yesTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+          this.refs.yesTextField.setErrorText(window.textSet.limitErr+"("+length+"/"+MaxLength+")");
         else if (length > 1)
           this.setState({emptyYes: false});
         else
@@ -199,7 +200,7 @@ var CreateNewAsk = React.createClass({
         break;
       case 'no' :
         if (length > MaxLength)
-          this.refs.noTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+          this.refs.noTextField.setErrorText(window.textSet.limitErr+"("+length+"/"+MaxLength+")");
         else if (length > 1)
           this.setState({emptyNo: false});
         else
@@ -235,7 +236,7 @@ var CreateNewAsk = React.createClass({
     if (poll.mainContent.length < 1
        || poll.yesContent.length < 1
        || poll.noContent.length < 1) {
-      this.setState({result: "One and more text field value were empty"});
+      this.setState({result: window.textSet.emptyErr});
       this.refs.snackbar.show();
       this.setState({sent: false});
 

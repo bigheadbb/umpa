@@ -14,7 +14,7 @@ var LoginSel = React.createClass({
       dialTitle: {
         backgroundColor: Colors.grey300,
         height: '40px',
-        paddingTop: '35px',        
+        paddingTop: '35px',
       },
       loginKaKaoBt: {
         width: '100%',
@@ -42,7 +42,7 @@ var LoginSel = React.createClass({
 
     const actions = [
       <FlatButton
-        label="Close"
+        label={window.textSet.dialogClose}
         keyboardFocused={true}
         onTouchTap={this._onClose} />,
     ];
@@ -50,7 +50,7 @@ var LoginSel = React.createClass({
     return (
       <div>
         <Dialog
-          title="Sign in"
+          title={window.textSet.login}
           contentStyle={styles.dialCont}
           titleStyle={styles.dialTitle}
           actions={actions}
@@ -60,13 +60,13 @@ var LoginSel = React.createClass({
             style={styles.loginKaKaoBt}
             backgroundColor="#fce808"
             onTouchTap={this._logInKakao} >
-            <div style={styles.kakaoText}>Login with Kakaotalk</div>
+            <div style={styles.kakaoText}>{window.textSet.kakaoLogin}</div>
           </FlatButton>
           <FlatButton
             style={styles.loginFaceBookBt}
             backgroundColor="#3b55a3"
             onTouchTap={this._logInFB} >
-            <div style={styles.fbText}>Login with Facebook</div>
+            <div style={styles.fbText}>{window.textSet.facebookLogin}</div>
           </FlatButton>
         </Dialog>
       </div>

@@ -30,7 +30,7 @@ var ShareAsk = React.createClass({
       iconButton: {
         marginRight: 10,
         marginBottom: 10,
-        float: "right"
+        float: "right",
       },
       dialCont: {
         width: '160px',
@@ -56,14 +56,14 @@ var ShareAsk = React.createClass({
 
     const actions = [
       <FlatButton
-        label="Cancle"
+        label={window.textSet.dialogClose}
         keyboardFocused={true}
         onTouchTap={this._onClose} />,
     ];
 
     return (
       <div>
-        <IconButton style={styles.iconButton} onTouchTap={this.handleShareButtonTouchTap} >
+        <IconButton style={styles.iconButton} onTouchTap={this.handleShareButtonTouchTap}>
           <Share />
         </IconButton>
         <Dialog
