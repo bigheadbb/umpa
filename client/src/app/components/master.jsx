@@ -81,7 +81,7 @@ var Master = React.createClass({
     document.addEventListener("fbUserInfo",
       function statusChangeCallback(e) {
         console.log('master fbUserInfo statusChangeCallback');
-        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.setState({snackbarMessage: window.textSet.loginToast + document.user.name});
         this.refs.snackbar.show();
       }.bind(this)
     );
@@ -104,7 +104,7 @@ var Master = React.createClass({
     document.addEventListener("kakaoUserInfo",
       function statusChangeCallback(e) {
         console.log('master fbUserInfo statusChangeCallback');
-        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.setState({snackbarMessage: window.textSet.loginToast + document.user.name});
         this.refs.snackbar.show();
       }.bind(this)
     );

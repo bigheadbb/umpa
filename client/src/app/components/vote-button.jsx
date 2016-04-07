@@ -185,7 +185,7 @@ var VoteButton = React.createClass({
           this.props.handle(data.Items[0].voted,
                             this.props.yesCount,
                             this.props.noCount);
-          this.setState({snackbarMessage: "You already chose " + data.Items[0].voted.toUpperCase()});
+          this.setState({snackbarMessage: window.textSet.alreadyPop + data.Items[0].voted.toUpperCase() + window.textSet.alreadySelPop});
           this.refs.snackbar.show();
         } else {
           if (this._checkTargetAge() && this._checkTargetGender()) {
@@ -222,7 +222,7 @@ var VoteButton = React.createClass({
           this.props.handle(yesno,
                             parseInt(data.Items[0].yesCount.N),
                             parseInt(data.Items[0].noCount.N));
-          this.setState({snackbarMessage: "Your choice is " + yesno.toUpperCase()});
+          this.setState({snackbarMessage: window.textSet.choicePop + yesno.toUpperCase()});
           this.refs.snackbar.show();
           window.myVotedAsksState = "UpdateNeeded";
         }
@@ -266,7 +266,7 @@ var VoteButton = React.createClass({
       if (document.user.age_range.min > 20) {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only 21 years and older."});
+        this.setState({snackbarMessage: window.textSet.onlyOverAge});
         this.refs.snackbar.show();
         return false;
       }
@@ -276,7 +276,7 @@ var VoteButton = React.createClass({
       if (document.user.age_range.max <= 20) {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only less than 20 years and 20 years."});
+        this.setState({snackbarMessage: window.textSet.onlyUnderAge});
         this.refs.snackbar.show();
         return false;
       }
@@ -294,7 +294,7 @@ var VoteButton = React.createClass({
       if (document.user.gender === "male") {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only men can vote"});
+        this.setState({snackbarMessage: window.textSet.onlyMan});
         this.refs.snackbar.show();
         return false;
       }
@@ -304,7 +304,7 @@ var VoteButton = React.createClass({
       if (document.user.gender === "female") {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only women can vote"});
+        this.setState({snackbarMessage: window.textSet.onlyWoman});
         this.refs.snackbar.show();
         return false;
       }

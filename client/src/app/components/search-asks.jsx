@@ -91,13 +91,13 @@ var SearchAsks = React.createClass({
         <div style={styles.containerStyle}>
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+              <IconButton style={styles.iconButton} tooltip={window.textSet.back} onTouchTap={this.handleBackButtonTouchTap} >
                 <Back />
               </IconButton>
             </ToolbarGroup>
-            <ToolbarTitle text="Search" style={styles.toolbarTitle} />
+            <ToolbarTitle text={window.textSet.search} style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
-              <IconButton style={styles.iconButton} tooltip="Search" onTouchTap={this.handleSearchButtonTouchTap} >
+              <IconButton style={styles.iconButton} tooltip={window.textSet.search} onTouchTap={this.handleSearchButtonTouchTap} >
                 <Send />
               </IconButton>
             </ToolbarGroup>
@@ -145,7 +145,7 @@ var SearchAsks = React.createClass({
         this.lastSearchTag = query.tag;
 
         if (searchAsks.length < 1) {
-          this.setState({result: "No result, please type another tag..."});
+          this.setState({result: window.textSet.tagResult});
           this.refs.snackbar.show();
         }
       }.bind(this),
@@ -194,7 +194,7 @@ var SearchAsks = React.createClass({
   handleSearchButtonTouchTap: function(e) {
     console.log("search text : " + this.refs.searchField.getValue());
     if (this.refs.searchField.getValue().length < 1) {
-      this.setState({result: "Please type #tag..."});
+      this.setState({result: window.textSet.tag});
       this.refs.snackbar.show();
       return;
     }

@@ -42,15 +42,15 @@ var SelectTarget = React.createClass({
     };
 
     this.genderItems = [
-      { payload: '1', text: 'ALL' },
-      { payload: '2', text: 'MAN' },
-      { payload: '3', text: 'WOMAN' },
+      { payload: '1', text: window.textSet.total },
+      { payload: '2', text: window.textSet.man },
+      { payload: '3', text: window.textSet.woman },
     ];
 
     this.ageItems = [
-      { payload: '1', text: 'ALL' },
-      { payload: '2', text: 'UNDER 20' },
-      { payload: '3', text: 'OVER 20' },
+      { payload: '1', text: window.textSet.total },
+      { payload: '2', text: window.textSet.under },
+      { payload: '3', text: window.textSet.over },
     ];
 
     return (
@@ -59,14 +59,14 @@ var SelectTarget = React.createClass({
         ref="genderSelectField"
         style={styles.genderSelectField}
         value={this.state.genderValue}
-        floatingLabelText="Gender"
+        floatingLabelText={window.textSet.gender}
         onChange={this.handleSelectValuechange.bind(null, 'genderValue')}
         menuItems={this.genderItems} />
       <SelectField
         ref="ageSelectField"
         style={styles.ageSelectField}
         value={this.state.ageValue}
-        floatingLabelText="Age"
+        floatingLabelText={window.textSet.age}
         onChange={this.handleSelectValuechange.bind(null, 'ageValue')}
         menuItems={this.ageItems} />
       </div>
