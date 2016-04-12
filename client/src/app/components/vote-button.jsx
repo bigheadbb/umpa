@@ -259,10 +259,10 @@ var VoteButton = React.createClass({
     if (this.props.age === undefined)
       return true;
 
-    if (this.props.age.S === "ALL")
+    if (this.props.age.S === "ALL" || this.props.age.S === "전체")
       return true;
 
-    if (this.props.age.S === "OVER20") {
+    if (this.props.age.S === "OVER20" || this.props.age.S === "20세 이상") {
       if (document.user.age_range.min > 20) {
         return true;
       } else {
@@ -272,7 +272,7 @@ var VoteButton = React.createClass({
       }
     }
 
-    if (this.props.age.S === "UNDER20") {
+    if (this.props.age.S === "UNDER20" || this.props.age.S === "20세 이하") {
       if (document.user.age_range.max <= 20) {
         return true;
       } else {
@@ -287,10 +287,10 @@ var VoteButton = React.createClass({
     if (this.props.gender === undefined)
       return true;
 
-    if (this.props.gender.S === "ALL")
+    if (this.props.gender.S === "ALL" || this.props.gender.S === "전체")
       return true;
 
-    if (this.props.gender.S === "MAN") {
+    if (this.props.gender.S === "MAN"  || this.props.gender.S === "남성") {
       if (document.user.gender === "male") {
         return true;
       } else {
@@ -300,7 +300,7 @@ var VoteButton = React.createClass({
       }
     }
 
-    if (this.props.gender.S === "WOMAN") {
+    if (this.props.gender.S === "WOMAN"  || this.props.gender.S === "여성") {
       if (document.user.gender === "female") {
         return true;
       } else {
