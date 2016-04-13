@@ -8,3 +8,6 @@ lib/
 
 # Exclude node modules
 node_modules/
+
+# Exclude gzip modules
+gzip/
