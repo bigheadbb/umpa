@@ -25,6 +25,7 @@
     "gulp": "^3.8.10",
     "gulp-notify": "^2.1.0",
     "gulp-util": "^3.0.1",
+    "gulp-gzip": "1.2.0",
     "pretty-hrtime": "^0.2.2",
     "reactify": "^0.17.1",
     "require-dir": "^0.1.0",

@@ -1,4 +1,5 @@
 var dest = './build',
+  gzip = './gzip',
   src = './src',
   mui = './node_modules/material-ui/src';
 
@@ -19,7 +20,7 @@ module.exports = {
   },
   browserify: {
     // Enable source maps
-    debug: true,
+    debug: false,
     // A separate bundle will be generated for each
     // bundle config in the list below
     bundleConfigs: [{
@@ -27,5 +28,9 @@ module.exports = {
       dest: dest,
       outputName: 'app.js'
     }]
+  },
+  gzip: {
+    src: dest + '/*.js',
+    dest : gzip
   }
 };
