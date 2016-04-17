@@ -61,7 +61,7 @@ var AskContent = React.createClass({
             disabled={false}
             defaultValue={mainContent}
             rows={1}
-            rowsMax={5}
+            rowsMax={Number.MAX_VALUE}
             multiLine={true} />
         </div>
       );
