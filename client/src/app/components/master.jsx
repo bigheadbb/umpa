@@ -240,14 +240,14 @@ var Master = React.createClass({
         fontWeight: 'bold',
       },
       userSetting: {
-        position: 'fixed',
+        position: 'absolute',
         right: Spacing.desktopGutter/2,
         top: 8,
         zIndex: 5,
         color: 'white'
       },
       search: {
-        position: 'fixed',
+        position: 'absolute',
         right: Spacing.desktopGutter/2 + 40,
         top: 8,
         zIndex: 5,
