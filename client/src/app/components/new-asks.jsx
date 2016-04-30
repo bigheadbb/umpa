@@ -12,7 +12,7 @@ hotAsks = [];
 var NewAsks = React.createClass({
 
   getInitialState: function () {
-    return {newAsksData: [], hotAsksData: []};
+    return {newAsksData: [], hotAsksData: [], hotAsksMoreButtonShow : true};
   },
 
   componentWillMount: function () {
@@ -58,7 +58,7 @@ var NewAsks = React.createClass({
         cache: false,
         success: function (data) {
           hotAsks = data.Items;
-          this.setState({hotAsksData: hotAsks});
+          this.setState({hotAsksData: hotAsks.slice(0, 5)});
           console.log("hotAsks : " + hotAsks);
         }.bind(this),
         error: function (xhr, status, err) {
@@ -122,7 +122,7 @@ var NewAsks = React.createClass({
         cache: false,
         success: function (data) {
           hotAsks = data.Items;
-          this.setState({hotAsksData: hotAsks});
+          this.setState({hotAsksData: hotAsks.slice(0, 5)});
           console.log("hotAsks : " + hotAsks);
         }.bind(this),
         error: function (xhr, status, err) {
@@ -154,11 +154,12 @@ var NewAsks = React.createClass({
           }.bind(this), 1000);
         }
         setTimeout( function() {
-          this.refs.moreButton.showButton();
+          console.log("jungo");
+          this.refs.newAsksMoreButton.showButton();
         }.bind(this), 1000);
       }.bind(this),
       error: function (xhr, status, erro) {
-        this.refs.moreButton.showButton();
+        this.refs.newAsksMoreButton.showButton();
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
@@ -210,17 +211,24 @@ var NewAsks = React.createClass({
       maxWidth : 650,
     };
 
+    var hotAsksMoreButton = this.state.hotAsksMoreButtonShow ?
+      <MoreButton
+        ref='hotAsksMoreButton'
+        onTouchTap={this.handleHotAsksMoreButtonTouchTap} />
+      : null;
+
     return (
       <div style={root}>
       <div style={containerStyle}>
         <div style={newTabStyle}>
           <CardList data={this.state.newAsksData}/>
           <MoreButton
-            ref='moreButton'
-            onTouchTap={this.handleMoreButtonTouchTap} />
+            ref='newAsksMoreButton'
+            onTouchTap={this.handleNewAsksMoreButtonTouchTap} />
         </div>
         <div style={hotTabStyle}>
           <CardList data={this.state.hotAsksData}/>
+          {hotAsksMoreButton}
         </div>
       </div>
       <WriteButton />
@@ -228,16 +236,26 @@ var NewAsks = React.createClass({
     );
   },
 
-  handleMoreButtonTouchTap: function() {
-    console.log("handleMoreButtonTouchTap");
+  handleNewAsksMoreButtonTouchTap: function() {
+    console.log("handleNewAsksMoreButtonTouchTap");
     console.log(newAsks);
     console.log(newAsks.length);
-    this.refs.moreButton.showSpinner();
+    this.refs.newAsksMoreButton.showSpinner();
     if (newAsks.length > 0) {
       this.getNewAsks(newAsks[newAsks.length-1].date.S);
     } else {
       this.getNewAsks(new Date().getTime().toString());
     }
+  },
+
+  handleHotAsksMoreButtonTouchTap: function() {
+    console.log("handleHotAsksMoreButtonTouchTap");
+    console.log(hotAsks);
+    console.log(hotAsks.length);
+    this.refs.hotAsksMoreButton.showSpinner();
+    setTimeout( function() {
+      this.setState({hotAsksData: hotAsks, hotAsksMoreButtonShow: false});
+    }.bind(this), 1000);
   },
 });
 
