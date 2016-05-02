@@ -206,7 +206,7 @@ app.post('/getNewAsks', function (req, res) {
     },
     ScanIndexForward: false,
     ReturnConsumedCapacity: 'NONE', // optional (NONE | TOTAL | INDEXES)
-    Limit : 10,
+    Limit : 5,
   };
 
   dynamodb.query(params, function(err, data) {
