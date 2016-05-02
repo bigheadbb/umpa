@@ -257,7 +257,7 @@ var CreateNewAsk = React.createClass({
       data: poll,
       success: function (res) {
         if (res.message === undefined) {
-          this.setState({result: JSON.parse(res).result});
+          this.setState({result: window.textSet.newAskCreated});
           window.newAsksState = "UpdateNeeded";
           window.myAsksState = "UpdateNeeded";
           setTimeout(

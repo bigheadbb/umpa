@@ -168,7 +168,7 @@ var Content = React.createClass({
               defaultValue={mainContent}
               type='text'
               rows={1}
-              rowsMax={5}
+              rowsMax={Number.MAX_VALUE}
               multiLine={true} />
           </div>
           <div style={styles.vote}>
@@ -186,7 +186,7 @@ var Content = React.createClass({
                 defaultValue={yesContent}
                 type='text'
                 rows={1}
-                rowsMax={10}
+                rowsMax={Number.MAX_VALUE}
                 multiLine={true} />
             </FlatButton>
           </div>
@@ -208,7 +208,7 @@ var Content = React.createClass({
                 defaultValue={noContent}
                 type='text'
                 rows={1}
-                rowsMax={10}
+                rowsMax={Number.MAX_VALUE}
                 multiLine={true} />
             </FlatButton>
           </div>

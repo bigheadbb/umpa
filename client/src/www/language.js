@@ -37,6 +37,7 @@ function getTextSetByLanguege(language) {
       text.more = "더보기";
       text.tag = "태그를 입력해주세요";
       text.tagResult = "결과 없음, 다른 태그를 입력해주세요";
+      text.newAskCreated = "새로운 Ask가 생성되었습니다.";
       break;
     case "en" :
       text.login = "Sign in";
@@ -74,6 +75,7 @@ function getTextSetByLanguege(language) {
       text.more = "More"; 
       text.tag = "Please type #tag...";
       text.tagResult = "No result, please type another tag...";
+      text.newAskCreated = "New Ask created";
       break;
     default:
       console.log("Please check language parameter!")
