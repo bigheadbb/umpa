@@ -117,11 +117,16 @@ var Master = React.createClass({
     }.bind(this);
     setTabsState();
     window.onresize = setTabsState;
+    this.lastTabIndex = '1';
   },
 
   componentWillReceiveProps: function() {
     console.log("master componentWillReceiveProps");
-    this.setState({tabIndex: this._getSelectedIndex()});
+    if (!this.context.router.isActive('new-asks')) {
+      this.setState({tabIndex: '0'});
+    } else {
+      this.setState({tabIndex: this.lastTabIndex});
+    }
   },
 
   _getSelectedIndex: function() {
@@ -129,7 +134,14 @@ var Master = React.createClass({
   },
 
   _handleTabChange: function(value, e, tab) {
+    console.log("master _handleTabChange");
+    if (!this.context.router.isActive('new-asks')) {
+      this.context.router.transitionTo('new-asks');
+    }
+
     this.setState({tabIndex: value});
+    this.lastTabIndex = value;
+
     var event = new CustomEvent("tabChanged", {
           detail: {
               value: value

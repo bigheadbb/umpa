@@ -26,7 +26,7 @@ var LoginSel = React.createClass({
         width: '100%',
         height: '45px',
         float: 'left',
-        marginTop: '5px',
+        marginTop: '10px',
       },
       kakaoText: {
         color: "#3c1e1e",
