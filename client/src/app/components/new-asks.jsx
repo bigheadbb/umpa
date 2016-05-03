@@ -66,7 +66,7 @@ var NewAsks = React.createClass({
       });
       window.hotAsksState = "Updated";
     } else if (window.hotAsksState === "Updated"){
-      this.setState({hotAsksData: hotAsks});
+      this.setState({hotAsksData: hotAsks.slice(0, 5)});
     }
   },
 
