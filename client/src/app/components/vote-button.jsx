@@ -235,23 +235,38 @@ var VoteButton = React.createClass({
 
   _handleYesButtonTouched: function (e) {
     console.log('!!!!!!!_handleYesButton');
+    var timeout ;
     if (this.lastTouchEvent &&
         (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
+      clearTimeout(this.timeout);
       this.getVoted('yes');
       this.lastTouchEvent = 0;
     } else {
       this.lastTouchEvent = e.nativeEvent.timeStamp;
+
+      this.timeout = setTimeout(
+      function(){
+        this.setState({snackbarMessage: window.textSet.doubleClick});
+        this.refs.snackbar.show();
+      }.bind(this), 500);
     }
   },
 
   _handleNoButtonTouched: function (e) {
     console.log('!!!!!!!_handleNoButton');
+    var timeout ;
     if (this.lastTouchEvent &&
         (e.nativeEvent.timeStamp - this.lastTouchEvent) < 250) {
+      clearTimeout(this.timeout);
       this.getVoted('no');
       this.lastTouchEvent = 0;
     } else {
       this.lastTouchEvent = e.nativeEvent.timeStamp;
+      this.timeout = setTimeout(
+      function(){
+        this.setState({snackbarMessage: window.textSet.doubleClick});
+        this.refs.snackbar.show();
+      }.bind(this), 500);
     }
   },
 
