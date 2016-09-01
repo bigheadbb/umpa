@@ -106,6 +106,29 @@ var Master = React.createClass({
       }.bind(this)
     );
 
+    document.addEventListener("kakaoLogin",
+      function statusChangeCallback(e) {
+        console.log('master kakaoLogin statusChangeCallback');
+        console.log(e.detail.res);
+        var response = e.detail.res;
+        window.kakaoLoginStatusCallback(response);
+        clearTimeout(timeout);
+        this.setState({tabIndex: this._getSelectedIndex()});
+
+        if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
+          this.context.router.transitionTo('new-asks');
+        }
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoUserInfo",
+      function statusChangeCallback(e) {
+        console.log('master fbUserInfo statusChangeCallback');
+        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.refs.snackbar.show();
+      }.bind(this)
+    );
+
     // FIXME : Diable swipe because it makes wrong behavior sometimes
     //document.body.addEventListener('touchstart', this._onBodyTouchStart);
   },
