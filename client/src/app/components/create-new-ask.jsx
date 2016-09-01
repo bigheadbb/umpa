@@ -25,6 +25,9 @@ var CreateNewAsk = React.createClass({
     return {
       sent : false,
       result : '',
+      emptyTitle : false,
+      emptyYes : false,
+      emptyNo : false,
     };
   },
 
@@ -92,6 +95,7 @@ var CreateNewAsk = React.createClass({
         marginLeft : "calc(100% - 65px)"
       },
       checkboxLabel: {
+        width: 'auto',
         color: Colors.grey700
       },
       checkboxIcon: {
@@ -104,15 +108,15 @@ var CreateNewAsk = React.createClass({
         <div style={styles.containerStyle}>
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+              <IconButton style={styles.iconButton} tooltip={window.textSet.back} onTouchTap={this.handleBackButtonTouchTap} >
                 <Back />
               </IconButton>
             </ToolbarGroup>
-            <ToolbarTitle text="Make Ask" style={styles.toolbarTitle} />
+            <ToolbarTitle text={window.textSet.makeAsks} style={styles.toolbarTitle} />
             <ToolbarGroup float="right">
               <IconButton
                 style={styles.iconButton}
-                tooltip="Send"
+                tooltip={window.textSet.send}
                 disabled={this.state.sent}
                 onTouchTap={this.handleCreateNewAskTouchTap} >
                 <Send />
@@ -128,8 +132,9 @@ var CreateNewAsk = React.createClass({
               ref="contentTextField"
               rows={1}
               rowsMax={7}
-              floatingLabelText="What do you want to ask?"
+              floatingLabelText={window.textSet.makeTitle}
               multiLine={true}
+              errorText={this.state.emptyTitle ? window.textSet.emptyErrText : ""}
               onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
@@ -142,6 +147,7 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true}
+              errorText={this.state.emptyYes ? window.textSet.emptyErrText : ""}
               onChange={this.countText} />
             <TextField
               style={styles.textFieldStyle}
@@ -153,10 +159,11 @@ var CreateNewAsk = React.createClass({
               rows={1}
               rowsMax={5}
               multiLine={true}
+              errorText={this.state.emptyNo ? window.textSet.emptyErrText : ""}
               onChange={this.countText} />
             <SelectTarget ref="selectTarget" />
             <Checkbox
-              label="secret"
+              label={window.textSet.secret}
               ref="secretCheckBox"
               iconStyle={styles.checkboxIcon}
               labelStyle={styles.checkboxLabel}
@@ -177,19 +184,25 @@ var CreateNewAsk = React.createClass({
     switch(name){
       case 'title' :
         if (length > MaxLength)
-          this.refs.contentTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+          this.refs.contentTextField.setErrorText(window.textSet.limitErr+"("+length+"/"+MaxLength+")");
+        else if (length > 1)
+          this.setState({emptyTitle: false});
         else
           this.refs.contentTextField.setErrorText("");
         break;
       case 'yes' :
         if (length > MaxLength)
-          this.refs.yesTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+          this.refs.yesTextField.setErrorText(window.textSet.limitErr+"("+length+"/"+MaxLength+")");
+        else if (length > 1)
+          this.setState({emptyYes: false});
         else
           this.refs.yesTextField.setErrorText("");
         break;
       case 'no' :
-        if(length > MaxLength)
-          this.refs.noTextField.setErrorText("Warning: Limit text to 1000 characters.("+length+"/"+MaxLength+")");
+        if (length > MaxLength)
+          this.refs.noTextField.setErrorText(window.textSet.limitErr+"("+length+"/"+MaxLength+")");
+        else if (length > 1)
+          this.setState({emptyNo: false});
         else
           this.refs.noTextField.setErrorText("");
         break;
@@ -205,10 +218,11 @@ var CreateNewAsk = React.createClass({
     }
 
     this.setState({sent: true});
-    var url = 'http://54.65.152.112:5000/makeNewAsk';
+    var url = window.server.url+'/makeNewAsk';
     var poll = {};
     poll.askerId = document.user.id;
-    poll.askerName = document.user.name;
+    poll.askerName = this.refs.secretCheckBox.isChecked() ? "Anonymous" : document.user.name;
+    poll.profileImage = this.refs.secretCheckBox.isChecked() ? "Anonymous" : document.user.profile_image;
     poll.mainContent = this.refs.contentTextField.getValue().substring(0, 1000);
     poll.yesContent = this.refs.yesTextField.getValue().substring(0, 1000);
     poll.noContent = this.refs.noTextField.getValue().substring(0, 1000);
@@ -222,9 +236,17 @@ var CreateNewAsk = React.createClass({
     if (poll.mainContent.length < 1
        || poll.yesContent.length < 1
        || poll.noContent.length < 1) {
-      this.setState({result: "One and more text field value were empty"});
+      this.setState({result: window.textSet.emptyErr});
       this.refs.snackbar.show();
       this.setState({sent: false});
+
+      if (poll.mainContent.length < 1)
+        this.setState({emptyTitle: true});
+      if (poll.yesContent.length < 1)
+        this.setState({emptyYes: true});
+      if (poll.noContent.length < 1)
+        this.setState({emptyNo: true});
+
       return;
     }
 
@@ -235,7 +257,7 @@ var CreateNewAsk = React.createClass({
       data: poll,
       success: function (res) {
         if (res.message === undefined) {
-          this.setState({result: JSON.parse(res).result});
+          this.setState({result: window.textSet.newAskCreated});
           window.newAsksState = "UpdateNeeded";
           window.myAsksState = "UpdateNeeded";
           setTimeout(

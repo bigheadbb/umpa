@@ -40,7 +40,7 @@ var Master = React.createClass({
 
   getInitialState: function() {
     return {
-      tabIndex : '0',
+      tabIndex : '1',
       snackbarMessage : '',
       dialOpen : false,
     };
@@ -57,7 +57,6 @@ var Master = React.createClass({
     console.log("master componentDidMount");
     var timeout = setTimeout(
       function(){
-        this.setState({tabIndex: this._getSelectedIndex()});
         if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
           this.context.router.transitionTo('new-asks');
         }
@@ -70,7 +69,6 @@ var Master = React.createClass({
         var response = e.detail.res;
         window.fbLoginStatusCallback(response);
         clearTimeout(timeout);
-        this.setState({tabIndex: this._getSelectedIndex()});
 
         if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
           this.context.router.transitionTo('new-asks');
@@ -81,7 +79,29 @@ var Master = React.createClass({
     document.addEventListener("fbUserInfo",
       function statusChangeCallback(e) {
         console.log('master fbUserInfo statusChangeCallback');
-        this.setState({snackbarMessage: "Hi, " + document.user.name});
+        this.setState({snackbarMessage: window.textSet.loginToast + document.user.name});
+        this.refs.snackbar.show();
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoLogin",
+      function statusChangeCallback(e) {
+        console.log('master kakaoLogin statusChangeCallback');
+        console.log(e.detail.res);
+        var response = e.detail.res;
+        window.kakaoLoginStatusCallback(response);
+        clearTimeout(timeout);
+
+        if (window.location.href.indexOf('#') === -1 || window.location.href.split('#')[1] === "/") {
+          this.context.router.transitionTo('new-asks');
+        }
+      }.bind(this)
+    );
+
+    document.addEventListener("kakaoUserInfo",
+      function statusChangeCallback(e) {
+        console.log('master fbUserInfo statusChangeCallback');
+        this.setState({snackbarMessage: window.textSet.loginToast + document.user.name});
         this.refs.snackbar.show();
       }.bind(this)
     );
@@ -115,7 +135,6 @@ var Master = React.createClass({
 
   componentWillMount: function(){
     console.log("master componentWillMount");
-    this.setState({tabIndex: this._getSelectedIndex()});
     var setTabsState = function() {
       this.setState({mobileView: (document.body.clientWidth <= 647)});
     }.bind(this);
@@ -129,13 +148,18 @@ var Master = React.createClass({
   },
 
   _getSelectedIndex: function() {
-    return this.context.router.isActive('new-asks') ? '1' :
-      this.context.router.isActive('hot-asks') ? '2' : '0';
+    return this.context.router.isActive('new-asks') ? '1' : '0';
   },
 
   _handleTabChange: function(value, e, tab) {
-    this.context.router.transitionTo(tab.props.route);
-    this.setState({tabIndex: this._getSelectedIndex()});
+    this.setState({tabIndex: value});
+    var event = new CustomEvent("tabChanged", {
+          detail: {
+              value: value
+          }
+        });
+    document.dispatchEvent(event);
+    window.scrollTo(0,0);
   },
 
   _onRightUserSettingButtonTouchTap: function() {
@@ -240,14 +264,14 @@ var Master = React.createClass({
         fontWeight: 'bold',
       },
       userSetting: {
-        position: 'fixed',
+        position: 'absolute',
         right: Spacing.desktopGutter/2,
         top: 8,
         zIndex: 5,
         color: 'white'
       },
       search: {
-        position: 'fixed',
+        position: 'absolute',
         right: Spacing.desktopGutter/2 + 40,
         top: 8,
         zIndex: 5,
@@ -259,8 +283,8 @@ var Master = React.createClass({
       }
     };
 
-    var newTabStyle = this._getSelectedIndex() == 1 ? styles.selectedTab : styles.tab ;
-    var hotTabStyle = this._getSelectedIndex() == 2 ? styles.selectedTab : styles.tab ;
+    var newTabStyle = this.state.tabIndex === "1" ? styles.selectedTab : styles.tab ;
+    var hotTabStyle = this.state.tabIndex === "2" ? styles.selectedTab : styles.tab ;
 
     var yesOrNoIcon = (
       <EnhancedButton

@@ -31,7 +31,7 @@ var MoreButton = React.createClass({
       this.state.show == "showButton" ?
       <FlatButton
         onTouchTap={this.props.onTouchTap}
-        label={'more'}
+        label={window.textSet.more}
         style={styles.button} />
       : <CircularProgress
         style={styles.spinner}

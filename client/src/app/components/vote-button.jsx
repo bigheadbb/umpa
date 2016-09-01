@@ -165,7 +165,7 @@ var VoteButton = React.createClass({
   },
 
   getVoted: function (yesno) {
-    var url = 'http://54.65.152.112:5000/getVoted';
+    var url = window.server.url+'/getVoted';
     var query = {};
     if (document.user !== undefined && document.user.id !== undefined) {
       query.askerId = document.user.id;
@@ -185,7 +185,7 @@ var VoteButton = React.createClass({
           this.props.handle(data.Items[0].voted,
                             this.props.yesCount,
                             this.props.noCount);
-          this.setState({snackbarMessage: "You already chose " + data.Items[0].voted.toUpperCase()});
+          this.setState({snackbarMessage: window.textSet.alreadyPop + data.Items[0].voted.toUpperCase() + window.textSet.alreadySelPop});
           this.refs.snackbar.show();
         } else {
           if (this._checkTargetAge() && this._checkTargetGender()) {
@@ -205,7 +205,7 @@ var VoteButton = React.createClass({
 
   vote: function (yesno) {
     console.log('!!!!!!!   vote');
-    var url = 'http://54.65.152.112:5000/makeNewVote';
+    var url = window.server.url+'/makeNewVote';
     var query = {};
     query.askerId = document.user.id;
     query.index = this.askIndex();
@@ -222,7 +222,7 @@ var VoteButton = React.createClass({
           this.props.handle(yesno,
                             parseInt(data.Items[0].yesCount.N),
                             parseInt(data.Items[0].noCount.N));
-          this.setState({snackbarMessage: "Your choice is " + yesno.toUpperCase()});
+          this.setState({snackbarMessage: window.textSet.choicePop + yesno.toUpperCase()});
           this.refs.snackbar.show();
           window.myVotedAsksState = "UpdateNeeded";
         }
@@ -259,24 +259,24 @@ var VoteButton = React.createClass({
     if (this.props.age === undefined)
       return true;
 
-    if (this.props.age.S === "ALL")
+    if (this.props.age.S === "ALL" || this.props.age.S === "전체")
       return true;
 
-    if (this.props.age.S === "OVER20") {
+    if (this.props.age.S === "OVER20" || this.props.age.S === "20세 이상") {
       if (document.user.age_range.min > 20) {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only 21 years and older."});
+        this.setState({snackbarMessage: window.textSet.onlyOverAge});
         this.refs.snackbar.show();
         return false;
       }
     }
 
-    if (this.props.age.S === "UNDER20") {
+    if (this.props.age.S === "UNDER20" || this.props.age.S === "20세 이하") {
       if (document.user.age_range.max <= 20) {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only less than 20 years and 20 years."});
+        this.setState({snackbarMessage: window.textSet.onlyUnderAge});
         this.refs.snackbar.show();
         return false;
       }
@@ -287,24 +287,24 @@ var VoteButton = React.createClass({
     if (this.props.gender === undefined)
       return true;
 
-    if (this.props.gender.S === "ALL")
+    if (this.props.gender.S === "ALL" || this.props.gender.S === "전체")
       return true;
 
-    if (this.props.gender.S === "MAN") {
+    if (this.props.gender.S === "MAN"  || this.props.gender.S === "남성") {
       if (document.user.gender === "male") {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only men can vote"});
+        this.setState({snackbarMessage: window.textSet.onlyMan});
         this.refs.snackbar.show();
         return false;
       }
     }
 
-    if (this.props.gender.S === "WOMAN") {
+    if (this.props.gender.S === "WOMAN"  || this.props.gender.S === "여성") {
       if (document.user.gender === "female") {
         return true;
       } else {
-        this.setState({snackbarMessage: "Only women can vote"});
+        this.setState({snackbarMessage: window.textSet.onlyWoman});
         this.refs.snackbar.show();
         return false;
       }

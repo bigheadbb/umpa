@@ -36,7 +36,7 @@ var VotedAsks = React.createClass({
     if (window.myVotedAsksState === undefined || window.myVotedAsksState === "UpdateNeeded") {
       window.myVotedAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyVotedAsks',
+        url: window.server.url+'/getMyVotedAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -77,7 +77,7 @@ var VotedAsks = React.createClass({
       query.askerId = document.user.id;
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyVotedAsks',
+        url: window.server.url+'/getMyVotedAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -103,7 +103,7 @@ var VotedAsks = React.createClass({
     query.askerId = document.user.id;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getMyVotedAsks',
+      url: window.server.url+'/getMyVotedAsks',
       dataType: 'json',
       data : query,
       type: 'POST',
@@ -160,11 +160,11 @@ var VotedAsks = React.createClass({
       <div style={styles.containerStyle}>
         <Toolbar style={styles.toolbar}>
           <ToolbarGroup firstChild={true} float="left">
-            <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+            <IconButton style={styles.iconButton} tooltip={window.textSet.back} onTouchTap={this.handleBackButtonTouchTap} >
               <Back />
             </IconButton>
           </ToolbarGroup>
-          <ToolbarTitle text="My Voted Asks" style={styles.toolbarTitle} />
+          <ToolbarTitle text={window.textSet.votedAsk} style={styles.toolbarTitle} />
         </Toolbar>
         <CardList data={this.state.data}/>
         <MoreButton

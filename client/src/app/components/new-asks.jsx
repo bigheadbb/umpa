@@ -7,36 +7,33 @@ var WriteButton = require('./write-button.jsx');
 var MoreButton = require('./more-button.jsx');
 
 newAsks = [];
+hotAsks = [];
 
 var NewAsks = React.createClass({
 
   getInitialState: function () {
-    return {data: []};
+    return {newAsksData: [], hotAsksData: [], hotAsksMoreButtonShow : true};
   },
 
   componentWillMount: function () {
     console.log('New asks componentWillMount called');
     console.log('window.newAsksState is ', window.newAsksState);
-    var query = {};
-    query.date = new Date().getTime();
+    this.tabIndex = '1';
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
+      var query = {};
+      query.date = new Date().getTime();
       window.newAsksState = "Updating";
+
       $.ajax({
-        url: 'http://54.65.152.112:5000/getNewAsks',
+        url: window.server.url+'/getNewAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
         cache: false,
         success: function (data) {
           newAsks = data.Items;
-          this.setState({data: newAsks});
-
-          // prepare hot asks data
-          setTimeout( function() {
-            this.prepareHotAsks();
-          }.bind(this), 2000);
-
+          this.setState({newAsksData: newAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -44,32 +41,64 @@ var NewAsks = React.createClass({
       });
       window.newAsksState = "Updated";
     } else if (window.newAsksState === "Updated"){
-      this.setState({data: newAsks});
+      this.setState({newAsksData: newAsks});
+    }
+
+    if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
+      var NUMBER_MAX_VALUE = 999999999999999999999999;
+      var query = {};
+      query.voteCount = NUMBER_MAX_VALUE;
+
+      window.hotAsksState = "Updating";
+      $.ajax({
+        url: window.server.url+'/getHotAsks',
+        dataType: 'json',
+        data : query,
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          hotAsks = data.Items;
+          this.setState({hotAsksData: hotAsks.slice(0, 5)});
+          console.log("hotAsks : " + hotAsks);
+        }.bind(this),
+        error: function (xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+      window.hotAsksState = "Updated";
+    } else if (window.hotAsksState === "Updated"){
+      this.setState({hotAsksData: hotAsks});
     }
   },
 
   componentDidMount: function () {
     console.log('New asks componentDidMount called');
     console.log('window.newAsksState is ', window.newAsksState);
+    document.addEventListener("tabChanged",
+      function statusChangeCallback(e) {
+        this.tabIndex = e.detail.value;
+      }.bind(this)
+    );
   },
 
   componentWillUpdate: function(nextProps, nextState) {
     console.log('New asks componentWillUpdate called');
-    console.log('window.newAsksState is ', window.newAsksState);
+    console.log('New asks window.newAsksState is ', window.newAsksState);
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
       query.date = new Date().getTime();
+      window.newAsksState = "Updating";
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getNewAsks',
+        url: window.server.url+'/getNewAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
         cache: false,
         success: function (data) {
           newAsks = data.Items;
-          this.setState({data: newAsks});
+          this.setState({newAsksData: newAsks});
         }.bind(this),
         error: function (xhr, status, erro) {
           console.error(this.props.url, status, err.toString());
@@ -78,55 +107,22 @@ var NewAsks = React.createClass({
 
       window.newAsksState = "Updated";
     }
-  },
-
-  getNewAsks: function(dateTime) {
-    console.log('New asks getNewAsks called');
-    var query = {};
-    var now = new Date().getTime();
-    query.date = dateTime ? dateTime : now;
-
-    $.ajax({
-      url: 'http://54.65.152.112:5000/getNewAsks',
-      dataType: 'json',
-      data : query,
-      type: 'POST',
-      cache: false,
-      success: function (recievedData) {
-        console.log(recievedData.Items);
-        if (recievedData.Items !== undefined && recievedData.Count > 1) {
-          newAsks = newAsks.concat(recievedData.Items);
-          setTimeout( function() {
-            this.setState({data: newAsks})
-          }.bind(this), 1000);
-        }
-        setTimeout( function() {
-          this.refs.moreButton.showButton();
-        }.bind(this), 1000);
-      }.bind(this),
-      error: function (xhr, status, erro) {
-        this.refs.moreButton.showButton();
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-
-  prepareHotAsks: function() {
-    console.log("prepareHotAsks called");
-    var NUMBER_MAX_VALUE = 999999999999999999999999;
-    var query = {};
-    query.voteCount = NUMBER_MAX_VALUE;
 
     if (window.hotAsksState === undefined || window.hotAsksState === "UpdateNeeded") {
+      var NUMBER_MAX_VALUE = 999999999999999999999999;
+      var query = {};
+      query.voteCount = NUMBER_MAX_VALUE;
+
       window.hotAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getHotAsks',
+        url: window.server.url+'/getHotAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
         cache: false,
         success: function (data) {
           hotAsks = data.Items;
+          this.setState({hotAsksData: hotAsks.slice(0, 5)});
           console.log("hotAsks : " + hotAsks);
         }.bind(this),
         error: function (xhr, status, err) {
@@ -137,7 +133,40 @@ var NewAsks = React.createClass({
     }
   },
 
+  getNewAsks: function(dateTime) {
+    console.log('New asks getNewAsks called');
+    var query = {};
+    var now = new Date().getTime();
+    query.date = dateTime ? dateTime : now;
+
+    $.ajax({
+      url: window.server.url+'/getNewAsks',
+      dataType: 'json',
+      data : query,
+      type: 'POST',
+      cache: false,
+      success: function (recievedData) {
+        console.log(recievedData.Items);
+        if (recievedData.Items !== undefined && recievedData.Count > 1) {
+          newAsks = newAsks.concat(recievedData.Items);
+          setTimeout( function() {
+            this.setState({newAsksData: newAsks})
+          }.bind(this), 1000);
+        }
+        setTimeout( function() {
+          console.log("jungo");
+          this.refs.newAsksMoreButton.showButton();
+        }.bind(this), 1000);
+      }.bind(this),
+      error: function (xhr, status, erro) {
+        this.refs.newAsksMoreButton.showButton();
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+
   render: function() {
+    console.log("new Asks rendering : " + this.tabIndex);
     var root = {
       backgroundColor : Colors.grey100,
     };
@@ -150,29 +179,83 @@ var NewAsks = React.createClass({
       backgroundColor : Colors.grey100,
     };
 
+    var newTabStyle = this.tabIndex === "1" ?
+    {
+      position: "absolute",
+      top: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
+      width: "100%",
+      maxWidth : 650,
+    }
+    : {
+      position: "absolute",
+      top: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
+      top: -10000,
+      left: -10000,
+      width: "100%",
+      maxWidth : 650,
+    };
+
+    var hotTabStyle = this.tabIndex === "2" ?
+    {
+      position: "absolute",
+      top: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
+      width: "100%",
+      maxWidth : 650,
+    }
+    : {
+      position: "absolute",
+      top: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
+      top: -10000,
+      left: -10000,
+      width: "100%",
+      maxWidth : 650,
+    };
+
+    var hotAsksMoreButton = this.state.hotAsksMoreButtonShow ?
+      <MoreButton
+        ref='hotAsksMoreButton'
+        onTouchTap={this.handleHotAsksMoreButtonTouchTap} />
+      : null;
+
     return (
       <div style={root}>
       <div style={containerStyle}>
-        <CardList data={this.state.data}/>
-        <MoreButton
-          ref='moreButton'
-          onTouchTap={this.handleMoreButtonTouchTap} />
+        <div style={newTabStyle}>
+          <CardList data={this.state.newAsksData}/>
+          <MoreButton
+            ref='newAsksMoreButton'
+            onTouchTap={this.handleNewAsksMoreButtonTouchTap} />
+        </div>
+        <div style={hotTabStyle}>
+          <CardList data={this.state.hotAsksData}/>
+          {hotAsksMoreButton}
+        </div>
       </div>
       <WriteButton />
       </div>
     );
   },
 
-  handleMoreButtonTouchTap: function() {
-    console.log("handleMoreButtonTouchTap");
+  handleNewAsksMoreButtonTouchTap: function() {
+    console.log("handleNewAsksMoreButtonTouchTap");
     console.log(newAsks);
     console.log(newAsks.length);
-    this.refs.moreButton.showSpinner();
+    this.refs.newAsksMoreButton.showSpinner();
     if (newAsks.length > 0) {
       this.getNewAsks(newAsks[newAsks.length-1].date.S);
     } else {
       this.getNewAsks(new Date().getTime().toString());
     }
+  },
+
+  handleHotAsksMoreButtonTouchTap: function() {
+    console.log("handleHotAsksMoreButtonTouchTap");
+    console.log(hotAsks);
+    console.log(hotAsks.length);
+    this.refs.hotAsksMoreButton.showSpinner();
+    setTimeout( function() {
+      this.setState({hotAsksData: hotAsks, hotAsksMoreButtonShow: false});
+    }.bind(this), 1000);
   },
 });
 

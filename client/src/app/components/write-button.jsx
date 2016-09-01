@@ -6,6 +6,7 @@ var { Colors, } = mui.Styles;
 
 var WritePencil = require('./svg-icons/write-pencil.jsx');
 var LoginSel = require('./login-select.jsx');
+var Tooltip = require("react-tooltip");
 
 var WriteButton = React.createClass({
 
@@ -28,8 +29,9 @@ var WriteButton = React.createClass({
           backgroundColor={Colors.deepPurple500}
           style={floatingButtonStyle}
           onTouchTap={this.handleCreateNewAsksButtonTouchTap}>
-          <WritePencil />
+          <WritePencil data-tip data-for="write" />
         </FloatingActionButton>
+        <Tooltip id="write" effect="solid" delayShow={500}>{window.textSet.makeAsks}</Tooltip>
         <LoginSel
           openstate={this.state.dialOpen}
           close={this._loginClose}>

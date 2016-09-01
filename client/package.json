@@ -25,6 +25,7 @@
     "gulp": "^3.8.10",
     "gulp-notify": "^2.1.0",
     "gulp-util": "^3.0.1",
+    "gulp-gzip": "1.2.0",
     "pretty-hrtime": "^0.2.2",
     "reactify": "^0.17.1",
     "require-dir": "^0.1.0",
@@ -35,8 +36,10 @@
   "dependencies": {
     "material-ui": "0.13.4",
     "react": "0.14.6",
+    "react-copy-to-clipboard": "^4.0.2",
     "react-dom": "0.14.6",
     "react-router": "0.13.5",
-    "react-tap-event-plugin": "0.2.1"
+    "react-tap-event-plugin": "0.2.1",
+    "react-tooltip": "1.1.4"
   }
 }

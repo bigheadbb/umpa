@@ -36,7 +36,7 @@ var MyAsks = React.createClass({
     if (window.myAsksState === undefined || window.myAsksState === "UpdateNeeded") {
       window.myAsksState = "Updating";
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyAsks',
+        url: window.server.url+'/getMyAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -77,7 +77,7 @@ var MyAsks = React.createClass({
       query.askerId = document.user.id;
 
       $.ajax({
-        url: 'http://54.65.152.112:5000/getMyAsks',
+        url: window.server.url+'/getMyAsks',
         dataType: 'json',
         data : query,
         type: 'POST',
@@ -103,7 +103,7 @@ var MyAsks = React.createClass({
     query.askerId = document.user.id;
 
     $.ajax({
-      url: 'http://54.65.152.112:5000/getMyAsks',
+      url: window.server.url+'/getMyAsks',
       dataType: 'json',
       data : query,
       type: 'POST',
@@ -160,11 +160,11 @@ var MyAsks = React.createClass({
       <div style={styles.containerStyle}>
         <Toolbar style={styles.toolbar}>
           <ToolbarGroup firstChild={true} float="left">
-            <IconButton style={styles.iconButton} tooltip="Back" onTouchTap={this.handleBackButtonTouchTap} >
+            <IconButton style={styles.iconButton} tooltip={window.textSet.back} onTouchTap={this.handleBackButtonTouchTap} >
               <Back />
             </IconButton>
           </ToolbarGroup>
-          <ToolbarTitle text="My Asks" style={styles.toolbarTitle} />
+          <ToolbarTitle text={window.textSet.myAsk} style={styles.toolbarTitle} />
         </Toolbar>
         <MyCardList data={this.state.data}/>
         <MoreButton

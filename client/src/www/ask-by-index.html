@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  var regex = /[?&]([^=#]+)=([^&#]*)/g,
+    url = window.location.href,
+    params = {},
+    match;
+  while(match = regex.exec(url)) {
+    params[match[1]] = match[2];
+  }
+  console.log(params);
+  window.location = "http://askus.me/#/ask-by-index?"+"index="+params.index+"#"+params.date;
+</script>
+</head>
+<body>
+</body>
+</html>
