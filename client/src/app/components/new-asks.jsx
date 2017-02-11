@@ -18,7 +18,6 @@ var NewAsks = React.createClass({
   componentWillMount: function () {
     console.log('New asks componentWillMount called');
     console.log('window.newAsksState is ', window.newAsksState);
-    this.tabIndex = '1';
 
     if (window.newAsksState === undefined || window.newAsksState === "UpdateNeeded") {
       var query = {};
@@ -67,18 +66,13 @@ var NewAsks = React.createClass({
       });
       window.hotAsksState = "Updated";
     } else if (window.hotAsksState === "Updated"){
-      this.setState({hotAsksData: hotAsks});
+      this.setState({hotAsksData: hotAsks.slice(0, 5)});
     }
   },
 
   componentDidMount: function () {
     console.log('New asks componentDidMount called');
     console.log('window.newAsksState is ', window.newAsksState);
-    document.addEventListener("tabChanged",
-      function statusChangeCallback(e) {
-        this.tabIndex = e.detail.value;
-      }.bind(this)
-    );
   },
 
   componentWillUpdate: function(nextProps, nextState) {
@@ -154,7 +148,6 @@ var NewAsks = React.createClass({
           }.bind(this), 1000);
         }
         setTimeout( function() {
-          console.log("jungo");
           this.refs.newAsksMoreButton.showButton();
         }.bind(this), 1000);
       }.bind(this),
@@ -166,7 +159,7 @@ var NewAsks = React.createClass({
   },
 
   render: function() {
-    console.log("new Asks rendering : " + this.tabIndex);
+    console.log("New Asks rendering : " + window.lastTabIndex);
     var root = {
       backgroundColor : Colors.grey100,
     };
@@ -179,7 +172,7 @@ var NewAsks = React.createClass({
       backgroundColor : Colors.grey100,
     };
 
-    var newTabStyle = this.tabIndex === "1" ?
+    var newTabStyle = window.lastTabIndex === "1" ?
     {
       position: "absolute",
       top: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
@@ -195,7 +188,7 @@ var NewAsks = React.createClass({
       maxWidth : 650,
     };
 
-    var hotTabStyle = this.tabIndex === "2" ?
+    var hotTabStyle = window.lastTabIndex === "2" ?
     {
       position: "absolute",
       top: document.body.clientWidth <= 647 ? Spacing.desktopKeylineIncrement+48: Spacing.desktopKeylineIncrement,
